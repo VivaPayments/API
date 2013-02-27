@@ -1,4 +1,4 @@
-This repository contains sample projects for integrating Viva Payments (https://www.vivapaypents.com) to your website.
+This repository contains sample projects for integrating Viva Payments (https://www.vivapayments.com) to your website.
 
 Feel free to send us any issues, comments, or enhancements.
 
