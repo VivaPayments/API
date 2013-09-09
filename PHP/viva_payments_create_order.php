@@ -34,9 +34,13 @@ curl_close($session);
 
 // Parse the JSON response
 try {
-	$resultObj=json_decode($response);
+	if(is_object(json_decode($response))){
+	  	$resultObj=json_decode($response);
+	}else{
+		throw new Exception("Result is not a json object: ")
+	}
 } catch( Exception $e ) {
-	throw new Exception("Result is not a json object (" . $e->getMessage() . ")");
+	echo $e->getMessage();
 }
 
 if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
