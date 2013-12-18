@@ -6,7 +6,7 @@ $request =  'http://demo.vivapayments.com/api/orders';	// demo environment URL
 
 // Your merchant ID and API Key can be found in the 'Security' settungs on your profile.
 $MerchantId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-$APIKey = 'xxxxxxxxxxxxx';	
+$APIKey = 'xxxxxxxxxxxxx'; 	
 
 //Set the Payment Amount
 $Amount = 100;	// Amount in cents
@@ -27,7 +27,6 @@ curl_setopt($session, CURLOPT_POST, true);
 curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
 curl_setopt($session, CURLOPT_HEADER, false);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($session, CURLOPT_USERPWD, $MerchantId.':'.$APIKey);
 
 // Do the POST and then close the session
@@ -50,7 +49,7 @@ if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
 	echo 'Your Order Code is: <b>'. $orderId.'</b>';
 	echo '<br/><br/>';
 	echo 'To simulate a successfull payment, use the credit card 4111 1111 1111 1111, with a valid expiration date and 111 as CVV2.';
-	echo '<br/><a href="http://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
+	echo '</br/><a href="http://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
 }
 	
 else{
