@@ -4,7 +4,7 @@
 $request =  'http://demo.vivapayments.com/api/orders';	// demo environment URL
 //$request =  'https://www.vivapayments.com/api/orders';	// production environment URL
 
-// Your merchant ID and API Key can be found in the 'Security' settungs on your profile.
+// Your merchant ID and API Key can be found in the 'Security' settings on your profile.
 $MerchantId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 $APIKey = 'xxxxxxxxxxxxx'; 	
 
