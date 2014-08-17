@@ -1,9 +1,12 @@
-import datetime
+"""
+Depends on the dateutil module
+`pip install python-dateutil`
+"""
 import urllib2
 import urllib
 import base64
 import json
-import math
+from dateutil.parser import parse as duparse
 
 class VivaPayments(object):
     """VivaPayments API Wrapper"""
@@ -15,9 +18,11 @@ class VivaPayments(object):
     # Production constants
     PRODUCTION_URL = 'https://www.vivapayments.com/api/'
     PRODUCT_REDIRECT_URL = 'http://www.vivapayments.com/web/newtransaction.aspx?ref='
-    
+
     def __init__(self,merchant_id=None,api_key=None,production=False):
-        self.url = VivaPayments.DEMO_URL if production == False else PRODUCT_REDIRECT_URL
+        self.url = VivaPayments.DEMO_URL \
+            if production == False \
+                else VivaPayments.PRODUCT_REDIRECT_URL
         self.merchant_id=merchant_id
         self.api_key=api_key
 
@@ -48,7 +53,9 @@ class VivaPayments(object):
    
     def get_redirect_url(self,order_code):
         """Returns the order code appended on the REDIRECT_URL_PREFIX"""
-        redirect_url = VivaPayments.DEMO_REDIRECT_URL if self.url == VivaPayments.DEMO_URL else VivaPayments.PRODUCT_REDIRET_URL
+        redirect_url = VivaPayments.DEMO_REDIRECT_URL \
+            if self.url == VivaPayments.DEMO_URL \
+                else VivaPayments.PRODUCT_REDIRET_URL
         return redirect_url+str(order_code)
 
     ### UTILITY FUNCTIONS ###
@@ -60,11 +67,12 @@ class VivaPayments(object):
         data = urllib.urlencode(data)
         request_url = self.url + url_suffix
         request = urllib2.Request(request_url,data=data)
-        
+
         # Request basic access authentication
-        base64string = base64.encodestring('%s:%s' % (self.merchant_id,self.api_key)).replace('\n', '')
+        base64string = base64.encodestring('%s:%s' % \
+                (self.merchant_id,self.api_key)).replace('\n', '')
         request.add_header("Authorization", "Basic %s" % base64string)   
-        
+
         # Set http request method
         request.get_method = lambda: request_method
         response = urllib2.urlopen(request)
@@ -72,22 +80,14 @@ class VivaPayments(object):
 
     def _decode(self,json_response):
         obj = json.loads(json_response)
-        
-        timestamp=obj['TimeStamp']
-
-        date_tokens =timestamp[0:10].split('-')
-        year = int(date_tokens[0])
-        month = int(date_tokens[1])
-        day = int(date_tokens[2])
-
-        time_tokens =timestamp[11:27].split(':')
-        hour = int(time_tokens[0])
-        minute = int(time_tokens[1])
-        second = int(math.floor(float(time_tokens[2])))
-       
-        # Doesn't add timezone info 
-        obj['TimeStamp'] = datetime.datetime(year,month,day,hour,minute,second)
-
+        # TimeStamp is always present
+        obj['TimeStamp'] = duparse(obj['TimeStamp'])
+        # Transaction response
+        if 'Transactions' in obj:
+            for t in obj['Transactions']:
+                for key in ('InsDate', 'ClearanceDate'):
+                    if t[key]:
+                        t[key] = duparse(t['InsDate'])
         return obj
 
 # Examples
