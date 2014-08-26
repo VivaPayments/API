@@ -52,7 +52,7 @@ if (isset($resultObj->ErrorCode) && $resultObj->ErrorCode==0){	//success when Er
 	echo '</br/><a href="http://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
 } elseif (!isset($resultObj->ErrorCode)){
         $output = 'The following error occured: ' . $resultObj->Message;
-    } else{
+} else{
 	echo 'The following error occured: ' . $resultObj->ErrorText;
 }
 
