@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // The POST URL and parameters
 $request =  'http://demo.vivapayments.com/api/orders';	// demo environment URL
@@ -6,7 +6,7 @@ $request =  'http://demo.vivapayments.com/api/orders';	// demo environment URL
 
 // Your merchant ID and API Key can be found in the 'Security' settings on your profile.
 $MerchantId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-$APIKey = 'xxxxxxxxxxxxx'; 	
+$APIKey = 'xxxxxxxxxxxxx';
 
 //Set the Payment Amount
 $Amount = 100;	// Amount in cents
@@ -44,15 +44,15 @@ try {
 	echo $e->getMessage();
 }
 
-if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
+if (isset($resultObj->ErrorCode) && $resultObj->ErrorCode==0){	//success when ErrorCode = 0
 	$orderId = $resultObj->OrderCode;
 	echo 'Your Order Code is: <b>'. $orderId.'</b>';
 	echo '<br/><br/>';
 	echo 'To simulate a successfull payment, use the credit card 4111 1111 1111 1111, with a valid expiration date and 111 as CVV2.';
 	echo '</br/><a href="http://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
-}
-	
-else{
+} elseif (!isset($resultObj->ErrorCode)){
+        $output = 'The following error occured: ' . $resultObj->Message;
+    } else{
 	echo 'The following error occured: ' . $resultObj->ErrorText;
 }
 
