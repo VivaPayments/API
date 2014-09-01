@@ -41,10 +41,9 @@ class VivaPayments(object):
         data = self.pack_data('transaction_id',transaction_id,kwargs)
         return self._request('POST','transactions/'+str(transaction_id),data)
 
-    def cancel_transaction(self,transaction_id,**kwargs):
+    def cancel_transaction(self,transaction_id,amount):
         """Cancel or refund a payment."""
-        data = self.pack_data('transaction_id',transaction_id,kwargs)
-        return self._request('DELETE','transactions/'+str(transaction_id),data)
+        return self._grequest('DELETE','transactions/'+str(transaction_id)+'?amount='+str(amount))
    
     def get_redirect_url(self,order_code):
         """Returns the order code appended on the REDIRECT_URL_PREFIX"""
@@ -54,6 +53,20 @@ class VivaPayments(object):
     ### UTILITY FUNCTIONS ###
     def pack_data(self,arg_name,arg_val,kwargs):
         return dict({arg_name:arg_val}.items() + kwargs.items())
+
+    def _grequest(self,request_method,url_suffix):
+        # Construct request object
+        request_url = self.url + url_suffix
+        request = urllib2.Request(request_url)
+        
+        # Request basic access authentication
+        base64string = base64.encodestring('%s:%s' % (self.merchant_id,self.api_key)).replace('\n', '')
+        request.add_header("Authorization", "Basic %s" % base64string)   
+        
+        # Set http request method
+        request.get_method = lambda: request_method
+        response = urllib2.urlopen(request)
+        return self._decode(response.read())
 
     def _request(self,request_method,url_suffix,data):
         # Construct request object
@@ -108,5 +121,11 @@ if __name__ == '__main__':
 
     # Get the redirect url and paste it at your browser
     print redirect_url
+
+    # Example 2
+    # Cancel Transaction
+
+    result = viva_payments.cancel_transaction('959A0471-2CC8-4E75-A422-97E318E48ACD', 10)
+    print result
 
 
