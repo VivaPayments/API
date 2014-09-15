@@ -7,3 +7,7 @@ We also welcome your contribution for developing plugins that will allow easy in
 Check out our Wiki for detailed instructions on the APIs
 
 https://github.com/VivaPayments/API/wiki
+
+You may also browse our knowledge base, or post your questions to our online community for developers 
+
+https://support.vivapayments.com/hc/en-us
