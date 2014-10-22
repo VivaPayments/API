@@ -28,6 +28,7 @@ curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
 curl_setopt($session, CURLOPT_HEADER, false);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($session, CURLOPT_USERPWD, $MerchantId.':'.$APIKey);
+curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
 
 // Do the POST and then close the session
 $response = curl_exec($session);
