@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 public partial class _Default : System.Web.UI.Page
 {
-    private Guid _MerchantId = Guid.Parse("22C8A516-BE4A-4B21-AB5C-01F25C02557C");
+    private Guid _MerchantId = new Guid("22C8A516-BE4A-4B21-AB5C-01F25C02557C");
     private string _ApiKey = "myapitestkey";
     private string _BaseApiUrl = "http://demo.vivapayments.com";
     private string _WebhooksAuthUrl = "/api/messages/config/token";
