@@ -16,6 +16,7 @@ namespace WebhooksConsumerMVC.Controllers
         private string _BaseApiUrl = "http://demo.vivapayments.com";
         private string _WebhooksAuthUrl = "/api/messages/config/token";
 
+        [HttpGet]
         public ActionResult Index()
         {
             //USING HttpClient TO GET WEBHOOK AUTH TOKEN
@@ -43,13 +44,14 @@ namespace WebhooksConsumerMVC.Controllers
             return View();
         }
 
-        public ActionResult Process(Message<TransactionEventData> data)
+        [HttpPost]
+        public ActionResult Index(Message<TransactionEventData> data)
         {
             if (data == null ||
                 data.EventData == null)
                 return View("Error");
             
-            return View(data.EventData);
+            return View("Process", data.EventData);
         }
     }
 
