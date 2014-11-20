@@ -11,18 +11,18 @@
 <body>
     <form id="paymentform" runat="server">
         CardHolder's name:
-        <asp:TextBox ID="txtCardHolder" runat="server" data-vp="cardholder" Text="test"></asp:TextBox><br />
+        <asp:TextBox ID="txtCardHolder" runat="server" data-vp="cardholder"></asp:TextBox><br />
         CardNumber:
-        <asp:TextBox ID="txtCardNumber" runat="server" data-vp="cardnumber" MaxLength="16" Text="4111111111111111"></asp:TextBox><br />
+        <asp:TextBox ID="txtCardNumber" runat="server" data-vp="cardnumber" MaxLength="16"></asp:TextBox><br />
         <div id="divInstallments" style="display:none">
             Installments: <asp:DropDownList ID="drpInstallments" runat="server"></asp:DropDownList>
         </div>
         CVV:
-        <asp:TextBox ID="txtCVV" runat="server" data-vp="cvv" Text="111"></asp:TextBox><br />
+        <asp:TextBox ID="txtCVV" runat="server" data-vp="cvv"></asp:TextBox><br />
         Expiration Month:
-        <asp:TextBox ID="txtExpMonth" runat="server" data-vp="month" Text="05"></asp:TextBox><br />
+        <asp:TextBox ID="txtExpMonth" runat="server" data-vp="month"></asp:TextBox><br />
         Expiration Year:
-        <asp:TextBox ID="txtExpYear" runat="server" data-vp="year" Text="2015"></asp:TextBox><br />
+        <asp:TextBox ID="txtExpYear" runat="server" data-vp="year"></asp:TextBox><br />
         <asp:HiddenField ID="hidToken" runat="server" />
         <asp:Button ID="btnSubmit" runat="server" text="Submit" OnClientClick="VivaPayments.cards.requestToken();return false;" />
     </form>
