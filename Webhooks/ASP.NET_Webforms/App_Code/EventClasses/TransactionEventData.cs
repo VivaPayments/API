@@ -7,7 +7,7 @@ public class TransactionEventData
 {
     public decimal Amount { get; set; }
     public string CardNumber { get; set; }
-    public byte CardTypeId { get; set; }
+    public byte? CardTypeId { get; set; }
     public Guid? ClientId { get; set; }
     public string CompanyName { get; set; }
     public string CurrencyCode { get; set; }
