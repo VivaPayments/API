@@ -25,21 +25,28 @@ $session = curl_init($request);
 // Set the POST options.
 curl_setopt($session, CURLOPT_POST, true);
 curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
-curl_setopt($session, CURLOPT_HEADER, false);
+curl_setopt($session, CURLOPT_HEADER, true);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($session, CURLOPT_USERPWD, $MerchantId.':'.$APIKey);
 curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
 
 // Do the POST and then close the session
 $response = curl_exec($session);
+
+// Separate Header from Body
+$header_len = curl_getinfo($session, CURLINFO_HEADER_SIZE);
+$resHeader = substr($response, 0, $header_len);
+$resBody =  substr($response, $header_len);
+
 curl_close($session);
 
 // Parse the JSON response
 try {
-	if(is_object(json_decode($response))){
-	  	$resultObj=json_decode($response);
+	if(is_object(json_decode($resBody))){
+	  	$resultObj=json_decode($resBody);
 	}else{
-		throw new Exception("Result is not a json object: ");
+		preg_match('#^HTTP/1.(?:0|1) [\d]{3} (.*)$#m', $resHeader, $match);
+				throw new Exception("API Call failed! The error was: ".trim($match[1]));
 	}
 } catch( Exception $e ) {
 	echo $e->getMessage();
