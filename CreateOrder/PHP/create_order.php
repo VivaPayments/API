@@ -14,9 +14,9 @@ $Amount = 100;	// Amount in cents
 //Set some optional parameters (Full list available here: https://github.com/VivaPayments/API/wiki/Optional-Parameters)
 $AllowRecurring = 'true'; // This flag will prompt the customer to accept recurring payments in tbe future.
 $RequestLang = 'en-US'; //This will display the payment page in English (default language is Greek)
+$Source = 'Default'; // This will assign the transaction to the Source with Code = "Default". If left empty, the default source will be used.
 
-
-$postargs = 'Amount='.urlencode($Amount).'&AllowRecurring='.$AllowRecurring.'&RequestLang='.$RequestLang;
+$postargs = 'Amount='.urlencode($Amount).'&AllowRecurring='.$AllowRecurring.'&RequestLang='.$RequestLang.'&Source='.$Source;
 
 // Get the curl session object
 $session = curl_init($request);
