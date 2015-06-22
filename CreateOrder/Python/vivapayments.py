@@ -14,7 +14,7 @@ class VivaPayments(object):
 
     # Production constants
     PRODUCTION_URL = 'https://www.vivapayments.com/api/'
-    PRODUCT_REDIRECT_URL = 'http://www.vivapayments.com/web/newtransaction.aspx?ref='
+    PRODUCT_REDIRECT_URL = 'https://www.vivapayments.com/web/newtransaction.aspx?ref='
     
     def __init__(self,merchant_id=None,api_key=None,production=False):
         self.url = VivaPayments.DEMO_URL if production == False else PRODUCT_REDIRECT_URL
