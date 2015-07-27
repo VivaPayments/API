@@ -16,7 +16,7 @@ $AllowRecurring = 'true'; // This flag will prompt the customer to accept recurr
 $RequestLang = 'en-US'; //This will display the payment page in English (default language is Greek)
 $Source = 'Default'; // This will assign the transaction to the Source with Code = "Default". If left empty, the default source will be used.
 
-$postargs = 'Amount='.urlencode($Amount).'&AllowRecurring='.$AllowRecurring.'&RequestLang='.$RequestLang.'&Source='.$Source;
+$postargs = 'Amount='.urlencode($Amount).'&AllowRecurring='.$AllowRecurring.'&RequestLang='.$RequestLang.'&SourceCode='.$Source;
 
 // Get the curl session object
 $session = curl_init($request);
