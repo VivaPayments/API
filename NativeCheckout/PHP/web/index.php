@@ -6,7 +6,7 @@ if (count($_POST)>0){
 	// Remember to change the API Credentials in the NativeCheckoutClass file
 	$page=new NativeCheckout();
 	$amount=100; // in cents
-	$transactionId=$page->MakePayment($amount,$_POST[hidToken],$_POST[drpInstallments]);
+	$transactionId=$page->MakePayment($amount,$_POST["hidToken"],$_POST["drpInstallments"]);
 
 	if ($transactionId!='0')
 		echo "Transaction Succesful with Id :".$transactionId;
@@ -26,7 +26,7 @@ if (count($_POST)>0){
 
 		$(document).ready(function (){
 			   VivaPayments.cards.setup({
-					publicKey: 'CyfFrQukW8HOMYx+YPtD7RUv6RAPENfHkVZQC/PVM9c=',
+					publicKey: 'your_public_key',
 					baseURL: 'http://demo.vivapayments.com',
 					cardTokenHandler: function (response) {
 							if (!response.Error) {
@@ -67,7 +67,7 @@ if (count($_POST)>0){
 		<div class="form-row">
 		<label>
 			<span>Card Number</span>
-			<input type="text" size="20" name=”txtCardNumber” autocomplete="off" data-vp="cardnumber"/>
+			<input type="text" size="20" maxlength="16" name=”txtCardNumber” autocomplete="off" data-vp="cardnumber"/>
 		</label>
 		</div>
 		<div class="form-row">

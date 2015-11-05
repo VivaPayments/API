@@ -5,13 +5,16 @@ class PaymentRequest {}
 
 class NativeCheckout {
 
-	private $merchantId = '90DDA476-CF7C-4CFD-A9CB-23DFE11F131E';
-	private $apiKey = 'XXXXXX'; 
+	private $merchantId = 'your_merchant_id';
+	private $apiKey = 'your_api_key'; 
 	private $baseApiUrl = "http://demo.vivapayments.com";
     private $paymentsUrl = "/api/transactions";
     private $paymentsCreateOrderUrl = "/api/orders";
+    // A Source for which its Integration method is 
+    // set to "Native/Pay with Viva Wallet" option.
+    // See http://demo.vivapayments.com/selfcare/en-US/sources/paymentsources
 	private $nativeCheckoutSourceCode = "Native";
-	
+	private $resultObj = "";
 	
 	public function MakePayment($amount,$cardToken,$installments){
 		
@@ -22,7 +25,7 @@ class NativeCheckout {
 		$obj->Amount=$amount;
 		$obj->OrderCode=$orderCode;
 		$obj->SourceCode=$this->nativeCheckoutSourceCode;
-		$obj->CreditCard[Token]=$cardToken;
+		$obj->CreditCard["Token"]=$cardToken;
 		$obj->Installments=$installments;
 		
 		$resultObj = $this->ExecuteCall($this->baseApiUrl.$this->paymentsUrl,$obj);
