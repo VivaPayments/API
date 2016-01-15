@@ -170,7 +170,9 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 {
 	NSAssert(self.apiKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
 
-	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards?key=%@", self.apiURL.absoluteString, self.apiKey];
+	NSString *escapedAPIKey = [self urlEncodeString:self.apiKey usingEncoding:NSUTF8StringEncoding];
+	
+	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards?key=%@", self.apiURL.absoluteString, escapedAPIKey];
 	NSURL *ordersURL = [NSURL URLWithString:urlString];
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
@@ -247,5 +249,13 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 	return [NSString stringWithFormat:@"Basic %@", base64UserNamePassword];
 }
 
+
+-(NSString *)urlEncodeString:(NSString *)string usingEncoding:(NSStringEncoding)encoding {
+	return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+															   (CFStringRef)string,
+															   NULL,
+															   (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
+															   CFStringConvertNSStringEncodingToEncoding(encoding)));
+}
 
 @end
