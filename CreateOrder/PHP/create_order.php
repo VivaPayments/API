@@ -42,12 +42,16 @@ curl_close($session);
 
 // Parse the JSON response
 try {
-	if(is_object(json_decode($resBody))){
-	  	$resultObj=json_decode($resBody);
-	}else{
-		preg_match('#^HTTP/1.(?:0|1) [\d]{3} (.*)$#m', $resHeader, $match);
-				throw new Exception("API Call failed! The error was: ".trim($match[1]));
-	}
+	// JSON_BIGINT_AS_STRING 
+	$resultObj = json_decode($resBody, FALSE, 512, JSON_BIGINT_AS_STRING); 
+	
+	if ( ! is_object($resultObj) ) {
+                                                                       
+            preg_match('#^HTTP/1.(?:0|1) [\d]{3} (.*)$#m', $resHeader, $match);
+            throw new \Exception("API Call failed! The error was: " . trim($match[1]));
+
+        }
+                                
 } catch( Exception $e ) {
 	echo $e->getMessage();
 }
