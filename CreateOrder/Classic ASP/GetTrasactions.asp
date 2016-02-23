@@ -1,3 +1,4 @@
+<%
 dim baseUrl
 baseUrl = "http://demo.vivapayments.com/api/transactions/"
 
@@ -15,3 +16,4 @@ http.setRequestHeader "Authorization", "Basic "&Base64Encode(MerchantId & ":" & 
 http.send()
 
 response.write http.responsetext
+%>
