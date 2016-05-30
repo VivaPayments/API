@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Viva Payments AngularJS Example</h1>
+    <p class="lead"></p>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div ng-controller="VivaPaymentsCtlr">
+            <form id="frmCheckout" action="/Home/Checkout" method="post" postform>
+                <button class="form-control btn btn-primary" type="button" value="CHARGE 0&euro;"
+                        data-vp-publickey="aBon7Oqqme4i/d6kPz3ICnIm/KEFXnavmpAGMR+dtK0="
+                        data-vp-baseurl="https://demo.vivapayments.com"
+                        data-vp-lang="{{culture}}"
+                        data-vp-amount="{{totalCost * 100.0}}"
+                        data-vp-description="My product" />
+            </form>
+            <script src="https://demo.vivapayments.com/web/checkout/js"></script>
+        </div>
+    </div>
+</div>
