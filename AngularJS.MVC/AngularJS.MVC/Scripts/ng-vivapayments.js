@@ -17,6 +17,8 @@
                         success: function (response) {
                             $timeout(function () {
                                 alert('Success');
+                                $scope.step = null;
+                                window.location.href = "/";
                             }, 0);
                         }
                     }).fail(function (error) {
@@ -30,9 +32,11 @@
     });
 
     ngVivaPaymentsMod.controller("VivaPaymentsCtlr", ['$scope', '$timeout', function ($scope, $timeout) {
-
+        
         $scope.culture = 'el';
-        $scope.totalCost = 0.3;
+        $scope.step2 = function () {
+            $scope.step = 2;
+        }
 
     }]);
 

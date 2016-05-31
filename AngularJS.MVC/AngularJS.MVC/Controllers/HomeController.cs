@@ -12,8 +12,8 @@ namespace AngularJS.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private Guid _merchantId = new Guid("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-        private String _apiKey = "xxxxxx";
+        private readonly Guid _merchantId = new Guid("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        const String _apiKey = "xxxxxx";
 
         public ActionResult Index()
         {
