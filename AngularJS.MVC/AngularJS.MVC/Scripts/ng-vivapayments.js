@@ -3,10 +3,18 @@
 
     var ngVivaPaymentsMod = angular.module('ngVivaPaymentsApp', []);
 
-    ngVivaPaymentsMod.directive('postform', function ($timeout) {
+    ngVivaPaymentsMod.directive('ngVivapayment', function ($timeout) {
         return {
-            restrict: 'A',
-            link: function ($scope, element, $attr) {
+            restrict: 'AE',
+            template: '<form id="frmCheckout" action="/Home/Checkout" method="post">' +
+                      '<button class="form-control btn btn-primary" type="button"' +
+                      'data-vp-publickey="aBon7Oqqme4i/d6kPz3ICnIm/KEFXnavmpAGMR+dtK0="' +
+                      'data-vp-baseurl="https://demo.vivapayments.com"' +
+                      'data-vp-lang="{{culture}}"' +
+                      'data-vp-amount="{{totalCost * 100}}"' +
+                      'data-vp-description="My product" />' +
+                      '</form>',
+            link: function ($scope, element) {
                 $(element).submit(function (event) {
                     event.preventDefault();
                     var vivaWalletToken = $('input[name="vivaWalletToken"]', $('#frmCheckout')).val();
@@ -16,7 +24,6 @@
                         data: { vivaWalletToken: vivaWalletToken },
                         success: function (response) {
                             $timeout(function () {
-                                alert('Success');
                                 $scope.step = null;
                                 window.location.href = "/";
                             }, 0);
@@ -28,16 +35,26 @@
                     });
                 });
             }
-        }
+        };
     });
 
     ngVivaPaymentsMod.controller("VivaPaymentsCtlr", ['$scope', '$timeout', function ($scope, $timeout) {
-        
-        $scope.culture = 'el';
+
+        $scope.step = 1;
+        $scope.culture = 'el'; // en
+
         $scope.step2 = function () {
+            $.getScript("https://demo.vivapayments.com/web/checkout/js")
+                .done(function (script, textStatus) {
+                    
+                });
             $scope.step = 2;
         }
 
     }]);
+
+    $(document).ready(function () {
+        $('.loader').show();
+    });
 
 })(window, angular, $);

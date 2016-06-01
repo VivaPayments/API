@@ -8,22 +8,14 @@
 </div>
 
 <div class="row" ng-controller="VivaPaymentsCtlr">
-    <div class="col-md-12" style="display: inline-block; vertical-align: middle; text-align: center;">
-        <div>
+    <div class="col-md-12 loader" style="display: none; vertical-align: middle; text-align: center;">
+        <div ng-show="step == 1">
             <input type="text" ng-model="totalCost" ng-init="totalCost=0.1">
-            <input type="button" value="&euro;{{totalCost}} Proceed to checkout" ng-click="step2()">
+            <input type="button" value="&euro;{{totalCost}} Proceed to payment" ng-click="step2()">
         </div>
-        <div ng-if="step == 2" style="padding-top: 15px;">
-            <form id="frmCheckout" action="/Home/Checkout" method="post" postform>
-                <button class="form-control btn btn-primary" type="button"
-                        data-vp-publickey="aBon7Oqqme4i/d6kPz3ICnIm/KEFXnavmpAGMR+dtK0="
-                        data-vp-baseurl="https://demo.vivapayments.com"
-                        data-vp-lang="{{culture}}"
-                        data-vp-amount="{{totalCost * 100.0}}"
-                        data-vp-description="My product" />
-
-            </form>
-            <script src="https://demo.vivapayments.com/web/checkout/js"></script>
+        <div ng-show="step == 2">
+            <input type="button" value="Back" onclick="window.location.href = '/';">
+            <div ng-vivapayment></div>
         </div>
     </div>
 </div>
