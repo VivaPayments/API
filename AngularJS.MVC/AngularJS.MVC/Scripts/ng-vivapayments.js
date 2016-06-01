@@ -44,7 +44,7 @@
         $scope.culture = 'el'; // en
 
         $scope.step2 = function () {
-            $.getScript("https://demo.vivapayments.com/web/checkout/js")
+            $.getScript("Scripts/viva.js") // Using customized js. Default: https://demo.vivapayments.com/web/checkout/js
                 .done(function (script, textStatus) {
                     
                 });
