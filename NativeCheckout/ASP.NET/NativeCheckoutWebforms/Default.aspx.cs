@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using RestSharp;
 
 public partial class _Default : System.Web.UI.Page 
@@ -38,17 +33,21 @@ public partial class _Default : System.Web.UI.Page
             paymentform.Visible = false;
 
             var res = cl.Execute<TransactionResult>(req);
-            if (res.Data != null && res.Data.ErrorCode == 0 && res.Data.StatusId == "F") {
-                Response.Write(String.Format(
-                    "Transaction was successful. TransactionId is {0}",
-                    res.Data.TransactionId));
-            }
-            else{
-                Response.Write(String.Format(
+            if (res.StatusCode == System.Net.HttpStatusCode.OK) {
+                if (res.Data.ErrorCode == 0 && res.Data.StatusId == "F") {
+                    Response.Write(string.Format(
+                        "Transaction was successful. TransactionId is {0}",
+                        res.Data.TransactionId));
+                } else {
+                    Response.Write(string.Format(
+                        "Transaction failed. Error code was {0}",
+                        res.Data.ErrorCode));
+                }
+            } else {
+                Response.Write(string.Format(
                     "Transaction failed. Error code was {0}",
-                    res.Data.ErrorCode));
+                    res.StatusCode));
             }
-            
         }
     }
 
@@ -71,8 +70,8 @@ public partial class _Default : System.Web.UI.Page
         if (res.Data != null && res.Data.ErrorCode == 0) {
             return res.Data.OrderCode;
         }
-        else
-            return 0;
+
+        return 0;
     }
 
     public class OrderResult
@@ -81,7 +80,6 @@ public partial class _Default : System.Web.UI.Page
         public int ErrorCode { get; set; }
         public string ErrorText { get; set; }
         public DateTime TimeStamp { get; set; }
-
     }
 
     public class TransactionResult
@@ -92,5 +90,4 @@ public partial class _Default : System.Web.UI.Page
         public string ErrorText { get; set; }
         public DateTime TimeStamp { get; set; }
     }
-
 }
