@@ -13,9 +13,10 @@
 #endif
 
 // Replace with YOUR Credentials
-static NSString *username = @"90DDA476-CF7C-4CFD-A9CB-23DFE11F131E";
-static NSString *password = @"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
-static NSString *apiKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
+// See more at https://github.com/VivaPayments/API/wiki/API%20Authentication
+static NSString *merchantID = @"90DDA476-CF7C-4CFD-A9CB-23DFE11F131E";
+static NSString *apiKey = @"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+static NSString *publicKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 
 @interface ViewController ()
 
@@ -42,9 +43,9 @@ static NSString *apiKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 	
 	mobileApi = [MobileAPI newDemoInstance];
 	
-	[mobileApi setUsername:username
-				  password:password
-					apiKey:apiKey];
+	[mobileApi setMerchantID:merchantID
+					  apiKey:apiKey
+				   publicKey:publicKey];
 	
 	[mobileApi createOrderWithAmount:amountInCents.unsignedLongLongValue
 							  params:nil
@@ -66,7 +67,7 @@ static NSString *apiKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 {
 	[mobileApi createCardTokenForCardNumber:@"4111111111111111"
 										cvc:@"111"
-					   expirationDateString:@"2016-01-01"
+					   expirationDateString:@"2021-01-01"
 							 cardHolderName:@"John Papadopoulos"
 								 completion:^(BOOL success, NSURLResponse *urlResponse, NSDictionary *response, NSError *error)
 	 {

@@ -17,7 +17,7 @@ typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDi
 /**
   *  Create a MobileAPI instance for the Viva Payments production (real) enviroment.
   *
-  *  Don't forget to call -[MobileAPI setUsername:password:apiKey:] to configure the API with the necessary credentials
+  *  Don't forget to call -[MobileAPI setMerchantID:apiKey:publicKey:] to configure the API with the necessary credentials
   */
 + (instancetype) newProductionInstance;
 
@@ -26,7 +26,7 @@ typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDi
 /**
   *  Create a MobileAPI instance for the Viva Payments DEMO enviroment.
   *
-  *  Don't forget to call -[MobileAPI setUsername:password:apiKey:] to configure the API with the necessary credentials
+  *  Don't forget to call -[MobileAPI setMerchantID:apiKey:publicKey:] to configure the API with the necessary credentials
   */
 + (instancetype) newDemoInstance;
 
@@ -36,7 +36,7 @@ typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDi
   *
   *  Make sure you call this function with the correct credentials or all other calls will fail
   */
-- (void) setUsername:(NSString *)username password:(NSString *)password apiKey:(NSString *)apiKey;
+- (void) setMerchantID:(NSString *)username apiKey:(NSString *)password publicKey:(NSString *)apiKey;
 
 
 

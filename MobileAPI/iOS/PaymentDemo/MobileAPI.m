@@ -22,9 +22,9 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 @interface MobileAPI ()
 
 @property (nonatomic, strong) NSURL *apiURL;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *merchantID;
 @property (nonatomic, strong) NSString *apiKey;
+@property (nonatomic, strong) NSString *publicKey;
 
 @end
 
@@ -53,11 +53,11 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 }
 
 
-- (void) setUsername:(NSString *)username password:(NSString *)password apiKey:(NSString *)apiKey
+- (void) setMerchantID:(NSString *)merchantID apiKey:(NSString *)apiKey publicKey:(NSString *)publicKey
 {
-	_username = [username copy];
-	_password = [password copy];
+	_merchantID = [merchantID copy];
 	_apiKey = [apiKey copy];
+	_publicKey = [publicKey copy];
 }
 
 
@@ -159,7 +159,7 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
 	[request setHTTPMethod:@"POST"];
 	[request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-	[request setValue:[self authenticationHeaderForUsername:self.username password:self.password]
+	[request setValue:[self authenticationHeaderForUsername:self.merchantID password:self.apiKey]
    forHTTPHeaderField:@"Authorization"];
 	
 	return request;
@@ -168,11 +168,9 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 
 - (NSMutableURLRequest *)createCardRequest
 {
-	NSAssert(self.apiKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
+	NSAssert(self.publicKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
 
-	NSString *escapedAPIKey = [self urlEncodeString:self.apiKey usingEncoding:NSUTF8StringEncoding];
-	
-	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards?key=%@", self.apiURL.absoluteString, escapedAPIKey];
+	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards?key=%@", self.apiURL.absoluteString, self.publicKey];
 	NSURL *ordersURL = [NSURL URLWithString:urlString];
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
@@ -185,9 +183,9 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 
 - (NSMutableURLRequest *)createInstallmentsRequest
 {
-	NSAssert(self.apiKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
+	NSAssert(self.publicKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
 
-	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards/installments?key=%@", self.apiURL.absoluteString, self.apiKey];
+	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards/installments?key=%@", self.apiURL.absoluteString, self.publicKey];
 	NSURL *ordersURL = [NSURL URLWithString:urlString];
 	
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
@@ -203,7 +201,7 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
 	[request setHTTPMethod:@"POST"];
 	[request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-	[request setValue:[self authenticationHeaderForUsername:self.username password:self.password]
+	[request setValue:[self authenticationHeaderForUsername:self.merchantID password:self.apiKey]
    forHTTPHeaderField:@"Authorization"];
 
 	return request;
@@ -239,8 +237,8 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 
 - (NSString *)authenticationHeaderForUsername:(NSString *)username password:(NSString *)password
 {
-	NSAssert(username, @"Viva Payments API username is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
-	NSAssert(password, @"Viva Payments API username is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
+	NSAssert(username, @"Viva Payments API username is not specified. Did you forget to call -[MobileAPI setMerchantID:apikey:publicKey:] ?");
+	NSAssert(password, @"Viva Payments API username is not specified. Did you forget to call -[MobileAPI setMerchantID:apikey:publicKey:] ?");
 	
 	NSString *userAndPass = [NSString stringWithFormat:@"%@:%@", username, password];
 	
@@ -249,13 +247,5 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 	return [NSString stringWithFormat:@"Basic %@", base64UserNamePassword];
 }
 
-
--(NSString *)urlEncodeString:(NSString *)string usingEncoding:(NSStringEncoding)encoding {
-	return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
-															   (CFStringRef)string,
-															   NULL,
-															   (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
-															   CFStringConvertNSStringEncodingToEncoding(encoding)));
-}
 
 @end
