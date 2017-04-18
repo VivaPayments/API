@@ -1,0 +1,29 @@
+The module for receiving Vivawallet payments for TomatoCart
+
+Installation:
+1. Extract this folder contents to your TomatoCart installation keeping the folder structure.
+2. In Start-> Modules -> Payment Modules on the Admin page, click on [Install] opposite Viva Payments, then click [Edit] and enter your settings.
+3. At Viva Payments create a new payment source:
+
+Success page: checkout.php?callback&module=hellaspay&success
+Fail page: checkout.php?callback&module=hellaspay&fail
+
+----------------------------------------------------------------------------------------------------------
+
+Vivawallet setup:
+You can find your Merchant ID and API Key when you login your business account under Settings - API Access.
+
+To connect the plugin with your e-commerce platform and Vivawallet you would have to create a new Payment Source in your Vivawallet business account, use the generated source code (usually a four digit number) in the plugin settings.
+
+You can create a new Payment Source from the menu My Sales - Payment Sources - New Website/App.
+Code - use this code in your plugin
+Source Name - provide a logic name here
+Linked Wallet - link the payment source to the wallet you want to use with it
+Protocol - in case your e-commerce platform uses SSL on the checkout select https, otherwise use https
+Integration method - redirection
+Company Logo - your png company logo to display on the Vivawallet payment page
+Success URL - as described in the plugin instructions
+Failure URL - as described in the plugin instructions
+Advanced Configuration - usually no need to make any changes here
+
+Wait until Vivawallet has activated your newly created Payment Source before activating the plugin in your e-commerce platform.

@@ -1,0 +1,13 @@
+name = Viva Payments
+description = Accept credit card payments through Viva Payments.
+package = Commerce (contrib)
+dependencies[] = commerce
+dependencies[] = commerce_payment
+dependencies[] = commerce_order
+core = 7.x
+
+version = "7.x-1.0"
+core = "7.x"
+project = "commerce_hellaspay"
+datestamp = "1323184838"
+

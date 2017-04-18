@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.0" type="plugin" group="vmpayment" >
+    <name>VM - Payment, VivaPayments</name>
+    <creationDate>January 2013</creationDate>
+    <author>Viva Wallet</author>
+    <authorUrl>http://www.vivawallet.com</authorUrl>
+    <copyright>Copyright (C) 2017 Vivawallet.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2</license>
+    <version>1.0.0</version>
+    <description><![CDATA[<a href="http://www.vivawallet.com/" target="_blank">Vivawallet</a> is a popular
+	payment gateway provider in Greece. ]]>
+    </description>
+    <files>
+	<filename plugin="hellaspay">hellaspay.php</filename>
+    </files>
+	
+    <languages>
+	<language tag="en-GB">en-GB.plg_vmpayment_hellaspay.ini</language>
+	<language tag="el-GR">el-GR.plg_vmpayment_hellaspay.ini</language>
+    </languages>
+	
+    <params addpath="/administrator/components/com_virtuemart/elements">
+	
+	<param type="vmjpluginwarning" />
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_PAYMENT_TITLE" level="level1" />
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_PAYMENT_SETTINGS" level="level1" />
+	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_HELLASPAY_LOGOS"
+             	description="VMPAYMENT_HELLASPAY_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/payment"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"  exclude="^_" />
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_PARAMS" level="level1" />
+	<param type="text" name="hellaspay_merchant_id"  size="50" label="VMPAYMENT_HELLASPAY_ID"
+             default="" description="" />
+	<param type="text" name="hellaspay_merchant_pass"  size="50" label="VMPAYMENT_HELLASPAY_PASS"
+             default="" description="VMPAYMENT_HELLASPAY_PASS_DESC" />	
+	<param type="text" name="hellaspay_source"  size="50" label="VMPAYMENT_HELLASPAY_SOURCE"
+             default="" description="" />		 	 
+			 
+	<param name="hellaspay_production" type="radio" default="1" label="VMPAYMENT_HELLASPAY_PRODUCTION" description="" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>	
+	
+	<param type="text" name="hellaspay_instalments"  size="70" label="VMPAYMENT_HELLASPAY_INSTALMENTS"
+             default="" description="VMPAYMENT_HELLASPAY_INSTALMENTS_NOTE" />	
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_INSTALMENTS_DESC" level="level1" />	
+	<param type="spacer" default="" level="level1" />
+	<param type="text" name="hellaspay_instalments_charge"  size="70" label="VMPAYMENT_HELLASPAY_INSTALMENTS_CHARGE"
+             default="" description="VMPAYMENT_HELLASPAY_INSTALMENTS_CHARGE_NOTE" />	
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_INSTALMENTS_CHARGE_DESC" level="level1" />	
+	<param type="spacer" default="" level="level1" />
+		
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_RESTRICTIONS" level="level1" />
+	     <!-- BY DEFAULT hellaspay currency= vendor currency -->
+	<param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_HELLASPAY_CURRENCY" description="VMPAYMENT_HELLASPAY_CURRENCY_DESC" />
+	<param name="language" type="list" label="VMPAYMENT_HELLASPAY_LANGUAGE" description="VMPAYMENT_HELLASPAY_LANGUAGE_DESC">
+	    <option value="">VMPAYMENT_HELLASPAY_ALL</option>
+	    <option value="el">VMPAYMENT_HELLASPAY_GREEK</option>
+	    <option value="en">VMPAYMENT_HELLASPAY_ENGLISH</option>
+	    <option value="nl">VMPAYMENT_HELLASPAY_DUTCH</option>
+	</param>
+	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_HELLASPAY_COUNTRIES" description="VMPAYMENT_HELLASPAY_COUNTRIES_DESC"/>
+	<param name="min_amount" type="text"  label="VMPAYMENT_HELLASPAY_MIN_AMOUNT" description="VMPAYMENT_HELLASPAY_MIN_AMOUNT_EXPLAIN" />
+	<param name="max_amount" type="text"  label="VMPAYMENT_HELLASPAY_MAX_AMOUNT" description="VMPAYMENT_HELLASPAY_MAX_AMOUNT_EXPLAIN" />
+	<param name="cost_per_transaction" type="text"  label="VMPAYMENT_HELLASPAY_COST_PER_TRANSACTION" description="VMPAYMENT_HELLASPAY_COST_PER_TRANSACTION_EXPLAIN" />
+	<param name="cost_percent_total" type="text"  label="VMPAYMENT_HELLASPAY_COST_PERCENT_TOTAL" description="VMPAYMENT_HELLASPAY_COST_PERCENT_TOTAL_EXPLAIN" />
+	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_HELLASPAY_TAX" description="VMPAYMENT_HELLASPAY_TAX_EXPLAIN" />
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_HELLASPAY_PAYMENT_PAGE" level="level1" />
+	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_HELLASPAY_STATUS_PENDING" description="VMPAYMENT_HELLASPAY_STATUS_PENDING_EXPLAIN" />
+	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_HELLASPAY_STATUS_SUCCESS" description="VMPAYMENT_HELLASPAY_STATUS_SUCCESS_EXPLAIN" />
+	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_HELLASPAY_STATUS_FAILED" description="VMPAYMENT_HELLASPAY_STATUS_FAILED_EXPLAIN" />
+	<param type="spacer" default="" level="level1" />
+<param type="spacer" default="" level="level1" />
+    </params>
+</install>

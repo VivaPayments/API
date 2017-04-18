@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+	  <Mage_Hellaspay>
+		  <active>true</active>
+		  <codePool>local</codePool>
+		  <version>1.0.0</version>
+	  </Mage_Hellaspay>
+  </modules>
+</config>

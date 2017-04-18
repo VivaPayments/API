@@ -1,0 +1,196 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Jigoshop Viva Payments Gateway v0.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-25 17:20+0200\n"
+"PO-Revision-Date: 2014-11-25 17:20+0200\n"
+"Last-Translator: Viva Wallet <info@vivawallet.com>\n"
+"Language-Team: Translation by WordPressWebshop.com <info@wpwebshop.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.6.7\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: jigoshop-hellaspay.php:31
+msgid ""
+"JigoShop Viva Gateway depends on <a href=\"http://wordpress.org/extend/"
+"plugins/jigoshop/\">JigoShop</a> to work!"
+msgstr ""
+
+#: jigoshop-hellaspay.php:99
+msgid ""
+"The Viva Payments gateway does not have values entered for <strong>Source "
+"Code</strong> and the gateway is set to enabled.  Please enter your "
+"credentials for this or the gateway <strong>will not</strong> be available "
+"on the Checkout.  Disable the gateway to remove this warning."
+msgstr ""
+
+#: jigoshop-hellaspay.php:103
+#, php-format
+msgid ""
+"The Viva Payments gateway accepts payments in currencies of %s.  Your "
+"current currency is %s.  Viva Payments won't work until you change the "
+"Jigoshop currency to an accepted one.  Viva Payments is <strong>currently "
+"disabled</strong> on the Payment Gateways settings tab."
+msgstr ""
+
+#: jigoshop-hellaspay.php:108
+msgid ""
+"The Viva Payments gateway does not have values entered for <strong>Merchant "
+"ID</strong> and the gateway is set to enabled.  Please enter your "
+"credentials for this or the gateway <strong>will not</strong> be available "
+"on the Checkout.  Disable the gateway to remove this warning."
+msgstr ""
+
+#: jigoshop-hellaspay.php:112
+msgid ""
+"The Viva Payments gateway does not have values entered for <strong>API KEY</"
+"strong> and the gateway is set to enabled.  Please enter your credentials "
+"for this or the gateway <strong>will not</strong> be available on the "
+"Checkout.  Disable the gateway to remove this warning."
+msgstr ""
+
+#: jigoshop-hellaspay.php:147
+#, php-format
+msgid "Viva Payments %s"
+msgstr ""
+
+#: jigoshop-hellaspay.php:149
+#, php-format
+msgid ""
+"This module allows you to accept online payments via %s allowing customers "
+"to buy and pay with a credit card. Viva Payments is a safe, convenient and "
+"secure way for customers to buy online in one-step.  %s"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:149 jigoshop-hellaspay.php:170
+msgid "Viva Payments"
+msgstr ""
+
+#: jigoshop-hellaspay.php:149
+msgid "Signup for a Merchant Account"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:153
+msgid "Enable Viva Payments"
+msgstr ""
+
+#: jigoshop-hellaspay.php:160 jigoshop-hellaspay.php:218
+#: jigoshop-hellaspay.php:231
+msgid "No"
+msgstr ""
+
+#: jigoshop-hellaspay.php:161 jigoshop-hellaspay.php:219
+#: jigoshop-hellaspay.php:232
+msgid "Yes"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:166
+msgid "Title"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:168
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:175
+msgid "Description"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:177
+msgid ""
+"This controls the description which the user sees during checkout. With "
+"multiple languages do not change the default string, make your changes to "
+"the hellaspay-for-jigoshop language files."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:179 jigoshop-hellaspay.php:242
+msgid "Pay via Viva Payments - you can pay with your credit card."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:184
+msgid "Merchant ID"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:186
+msgid "Merchant ID provided by Viva Payments."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:193
+msgid "API Key"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:195
+msgid "API Key provided by Viva Payments."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:202
+msgid "Source Code"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:204
+msgid "Viva Payments Source Code."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:211
+msgid "Instalments"
+msgstr ""
+
+#: jigoshop-hellaspay.php:224
+msgid "Enable Test Mode"
+msgstr ""
+
+#: jigoshop-hellaspay.php:225
+msgid "Turn on to enable the test mode."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:328
+msgid "Pay Now"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:328
+msgid "Cancel"
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:357
+msgid "Thank you for your order, please click the button below to pay."
+msgstr ""
+
+#: jigoshop-hellaspay.php:385
+msgid "Order has been paid with Viva, TxID: "
+msgstr ""
+
+#: jigoshop-hellaspay.php:395 jigoshop-hellaspay.php:419
+#, php-format
+msgid "Failed payment %s via Viva Payments."
+msgstr ""
+
+# @ hellaspay-for-jigoshop
+#: jigoshop-hellaspay.php:397 jigoshop-hellaspay.php:421
+msgid "An error occured, please try again."
+msgstr ""

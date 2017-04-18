@@ -1,0 +1,295 @@
+<?php
+/**
+ ******************************************************************************
+ * @category   Payment Gateway
+ * @author     Viva Wallet
+ * @copyright  Copyright (c)2017 Vivawallet http://www.vivawallet.com
+ ****************************************************************************** 
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function uc_hellaspay_menu() {
+  $items = array();
+  
+  $items['cart/hellaspay/complete'] = array(
+    'title' => 'Order complete',
+    'page callback' => 'uc_hellaspay_complete',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'uc_hellaspay.proccess.inc',
+  );
+  $items['cart/hellaspay/error'] = array(
+    'title' => 'Error processing Credit Card',
+    'page callback' => 'uc_hellaspay_error',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'uc_hellaspay.proccess.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_init().
+ */
+function uc_hellaspay_init() {
+  global $conf;
+  $conf['i18n_variables'][] = 'uc_hellaspay_method_title';
+  $conf['i18n_variables'][] = 'uc_hellaspay_checkout_button';
+}
+
+/**
+ * Implementation of hook_ucga_display().
+ */
+function uc_hellaspay_ucga_display() {
+  // Tell UC Google Analytics to display the e-commerce JS on the custom
+  // order completion page for this module.
+
+  if ( arg(0) == 'cart' && arg(1) == 'hellaspay' && arg(2) == 'complete') {
+    return TRUE;
+  }
+}
+
+/**
+ * Implements hook_uc_payment_method().
+ */
+function uc_hellaspay_uc_payment_method() {
+  $path = base_path() . drupal_get_path('module', 'uc_hellaspay');
+  $title = variable_get('uc_hellaspay_method_title', t('Credit Card on secure server Viva Payments.')) .'<br />';
+    $title .= ' ' . theme('image', array(
+      'path' => drupal_get_path('module', 'uc_hellaspay') . '/images/cards.gif',
+      'attributes' => array('class' => array('uc-credit-cctype')),
+    ));
+
+  $methods['hellaspay'] = array(
+    'name' => t('Viva Payments'),
+    'title' => $title,
+    'review' => t('Credit card'),
+    'desc' => t('Redirect to Viva Payments and pay by credit card.'),
+    'callback' => 'uc_payment_method_hellaspay',
+    'redirect' => 'uc_hellaspay_form',
+    'weight' => 3,
+    'checkout' => TRUE,
+    'no_gateway' => TRUE,
+  );
+
+  return $methods;
+}
+
+
+/**
+ * Callback for payment method settings.
+ */
+function uc_payment_method_hellaspay($op, &$order, $form = NULL, &$form_state = NULL) {
+  switch ($op) {
+    case 'cart-details':
+      return;
+
+    case 'cart-process':
+      return;
+
+    case 'settings':
+      $form['uc_hellaspay_mid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Merchant ID'),
+        '#description' => t('Your Merchant ID.'),
+        '#default_value' => variable_get('uc_hellaspay_mid', ''),
+        '#size' => 20,
+      );
+	  $form['uc_hellaspay_pass'] = array(
+        '#type' => 'textfield',
+        '#title' => t('API Key'),
+        '#description' => t('Your Viva Payments API Key.'),
+        '#default_value' => variable_get('uc_hellaspay_pass', ''),
+        '#size' => 20,
+      );
+	  $form['uc_hellaspay_source'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Source Code'),
+        '#description' => t('Viva Payments Source Code.'),
+        '#default_value' => variable_get('uc_hellaspay_source', ''),
+        '#size' => 16,
+      );
+	  $form['uc_hellaspay_Instalments'] = array(
+    	'#type' => 'radios',
+    	'#title' => t('Instalments'),
+    	'#description' => t('Allow instalments.'),
+    	'#options' => array(
+      	'1' => t('Allow'),
+      	'2' => t('Deny')
+      ),
+    	'#default_value' => variable_get('uc_hellaspay_Instalments', '1'),
+  	  );
+	  $form['uc_hellaspay_Mode'] = array(
+    	'#type' => 'radios',
+    	'#title' => t('Transaction mode'),
+    	'#description' => t('Transaction options.'),
+    	'#options' => array(
+      	'Live' => t('Live transactions'),
+      	'Test' => t('Testing')
+      ),
+    	'#default_value' => variable_get('uc_hellaspay_Mode', 'Live'),
+  	  );	  
+	  $form['uc_hellaspay_currency'] = array(
+        '#type' => 'select',
+        '#title' => t('Currency code'),
+        '#description' => t('Transactions can only be processed in one of the listed currencies.'),
+        '#options' => _uc_hellaspay_currency_array(),
+        '#default_value' => variable_get('uc_hellaspay_currency', 'EUR'),
+      );
+      $form['uc_hellaspay_method_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Payment method title'),
+        '#default_value' => variable_get('uc_hellaspay_method_title', t('Credit card on a secure server:')),
+      );
+      $form['uc_hellaspay_checkout_button'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Order review submit button text'),
+        '#description' => t('Provide specific text for the submit button on the order review page.'),
+        '#default_value' => variable_get('uc_hellaspay_checkout_button', t('Submit Order')),
+      );
+      return $form;
+  }
+}
+
+
+// Form to build the submission
+function uc_hellaspay_form($form, &$form_state, $order) {
+  global $language, $user;
+  
+  $order = uc_order_load($order->order_id);
+
+  if (strtoupper($language->language) == 'EL' || strtoupper($language->language) == 'GR'){
+    $my_lang = 'el-GR';
+  } else {
+    $my_lang = 'en-US';
+  }	
+
+  $currency_code = variable_get('uc_currency_code', '');
+  if(strtoupper($currency_code)!='EUR'){
+  $errormsg = 'Only Euro currency supported';
+  drupal_set_message(variable_get('uc_hellaspay_card_error', '') . $errormsg);
+  drupal_goto(variable_get('uc_hellaspay_redirect_error', ''));
+  }
+
+  $MerchantRef = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
+  $TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
+  $currency_symbol = '978';
+  $url = variable_get('uc_hellaspay_url', '');
+
+    $MerchantID = variable_get('uc_hellaspay_mid', '');
+	$Password =  html_entity_decode(variable_get('uc_hellaspay_pass', ''));
+	
+	$poststring['Amount'] = number_format($order->order_total, 2, '.', '')*100;
+	$poststring['RequestLang'] = $my_lang;
+	
+	$poststring['Email'] = substr($order->primary_email, 0, 255);
+	if(variable_get('uc_hellaspay_Instalments', '')=='2'){
+	$poststring['MaxInstallments'] = '1';
+	} else {
+	$poststring['MaxInstallments'] = '36';
+	}
+	$poststring['MerchantTrns'] = $order->order_id;
+	$poststring['SourceCode'] = variable_get('uc_hellaspay_source', '');
+	$poststring['PaymentTimeOut'] = '300';
+	
+	if(variable_get('uc_hellaspay_Mode', '')=='Test'){
+	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	} else {
+	$curl = curl_init("https://www.vivapayments.com/api/orders");
+	curl_setopt($curl, CURLOPT_PORT, 443);
+	}
+	
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+	$curlversion = curl_version();
+	if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+	curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+	}
+	
+	if(variable_get('uc_hellaspay_Mode', '')!='Test'){
+	//curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	}
+
+	$response = curl_exec($curl);
+	
+	if(curl_error($curl)){
+	curl_setopt($curl, CURLOPT_PORT, 443);
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	$response = curl_exec($curl);
+	}
+
+	curl_close($curl);
+	
+	try {
+	if (version_compare(PHP_VERSION, '5.3.99', '>=')) {
+		$resultObj=json_decode($response, false, 512, JSON_BIGINT_AS_STRING);
+		} else {
+		$response = preg_replace('/:\s*(\-?\d+(\.\d+)?([e|E][\-|\+]\d+)?)/', ': "$1"', $response, 1);
+		$resultObj = json_decode($response);
+		}
+	} catch( Exception $e ) {
+		throw new Exception("Result is not a json object (" . $e->getMessage() . ")");
+	}
+	
+	if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
+	$OrderCode = $resultObj->OrderCode;
+	$ErrorCode = $resultObj->ErrorCode;
+	$ErrorText = $resultObj->ErrorText;
+	}
+	else{
+		throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
+	}	
+	
+  $data = array(
+    'Ref' => $OrderCode,
+  );
+
+  if(variable_get('uc_hellaspay_Mode', '')=='Test'){
+	$form['#action'] = "http://demo.vivapayments.com/web/newtransaction.aspx";
+	} else {
+	$form['#action'] = "https://www.vivapayments.com/web/newtransaction.aspx";
+	}
+	
+  $form['#method'] = 'get';
+  
+  foreach ($data as $name => $value) {
+    $form[$name] = array('#type' => 'hidden', '#value' => $value);
+  }
+
+  $form['actions'] = array('#type' => 'actions');
+  
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => variable_get('uc_hellaspay_checkout_button', t('Submit Order')),
+  );  
+    
+  $mref = db_query("SELECT status FROM {uc_hellaspay} WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode))->fetchField();
+  if (!empty($mref)) {
+      db_query("UPDATE {uc_hellaspay} set status = 'formerror' WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode));
+  }
+  else {
+	db_query("DELETE FROM {uc_hellaspay} WHERE order_id = :order_id", array(':order_id' => $order->order_id));
+	db_query("INSERT INTO {uc_hellaspay} (order_id, OrderCode, amount, currency, status) VALUES (:order_id, :ref, :amount, :currency, :status)", array(':order_id' => $order->order_id, ':ref' => $OrderCode, ':amount' => $poststring['Amount'], ':currency' => '978', ':status' => 'formok'));
+  }
+  return $form;
+}
+
+/**
+ * Returns an array of possible currency codes.
+ */
+function _uc_hellaspay_currency_array() {
+  return drupal_map_assoc(array('EUR'));
+}
