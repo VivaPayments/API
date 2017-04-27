@@ -1,3 +1,5 @@
+NOTE: The current implementation supports Magento version 1.x
+
 INSTALLATION:
 1) Upload the files to their corresponding location on the server (ftp/ssh).
 2) Clear Magento cache. 
