@@ -1,0 +1,334 @@
+<?php
+/**
+ ******************************************************************************
+ * @category   Payment Gateway
+ * @author     Vivawallet
+ * @copyright  Copyright (c)2017 Vivawallet http://www.vivawallet.com
+ ****************************************************************************** 
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function uc_vivawallet_menu() {
+  $items = array();
+
+$items[variable_get('uc_vivawallet_links_complete', 'cart/vivawallet/complete')] = array(
+    'title' => 'Order complete',
+    'page callback' => 'uc_vivawallet_complete',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'uc_vivawallet.proccess.inc',
+  );
+$items[variable_get('uc_vivawallet_links_error', 'cart/vivawallet/error')] = array(
+    'title' => 'Error processing Credit Card',
+    'page callback' => 'uc_vivawallet_error',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'uc_vivawallet.proccess.inc',
+  );  
+  
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_ucga_display().
+ */
+function uc_vivawallet_ucga_display() {
+  // Tell UC Google Analytics to display the e-commerce JS on the custom
+  // order completion page for this module.
+
+  if ( arg(0) == 'cart' && arg(1) == 'vivawallet' && arg(2) == 'complete') {
+    return TRUE;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function uc_vivawallet_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'uc_cart_checkout_review_form' && ($order_id = intval($_SESSION['cart_order'])) > 0) {
+    $order = uc_order_load($order_id);
+
+    if ($order->payment_method == 'vivawallet') {
+      unset($form['submit']);
+      $form['#prefix'] = '<table style="display: inline; padding-top: 1em;"><tr><td>';
+      $form['#suffix'] = '</td><td>'. drupal_get_form('uc_vivawallet_form', $order) .'</td></tr></table>';
+    }
+  }
+}
+
+
+/**
+ *****************************
+ * Hook Functions (Ubercart) *
+ *****************************
+ */
+
+/**
+ * Implementation of hook_payment_method().
+ */
+function uc_vivawallet_payment_method() {
+  
+  $path = base_path() . drupal_get_path('module', 'uc_vivawallet');
+  $title = variable_get('uc_vivawallet_method_title', t('Credit card on Vivawallet'));
+  $title .= '<br /><img src="'. $path .'/cards.gif" style="position: relative; left: 2.5em;">';
+
+  $methods[] = array(
+    'id' => 'vivawallet',
+    'name' => t('Vivawallet redirection'),
+    'title' => $title,
+    'review' => t('Credit card'),
+    'desc' => t('Redirect to Vivawallet to pay by credit card.'),
+    'callback' => 'uc_payment_method_vivawallet',
+    'weight' => 1,
+    'checkout' => TRUE,
+    'no_gateway' => TRUE,
+  );
+
+  return $methods;
+}
+
+
+/**
+ *****************************************
+ * Callback Functions, Forms, and Tables *
+ *****************************************
+ */
+
+/**
+ * Callback for payment method settings.
+ */
+
+function uc_payment_method_vivawallet($op, &$arg1) {
+  switch ($op) {
+    case 'cart-details':
+      return;
+
+    case 'cart-process':
+      return;
+
+    case 'settings':
+	$form['vivawallet_pay'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Vivawallet Parameters'),
+        '#description' => t('Vivawallet parameters.'),
+        '#collapsible' => TRUE,
+        '#collapsed'  => TRUE,
+      );
+	  $form['vivawallet_pay']['vivawallet'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Settings'),
+        '#description' => t('Vivawallet gateway account settings'),
+        '#collapsible' => TRUE,
+        '#collapsed'  => FALSE,
+      );
+      $form['vivawallet_pay']['vivawallet']['uc_vivawallet_mid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Merchant ID'),
+        '#description' => t('Your Merchant ID.'),
+        '#default_value' => variable_get('uc_vivawallet_mid', ''),
+        '#size' => 20,
+      );
+	  $form['vivawallet_pay']['vivawallet']['uc_vivawallet_pass'] = array(
+        '#type' => 'textfield',
+        '#title' => t('API Key'),
+        '#description' => t('Your Vivawallet API Key.'),
+        '#default_value' => variable_get('uc_vivawallet_pass', ''),
+        '#size' => 20,
+      );
+	  $form['vivawallet_pay']['vivawallet']['uc_vivawallet_source'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Source Code'),
+        '#description' => t('Vivawallet Source Code.'),
+        '#default_value' => variable_get('uc_vivawallet_source', ''),
+        '#size' => 16,
+      );
+      $form['vivawallet_pay']['vivawallet']['uc_vivawallet_instalments'] = array(
+    	'#type' => 'radios',
+    	'#title' => t('Instalments'),
+    	'#description' => t('Allow payments with instalments.'),
+    	'#options' => array(
+      	'1' => t('Allow'),
+      	'2' => t('Deny')
+      ),
+    	'#default_value' => variable_get('uc_vivawallet_instalments', '2'),
+  	  );
+	  $form['vivawallet_pay']['vivawallet']['uc_vivawallet_currency'] = array(
+        '#type' => 'select',
+        '#title' => t('Currency code'),
+        '#description' => t('Transactions can only be processed in one of the listed currencies.'),
+        '#options' => _uc_vivawallet_currency_array(),
+        '#default_value' => variable_get('uc_vivawallet_currency', 'EUR'),
+      );
+      $form['vivawallet_pay']['vivawallet']['uc_vivawallet_method_title'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Payment method title'),
+        '#default_value' => variable_get('uc_vivawallet_method_title', t('Credit card on a secure server:')),
+      );
+      $form['vivawallet_pay']['vivawallet']['uc_vivawallet_checkout_button'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Order review submit button text'),
+        '#description' => t('Provide specific text for the submit button on the order review page.'),
+        '#default_value' => variable_get('uc_vivawallet_checkout_button', t('Submit Order')),
+      );
+	  $form['vivawallet_pay']['links'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Links'),
+        '#description' => t('Links requested by the Vivawallet.'),
+        '#collapsible' => TRUE,
+        '#collapsed'  => TRUE,
+      );
+	  $form['vivawallet_pay']['links']['uc_vivawallet_links_complete'] = array(
+        '#type' => 'textfield',
+        '#title' => t('RETURN OK URL'),
+        '#description' => t('Default value: cart/vivawallet/complete'),
+        '#default_value' => variable_get('uc_vivawallet_links_complete', 'cart/vivawallet/complete'),
+        '#size' => 32,
+      );
+	  $form['vivawallet_pay']['links']['uc_vivawallet_links_error'] = array(
+        '#type' => 'textfield',
+        '#title' => t('RETURN FAIL URL'),
+        '#description' => t('Default value: cart/vivawallet/error'),
+        '#default_value' => variable_get('uc_vivawallet_links_error', 'cart/vivawallet/error'),
+        '#size' => 32,
+      );
+      return $form;
+  }
+}
+
+
+// Form to build the submission
+function uc_vivawallet_form(&$form_state, $order) {
+  global $language, $user;
+  
+  $order = uc_order_load($order->order_id);
+  
+  $currency_code = variable_get('uc_currency_code', '');
+  if(strtoupper($currency_code)!='EUR'){
+  $errormsg = 'Only Euro currency supported';
+  drupal_set_message($errormsg);
+  drupal_goto('cart');
+  }
+  
+  if (strtoupper($language->language) == 'EL' || strtoupper($language->language) == 'GR'){
+    $my_lang = 'el-GR';
+  } else {
+    $my_lang = 'en-US';
+  }
+  
+  $MerchantRef = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
+  $TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
+  $currency_symbol = '978';
+  $url = variable_get('uc_vivawallet_url', '');
+
+	$MerchantID = variable_get('uc_vivawallet_mid', '');
+	$Password =  html_entity_decode(variable_get('uc_vivawallet_pass', ''));
+	
+	$poststring['Amount'] = number_format($order->order_total, 2, '.', '')*100;
+	$poststring['RequestLang'] = $my_lang;
+	
+	$poststring['Email'] = substr($order->primary_email, 0, 255);
+	if(variable_get('uc_vivawallet_Instalments', '')=='2'){
+	$poststring['MaxInstallments'] = '1';
+	} else {
+	$poststring['MaxInstallments'] = '36';
+	}
+	$poststring['MerchantTrns'] = $order->order_id;
+	$poststring['SourceCode'] = variable_get('uc_vivawallet_source', '');
+	$poststring['PaymentTimeOut'] = '300';
+	
+	$curl = curl_init("https://www.vivapayments.com/api/orders");
+	curl_setopt($curl, CURLOPT_PORT, 443);
+	
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+	$curlversion = curl_version();
+	if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+	curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'RC4-SHA');
+	curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+	}
+
+	$response = curl_exec($curl);
+	
+	if(curl_error($curl)){
+	curl_setopt($curl, CURLOPT_PORT, 443);
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	$response = curl_exec($curl);
+	}
+
+	curl_close($curl);
+	
+	try {
+	if (version_compare(PHP_VERSION, '5.3.99', '>=')) {
+		$resultObj=json_decode($response, false, 512, JSON_BIGINT_AS_STRING);
+		} else {
+		$response = preg_replace('/:\s*(\-?\d+(\.\d+)?([e|E][\-|\+]\d+)?)/', ': "$1"', $response, 1);
+		$resultObj = json_decode($response);
+		}
+	} catch( Exception $e ) {
+		throw new Exception("Result is not a json object (" . $e->getMessage() . ")");
+	}
+	
+	if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
+	$OrderCode = $resultObj->OrderCode;
+	$ErrorCode = $resultObj->ErrorCode;
+	$ErrorText = $resultObj->ErrorText;
+	}
+	else{
+		throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
+	}	
+	
+  $data = array(
+    'Ref' => $OrderCode,
+  );
+  
+  $form['#action'] = "https://www.vivapayments.com/web/newtransaction.aspx";
+
+  $form['#method'] = 'get';
+  
+  foreach ($data as $name => $value) {
+    $form[$name] = array('#type' => 'hidden', '#value' => $value);
+  }
+  
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit Order'),
+    '#attributes' => array('onclick' => '$(this).click(function() { return false; });'),
+  ); 
+  
+
+  $result = db_query("SELECT status FROM {uc_vivawallet} WHERE OrderCode = '%s' ", $OrderCode);
+  if ($row = db_fetch_object($result)) {
+      db_query("UPDATE {uc_vivawallet} set status = 'formerror' WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode));
+  }
+  else {
+	db_query("DELETE FROM {uc_vivawallet} WHERE order_id = '".$order->order_id."'");
+	db_query("INSERT INTO {uc_vivawallet} (order_id, OrderCode, amount, currency, status) VALUES ('".$order->order_id."', '".$OrderCode."', '".$poststring['Amount']."', '978', 'formok')");
+  }
+  
+  //header('Location: https://www.vivapayments.com/web/newtransaction.aspx?Ref='.$OrderCode);
+  //exit; //when checkout review is disabled
+
+  return $form;
+}
+
+
+/**
+ * Returns an array of possible currency codes.
+ */
+function _uc_vivawallet_currency_array() {
+  return drupal_map_assoc(array('EUR'));
+}

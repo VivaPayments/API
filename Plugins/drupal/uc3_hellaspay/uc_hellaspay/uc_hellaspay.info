@@ -1,5 +1,0 @@
-name = Viva Payments
-description = Accept credit card payments through Viva Payments
-dependencies[] = uc_payment
-package = Ubercart - payment
-core = 7.x

@@ -1,0 +1,6 @@
+name = Vivawallet
+description = Accept credit card payments through Vivawallet
+dependencies[] = uc_payment
+package = Ubercart - payment
+core = 6.x
+php = 5.0 
