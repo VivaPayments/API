@@ -1,0 +1,34 @@
+<?php
+function commerce_vivawallet_schema() {
+  $schema['commerce_vivawallet'] = array(
+    'description' => 'Table storing access to payment system',
+    'fields' => array(
+	  'order_id' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
+	  'ref' => array('type' => 'varchar', 'length' => 150,'not null' => TRUE,'default' => ''),
+	  'OrderCode' => array('type' => 'varchar', 'length' => 255,'not null' => TRUE,'default' => ''),
+	  'ErrorCode' => array('type' => 'varchar', 'length' => 255,'not null' => TRUE,'default' => ''),
+	  'ErrorText' => array('type' => 'varchar', 'length' => 255,'not null' => TRUE,'default' => ''),
+      'amount' => array('type' => 'varchar','length' => 25,'not null' => TRUE,'default' => ''),
+      'currency' => array('type' => 'char','length' => 4, 'not null' => TRUE, 'default' => ''),
+	  'currencySymbol' => array('type' => 'char','length' => 3, 'not null' => TRUE,'default' => ''),
+	  'instalments' => array('type' => 'char','length' => 3, 'not null' => FALSE,'default' => ''),
+      'trans_id' => array('type' => 'int'),
+	  'status' => array('type' => 'varchar', 'length' => 64, 'not null' => TRUE, 'default' => ''),
+      'var1' => array('type' => 'varchar', 'length' => 64, 'not null' => FALSE, 'default' => ''),
+      'Method' => array('type' => 'varchar', 'length' => 32, 'not null' => FALSE, 'default' => ''),
+      'DTime' => array('type' => 'varchar', 'length' => 32, 'not null' => FALSE, 'default' => ''),
+      'RemoteAddr' => array('type' => 'varchar', 'length' => 32, 'not null' => FALSE, 'default' => ''),
+    ),
+    'primary key' => array('order_id','ref'),
+  );
+  return $schema;
+}
+
+function commerce_vivawallet_uninstall() {
+  db_delete('variable')
+    ->condition(db_or()
+      ->condition('name', 'commerce_vivawallet%', 'LIKE')
+    )
+    ->execute();
+  drupal_uninstall_schema('commerce_vivawallet');
+}
