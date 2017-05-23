@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mage_Vivawallet>
+            <version>1.0.0</version>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Mage_Vivawallet>
+    </modules>
+    <global>
+    	<models>
+    		<vivawallet>
+	    		<class>Mage_Vivawallet_Model</class>
+				<resourceModel>paygate_mysql4</resourceModel>
+	    	</vivawallet>
+         <paygate_mysql4>
+            <class>Mage_Paygate_Model_Mysql4</class>
+            <entities>
+                <authorizenet_debug><table>paygate_authorizenet_debug</table></authorizenet_debug>
+            </entities>
+         </paygate_mysql4>
+		 
+    	</models>
+    	<helpers>
+    		<vivawallet>
+    			<class>Mage_Vivawallet_Helper</class>
+    		</vivawallet>
+    	</helpers>
+    	<blocks>
+    		<vivawallet>
+    			<class>Mage_Vivawallet_Block</class>
+    		</vivawallet>
+    	</blocks>
+        <resources>
+            <vivawallet_setup>
+                <setup>
+                    <module>Mage_Vivawallet</module>
+                </setup>
+                <connection>
+                    <use>directory_setup</use>
+                </connection>
+            </vivawallet_setup>
+            <vivawallet_write>
+                <connection>
+                    <use>local_write</use>
+                </connection>
+            </vivawallet_write>
+            <vivawallet_read>
+                <connection>
+                    <use>local_read</use>
+                </connection>
+            </vivawallet_read>
+        </resources>
+    </global>
+	
+    <frontend>
+        <routers>
+            <vivawallet>
+                <use>standard</use>
+                <args>
+                    <module>Mage_Vivawallet</module>
+                    <frontName>vivawallet</frontName>
+                </args>
+            </vivawallet>
+        </routers>
+        <translate>
+            <modules>
+                <Mage_Vivawallet>
+                    <files>
+                        <default>Mage_Vivawallet.csv</default>
+                    </files>
+                </Mage_Vivawallet>
+            </modules>
+        </translate>
+    </frontend>
+	
+	<default>
+        <payment>
+            <hpay>
+                <active>0</active>
+                <model>vivawallet/hpay</model>
+                <order_url>https://www.vivapayments.com/api/orders</order_url>
+                <cgi_url>https://www.vivapayments.com/web/newtransaction.aspx</cgi_url>
+                <merchantid>MerchantID</merchantid>
+				<merchantpass>API Key</merchantpass>
+				<merchantsource>Source Code</merchantsource>
+				<merchantsecsource></merchantsecsource>
+				<Installments>90:3,180:6</Installments>
+                <title>Viva Payments Credit Card (redirect)</title>
+                <Currency>EUR</Currency>
+                <debug>0</debug>
+            </hpay>
+        </payment>
+    </default>
+</config>
