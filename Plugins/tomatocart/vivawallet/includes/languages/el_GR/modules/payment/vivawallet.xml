@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <definitions>
+    <definition>
+      <key>payment_vivawallet_title</key>
+      <value><![CDATA[Vivawallet]]></value>
+      <group>modules-payment</group>
+    </definition>
+    <definition>
+      <key>payment_vivawallet_description</key>
+     <value><![CDATA[Vivawallet]]></value>
+      <group>modules-payment</group>
+    </definition>
+    <definition>
+      <key>payment_vivawallet_method_title</key>
+      <value><![CDATA[Vivawallet, Credit Card]]></value>
+      <group>modules-payment</group>
+    </definition>
+    <definition>
+      <key>payment_vivawallet_comment_pay_for</key>
+      <value><![CDATA[Payment for order]]></value>
+      <group>modules-payment</group>
+    </definition>
+	<definition>
+      <key>payment_vivawallet_language_code</key>
+      <value><![CDATA[GR]]></value>
+      <group>modules-payment</group>
+    </definition>
+	<definition>
+      <key>payment_vivawallet_error_message</key>
+      <value><![CDATA[There has been an error processing your credit card. Please try again.]]></value>
+      <group>checkout</group>
+    </definition>	
+	<definition>
+      <key>payment_vivawallet_cancel_message</key>
+      <value><![CDATA[The payment has been cancelled. Please try again.]]></value>
+      <group>checkout</group>
+    </definition>	
+	<definition>
+      <key>payment_vivawallet_no_instalments</key>
+      <value><![CDATA[Χωρίς δόσεις]]></value>
+      <group>checkout</group>
+    </definition>
+	<definition>
+      <key>payment_vivawallet_free_instalments</key>
+      <value><![CDATA[ άτοκες δόσεις]]></value>
+      <group>checkout</group>
+    </definition>
+	<definition>
+      <key>payment_vivawallet_instalments</key>
+      <value><![CDATA[Δόσεις: ]]></value>
+      <group>checkout</group>
+    </definition>			
+  </definitions>
+</language>
