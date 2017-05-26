@@ -1,0 +1,207 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Jigoshop Vivawallet Gateway v0.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-25 17:21+0200\n"
+"PO-Revision-Date: 2017-05-26 08:24+0200\n"
+"Last-Translator: Viva Wallet <info@vivawallet.com>\n"
+"Language-Team: \n"
+"Language: el_GR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.8.1\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: jigoshop-vivawallet.php:31 languages/jigoshop-vivawallet.php:31
+msgid ""
+"JigoShop Vivawallet Gateway depends on <a href=\"http://wordpress.org/extend/"
+"plugins/jigoshop/\">JigoShop</a> to work!"
+msgstr ""
+
+#: jigoshop-vivawallet.php:99 languages/jigoshop-vivawallet.php:99
+msgid ""
+"The Vivawallet gateway does not have values entered for <strong>Source Code</"
+"strong> and the gateway is set to enabled.  Please enter your credentials "
+"for this or the gateway <strong>will not</strong> be available on the "
+"Checkout.  Disable the gateway to remove this warning."
+msgstr ""
+
+#: jigoshop-vivawallet.php:103 languages/jigoshop-vivawallet.php:103
+#, php-format
+msgid ""
+"The Vivawallet gateway accepts payments in currencies of %s.  Your current "
+"currency is %s.  Vivawallet won't work until you change the Jigoshop "
+"currency to an accepted one.  Vivawallet is <strong>currently disabled</"
+"strong> on the Payment Gateways settings tab."
+msgstr ""
+
+#: jigoshop-vivawallet.php:108 languages/jigoshop-vivawallet.php:108
+msgid ""
+"The Vivawallet gateway does not have values entered for <strong>Merchant ID</"
+"strong> and the gateway is set to enabled.  Please enter your credentials "
+"for this or the gateway <strong>will not</strong> be available on the "
+"Checkout.  Disable the gateway to remove this warning."
+msgstr ""
+
+#: jigoshop-vivawallet.php:112 languages/jigoshop-vivawallet.php:112
+msgid ""
+"The Vivawallet gateway does not have values entered for <strong>API KEY</"
+"strong> and the gateway is set to enabled.  Please enter your credentials "
+"for this or the gateway <strong>will not</strong> be available on the "
+"Checkout.  Disable the gateway to remove this warning."
+msgstr ""
+
+#: jigoshop-vivawallet.php:147 languages/jigoshop-vivawallet.php:147
+#, php-format
+msgid "Vivawallet %s"
+msgstr ""
+
+#: jigoshop-vivawallet.php:149 languages/jigoshop-vivawallet.php:149
+#, php-format
+msgid ""
+"This module allows you to accept online payments via %s allowing customers "
+"to buy and pay with a credit card. Vivawallet is a safe, convenient and "
+"secure way for customers to buy online in one-step.  %s"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:149 jigoshop-vivawallet.php:170
+#: languages/jigoshop-vivawallet.php:149 languages/jigoshop-vivawallet.php:170
+msgid "Vivawallet"
+msgstr ""
+
+#: jigoshop-vivawallet.php:149 languages/jigoshop-vivawallet.php:149
+msgid "Signup for a Merchant Account"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:153 languages/jigoshop-vivawallet.php:153
+msgid "Enable Vivawallet"
+msgstr ""
+
+#: jigoshop-vivawallet.php:160 jigoshop-vivawallet.php:218
+#: jigoshop-vivawallet.php:231 languages/jigoshop-vivawallet.php:160
+#: languages/jigoshop-vivawallet.php:218 languages/jigoshop-vivawallet.php:231
+msgid "No"
+msgstr ""
+
+#: jigoshop-vivawallet.php:161 jigoshop-vivawallet.php:219
+#: jigoshop-vivawallet.php:232 languages/jigoshop-vivawallet.php:161
+#: languages/jigoshop-vivawallet.php:219 languages/jigoshop-vivawallet.php:232
+msgid "Yes"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:166 languages/jigoshop-vivawallet.php:166
+msgid "Title"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:168 languages/jigoshop-vivawallet.php:168
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:175 languages/jigoshop-vivawallet.php:175
+msgid "Description"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:177 languages/jigoshop-vivawallet.php:177
+msgid ""
+"This controls the description which the user sees during checkout. With "
+"multiple languages do not change the default string, make your changes to "
+"the vivawallet-for-jigoshop language files."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:179 jigoshop-vivawallet.php:242
+#: languages/jigoshop-vivawallet.php:179 languages/jigoshop-vivawallet.php:242
+msgid "Pay via Vivawallet - you can pay with your credit card."
+msgstr ""
+"Πληρώστε μέσω Vivawallet - μπορείτε να πληρώσετε με την πιστωτική σας κάρτα."
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:184 languages/jigoshop-vivawallet.php:184
+msgid "Merchant ID"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:186 languages/jigoshop-vivawallet.php:186
+msgid "Merchant ID provided by Vivawallet."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:193 languages/jigoshop-vivawallet.php:193
+msgid "API Key"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:195 languages/jigoshop-vivawallet.php:195
+msgid "API Key provided by Vivawallet."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:202 languages/jigoshop-vivawallet.php:202
+msgid "Source Code"
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:204 languages/jigoshop-vivawallet.php:204
+msgid "Vivawallet Source Code."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:211 languages/jigoshop-vivawallet.php:211
+msgid "Instalments"
+msgstr ""
+
+#: jigoshop-vivawallet.php:224 languages/jigoshop-vivawallet.php:224
+msgid "Enable Test Mode"
+msgstr ""
+
+#: jigoshop-vivawallet.php:225 languages/jigoshop-vivawallet.php:225
+msgid "Turn on to enable the test mode."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:327 languages/jigoshop-vivawallet.php:328
+msgid "Pay Now"
+msgstr "Πληρώστε"
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:327 languages/jigoshop-vivawallet.php:328
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:356 languages/jigoshop-vivawallet.php:357
+msgid "Thank you for your order, please click the button below to pay."
+msgstr ""
+"Σας ευχαριστούμε για την παραγγελία σας, παρακαλώ κάντε κλικ στο κουμπί "
+"παρακάτω για να πληρώσετε."
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:384 languages/jigoshop-vivawallet.php:385
+#, fuzzy
+msgid "Order has been paid with Viva, TxID: "
+msgstr "Η παραγγελία σας έχει δοθεί"
+
+#: jigoshop-vivawallet.php:394 jigoshop-vivawallet.php:418
+#: languages/jigoshop-vivawallet.php:395 languages/jigoshop-vivawallet.php:419
+#, php-format
+msgid "Failed payment %s via Vivawallet."
+msgstr ""
+
+# @ vivawallet-for-jigoshop
+#: jigoshop-vivawallet.php:396 jigoshop-vivawallet.php:420
+#: languages/jigoshop-vivawallet.php:397 languages/jigoshop-vivawallet.php:421
+msgid "An error occured, please try again."
+msgstr "Η συναλλαγή απέτυχε ή ακυρώθηκε, παρακαλώ προσπαθήστε ξανά."
