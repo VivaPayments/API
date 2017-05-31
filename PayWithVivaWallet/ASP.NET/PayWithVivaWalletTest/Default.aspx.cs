@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+
 using RestSharp;
 
 namespace WebApplication2
@@ -29,11 +26,14 @@ namespace WebApplication2
 
                 if (response.Data != null) {
                     Response.Write(response.Data.ErrorCode + "--" + response.Data.ErrorText);
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK &&
+                      response.Data.ErrorCode == 0) {
                         Response.Write("<br />Successful payment");
-                }
-                else
+                    }
+                } else {
                     Response.Write(response.ResponseStatus);
+                }
             }
         }
     }
