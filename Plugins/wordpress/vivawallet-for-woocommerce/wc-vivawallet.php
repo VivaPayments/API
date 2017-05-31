@@ -57,18 +57,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		$this->vivawallet_merchantpass = html_entity_decode($this->settings['vivawallet_merchantpass']);
 		$this->vivawallet_source = $this->settings['vivawallet_source'];
 		$this->vivawallet_instal = $this->settings['vivawallet_instal'];
-		$this->debug = $this->settings['debug'];
 
-		// Logs
-		if ($this->debug == 'yes')
-		{
-			$current_version = get_option( 'woocommerce_version', null );
-			if (version_compare( $current_version, '2.3.0', '<' )) { //older version
-			$this->log = $woocommerce->logger();
-			} else {
-			$this->log = new WC_Logger();
-			}
-		}
 
 		// Actions
 		add_action('valid-vivawallet-standard-ipn-reques', array($this, 'successful_request') );
@@ -180,12 +169,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 					'type' => 'text',
 					'description' => __('Example: 90:3,180:6<br>Order total 90 euro -> allow 0 and 3 instalments<br>Order total 180 euro -> allow 0, 3 and 6 instalments<br>Leave empty in case you do not want to offer instalments.', 'vivawallet-for-woocommerce'),
 					'default' => ''
-				),
-				'debug' => array(
-					'title' => __('Debug Log', 'vivawallet-for-woocommerce'),
-					'type' => 'checkbox',
-					'description' => __('Log events (<code>woocommerce/logs/paypal.txt</code>)<br>Only for debug purposes by programmers!', 'vivawallet-for-woocommerce'),
-					'default' => 'no'
 				)
 			);
 	}
@@ -212,8 +195,14 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 
 		$mref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 		$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
-		$charge = number_format($order->order_total, '2', '.', '');
+		$current_version = get_option( 'woocommerce_version', null );
+		if (version_compare( $current_version, '3.0.0', '>=' )) {
+		$amountcents = round(WC()->cart->total * 100);
+		$charge = number_format(WC()->cart->total, '2', '.', '');
+		} else {
 		$amountcents = round($order->order_total * 100);
+		$charge = number_format($order->order_total, '2', '.', '');
+		}
 		$trlang = get_locale();
 		
 		if (preg_match("/gr/i", $trlang) || preg_match("/el/i", $trlang)) {
@@ -396,11 +385,17 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 					'result' => 'success',
 					'redirect'	=> esc_url_raw(add_query_arg('order-pay', $order->id, add_query_arg('key', $order->order_key, get_permalink(woocommerce_get_page_id('pay')))))
 				);
+		} elseif (version_compare( $current_version, '3.0.0', '<' )) { //older version
+			return array
+				(
+					'result' => 'success',
+					'redirect'	=> esc_url_raw(add_query_arg('order-pay', $order->id, add_query_arg('key', $order->order_key, wc_get_page_permalink( 'checkout' ))))
+				);
 		} else {
 			return array
 			(
 				'result' => 'success',
-				'redirect'	=> esc_url_raw(add_query_arg('order-pay', $order->id, add_query_arg('key', $order->order_key, wc_get_page_permalink( 'checkout' ))))
+				'redirect'	=> esc_url_raw(add_query_arg('order-pay', $order->get_id(), add_query_arg('key', $order->get_order_key(), wc_get_page_permalink( 'checkout' ))))
 			);
 		}
 	}
@@ -448,8 +443,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$current_version = get_option( 'woocommerce_version', null );
 			if (version_compare( $current_version, '2.1.0', '<' )) { //older version
 			wp_redirect(esc_url_raw(add_query_arg('key', $order->order_key, add_query_arg('order', $inv_id, get_permalink(get_option('woocommerce_thanks_page_id'))))));
-			} else {
+			} elseif (version_compare( $current_version, '3.0.0', '<' )) { //older version
 			wp_redirect(esc_url_raw(add_query_arg('key', $order->order_key, add_query_arg('order-received', $inv_id, $this->get_return_url($order)))));
+			} else {
+			wp_redirect(esc_url_raw(add_query_arg('key', $order->get_order_key(), add_query_arg('order-received', $inv_id, $this->get_return_url($order)))));
 			}
 			exit;
 			
