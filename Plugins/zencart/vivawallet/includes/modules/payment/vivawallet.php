@@ -215,19 +215,13 @@
 
 	function after_process() {	
 	
-		global $db, $HTTP_POST_VARS, $HTTP_GET_VARS, $order, $insert_id;
-		
+	  global $db, $HTTP_POST_VARS, $HTTP_GET_VARS, $order, $insert_id;
 	   $tm_ref = zen_db_prepare_input($_GET['s']);
-	   
 	   $check = $db->Execute("select * from vivawallet_data where OrderCode='".$tm_ref."'");
 	   
-		
 	   if($check->fields['order_state']=='I' && $_GET['act'] == 'vivawallet' && $_GET['status'] == 'success'){
-	   
 	   $db->execute("update vivawallet_data set order_state = 'P' where OrderCode='".$tm_ref."'");
-	   
 	   $db->execute("update " . TABLE_ORDERS . " set orders_status = '" . (int)MODULE_PAYMENT_VIVAWALLET_ORDER_STATUS_ID . "', last_modified = now() where orders_id = '" . (int)$insert_id . "'");
-	   
 	   $sql_data_array = array('orders_id' => (int)$insert_id, 
                                 'orders_status_id' => (int)MODULE_PAYMENT_VIVAWALLET_ORDER_STATUS_ID, 
                                 'date_added' => 'now()', 
@@ -235,7 +229,80 @@
                                 'comments' => 'OrderCode: ' . $tm_ref);
 
         zen_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-		} 
+		} elseif($check->fields['order_state']=='I' && $_GET['act'] == 'vivawallet' && $_GET['status'] == 'webhook'){
+		$postdata = file_get_contents("php://input");
+
+		$MerchantID = MODULE_PAYMENT_VIVAWALLET_MERCHANTID;
+		$Password =  html_entity_decode(MODULE_PAYMENT_VIVAWALLET_PASSWORD);
+		
+		if(MODULE_PAYMENT_VIVAWALLET_MODE=='True'){
+		$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+		} else {
+		$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
+		}
+	
+		$curl = curl_init();
+		if (preg_match("/https/i", $curl_adr)) {
+		curl_setopt($curl, CURLOPT_PORT, 443);
+		}
+		curl_setopt($curl, CURLOPT_POST, false);
+		curl_setopt($curl, CURLOPT_URL, $posturl);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+		$curlversion = curl_version();
+		if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+		curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+		}
+		$response = curl_exec($curl);
+		
+		if(curl_error($curl)){
+		if (preg_match("/https/i", $curl_adr)) {
+		curl_setopt($curl, CURLOPT_PORT, 443);
+		}
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$response = curl_exec($curl);
+		}
+		
+		curl_close($curl);
+		echo $response;
+		
+		try {
+			
+		if(is_object(json_decode($postdata))){
+			$resultObj=json_decode($postdata);
+		}
+		} catch( Exception $e ) {
+			echo $e->getMessage();
+		}
+	
+	
+		if(sizeof($resultObj->EventData) > 0) {
+		$StatusId = $resultObj->EventData->StatusId;
+		$OrderCode = $resultObj->EventData->OrderCode;
+		$statustr = $this->vivawallet_processing;
+			
+	   $check = $db->Execute("select * from vivawallet_data where OrderCode='".$OrderCode."'");
+	   if($check->fields['order_state']=='I' && $_GET['act'] == 'vivawallet' && $_GET['status'] == 'webhook' && $StatusId=='F'){
+				   
+	   $db->execute("update vivawallet_data set order_state = 'P' where OrderCode='".$tm_ref."'");
+	   $db->execute("update " . TABLE_ORDERS . " set orders_status = '" . (int)MODULE_PAYMENT_VIVAWALLET_ORDER_STATUS_ID . "', last_modified = now() where orders_id = '" . (int)$insert_id . "'");
+	   $sql_data_array = array('orders_id' => (int)$insert_id, 
+                                'orders_status_id' => (int)MODULE_PAYMENT_VIVAWALLET_ORDER_STATUS_ID, 
+                                'date_added' => 'now()', 
+                                'customer_notified' => '0',
+                                'comments' => 'OrderCode: ' . $OrderCode);
+
+        zen_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+		}
+	  }
+	} 
+
   }
 	
 	function get_error() {
