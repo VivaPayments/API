@@ -10,6 +10,9 @@ index.php?vivawallet_callback=true&success=true
 Fail URL:
 index.php?vivawallet_callback=true&fail=true
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?vivawallet_callback=true&webhook
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:

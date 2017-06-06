@@ -125,7 +125,7 @@ function gateway_vivawallet($separator, $sessionid)
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	
 	$MerchantID = get_option('vivawallet_merchantid');
-	$Password =  get_option('vivawallet_merchantpass');
+	$Password =  html_entity_decode(get_option('vivawallet_merchantpass'));
 	
 	$poststring['Amount'] = $vivawallet_amount;
 	$poststring['RequestLang'] = get_option('vivawallet_language');
@@ -243,7 +243,11 @@ function nzshpcrt_vivawallet_callback()
 $check_query = $wpdb->get_results("SELECT order_state, sessionid FROM ". $wpdb->prefix . "vivawallet_data WHERE order_state='I' and ordercode = '".$tm_ref."'",ARRAY_A);
 $check_query_count = count($check_query);
 	if($check_query_count >= 1){
+	if($check_query[0]['order_state']=='I' || $check_query[0]['order_state']=='P') {
 	$sessionid = $check_query[0]['sessionid'];
+	if($check_query[0]['order_state']=='I'){
+			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
+		    $wpdb->query($query);
 					$data = array(
 						'processed'  => 3,
 						'transactid' => $tm_ref,
@@ -252,16 +256,6 @@ $check_query_count = count($check_query);
 					$where = array( 'sessionid' => $sessionid );
 					$format = array( '%d', '%s', '%s' );
 					
-					/*
-					$wpdb->update( WPSC_TABLE_PURCHASE_LOGS, $data, $where, $format );
-					
-					wpsc_update_purchase_log_details( $sessionid, $data, 'sessionid' );
-					transaction_results($sessionid, false, $tm_ref);
-					
-					$purchase_log_object = new WPSC_Purchase_Log( $sessionid, 'sessionid' );
-					$purchase_log = $purchase_log_object->get_data();
-					*/
-					
 					//added for WP4/WPE 3.8.14.3
 					wpsc_update_purchase_log_details( $sessionid, $data, 'sessionid' );
 					transaction_results($sessionid, false, $tm_ref);
@@ -269,10 +263,101 @@ $check_query_count = count($check_query);
 					
 					do_action('wpsc_payment_successful');
 					$transaction_url_with_sessionid = esc_url_raw(add_query_arg( 'sessionid', $sessionid, get_option('transact_url')));
+					}					
 					wp_redirect( $transaction_url_with_sessionid );
 					exit();
+	  }
 	}
 } //end success
+
+	if(isset($_GET['vivawallet_callback']) && $_GET['vivawallet_callback'] == 'true' && isset($_GET['webhook'])){
+	
+$postdata = file_get_contents("php://input");
+
+			$MerchantID = get_option('vivawallet_merchantid');
+			$Password =  html_entity_decode(get_option('vivawallet_merchantpass'));
+			
+			if(get_option('vivawallet_mode')=='Test'){
+			$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+			} else {
+			$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
+			}
+		
+			$curl = curl_init();
+			if (preg_match("/https/i", $curl_adr)) {
+			curl_setopt($curl, CURLOPT_PORT, 443);
+			}
+			curl_setopt($curl, CURLOPT_POST, false);
+			curl_setopt($curl, CURLOPT_URL, $posturl);
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+			$curlversion = curl_version();
+			if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+			curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+			}
+			$response = curl_exec($curl);
+			
+			if(curl_error($curl)){
+			if (preg_match("/https/i", $curl_adr)) {
+			curl_setopt($curl, CURLOPT_PORT, 443);
+			}
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			$response = curl_exec($curl);
+			}
+			
+			curl_close($curl);
+			echo $response;
+			
+			try {
+				
+			if(is_object(json_decode($postdata))){
+				$resultObj=json_decode($postdata);
+			}
+			} catch( Exception $e ) {
+				echo $e->getMessage();
+			}
+		
+		
+			if(sizeof($resultObj->EventData) > 0) {
+			$StatusId = $resultObj->EventData->StatusId;
+			$OrderCode = $resultObj->EventData->OrderCode;
+			$statustr = $this->vivawallet_processing;
+	  
+			$check_query = $wpdb->get_results("SELECT order_state, sessionid FROM ". $wpdb->prefix . "vivawallet_data WHERE order_state='I' and ordercode = '".$tm_ref."'",ARRAY_A);
+			$check_query_count = count($check_query);
+			if($check_query_count >= 1){
+			if($check_query[0]['order_state']=='I' && $StatusId=='F') {
+			
+			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($OrderCode)."'";
+		    $wpdb->query($query);
+			
+			$sessionid = $check_query[0]['sessionid'];
+			$data = array(
+				'processed'  => 3,
+				'transactid' => $tm_ref,
+				'date'       => time(),
+			);
+			$where = array( 'sessionid' => $sessionid );
+			$format = array( '%d', '%s', '%s' );
+			
+			//added for WP4/WPE 3.8.14.3
+			wpsc_update_purchase_log_details( $sessionid, $data, 'sessionid' );
+			transaction_results($sessionid, false, $tm_ref);
+			//end added
+			
+			do_action('wpsc_payment_successful');
+			exit;
+			 }
+			}
+          }
+
+} //end webhook
 
  //fail
 if(isset($_GET['fail']) && isset($_GET['s'])){	
