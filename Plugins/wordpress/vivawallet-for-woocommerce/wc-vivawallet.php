@@ -222,6 +222,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 		$current_version = get_option( 'woocommerce_version', null );
 		if (version_compare( $current_version, '3.0.0', '>=' )) {
+		define( 'WOOCOMMERCE_CHECKOUT', true );
+		WC()->cart->calculate_totals();	
 		$amountcents = round(WC()->cart->total * 100);
 		$charge = number_format(WC()->cart->total, '2', '.', '');
 		} else {
