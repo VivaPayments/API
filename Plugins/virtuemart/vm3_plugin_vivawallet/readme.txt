@@ -10,6 +10,10 @@ index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&
 Failure page: 
 index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&bnkact=fail
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&bnkact=webhook
+
 --------------------------------
 Optional multilanguage support.
 -In case you use English and Greek languages and the URLs contain the language code, create two
