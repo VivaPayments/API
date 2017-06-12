@@ -243,6 +243,83 @@
 	  
 	  }
 	  }//end success
+	  
+	  //webhook
+	  if(preg_match("/webhook/i", $_SERVER['REQUEST_URI'])) {
+		$postdata = file_get_contents("php://input");
+
+		$MerchantID = MODULE_PAYMENT_VIVAWALLET_MERCHANTID;
+		$Password =  html_entity_decode(MODULE_PAYMENT_VIVAWALLET_MERCHANTPASS);
+		
+		if(MODULE_PAYMENT_VIVAWALLET_MODE=='Testing'){
+		$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+		} else {
+		$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
+		}
+	
+		$curl = curl_init();
+		if (preg_match("/https/i", $curl_adr)) {
+		curl_setopt($curl, CURLOPT_PORT, 443);
+		}
+		curl_setopt($curl, CURLOPT_POST, false);
+		curl_setopt($curl, CURLOPT_URL, $posturl);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+		$curlversion = curl_version();
+		if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+		curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+		}
+		$response = curl_exec($curl);
+		
+		if(curl_error($curl)){
+		if (preg_match("/https/i", $curl_adr)) {
+		curl_setopt($curl, CURLOPT_PORT, 443);
+		}
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$response = curl_exec($curl);
+		}
+		
+		curl_close($curl);
+		echo $response;
+		
+		try {
+			
+		if(is_object(json_decode($postdata))){
+			$resultObj=json_decode($postdata);
+		}
+		} catch( Exception $e ) {
+			echo $e->getMessage();
+		}
+	
+	
+		if(sizeof($resultObj->EventData) > 0) {
+		$StatusId = $resultObj->EventData->StatusId;
+		$OrderCode = $resultObj->EventData->OrderCode;
+		$statustr = $this->vivawallet_processing;		
+
+ 	    $check_query = "select ref, sessionid from vivawallet_data where order_state='I' and OrderCode='".addslashes($OrderCode)."'";
+		$oQuery = $osC_Database->query($check_query);
+		$oRecordset = $oQuery->execute();
+		
+		if(mysql_num_rows($oRecordset) && $StatusId=='F'){
+	    $oRecord = mysql_fetch_assoc($oRecordset);
+
+		$update_query = "update vivawallet_data set order_state='P' where OrderCode='".addslashes($OrderCode)."'";
+		$uQuery = $osC_Database->query($update_query);
+		$uRecordset = $uQuery->execute();
+
+		 $comment = 'OrderCode ' . addslashes($OrderCode);
+		 osC_Order::process($oRecord['ref'], $this->order_status, $comment);
+		 $osC_ShoppingCart->reset(true);
+		}
+	   }
+	  }//end webhook	  
 	  	  	  
   }
 }  
