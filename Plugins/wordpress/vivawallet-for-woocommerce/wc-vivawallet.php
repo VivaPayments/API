@@ -230,6 +230,14 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		$amountcents = round($order->order_total * 100);
 		$charge = number_format($order->order_total, '2', '.', '');
 		}
+		
+		if($amountcents==0){
+		$order_id = wc_get_order_id_by_order_key($_GET['key']);
+		$order    = wc_get_order( $order_id );
+		$amountcents = round($order->get_total() * 100);
+		$charge = number_format($order->get_total(), '2', '.', '');
+		} 
+		
 		$trlang = get_locale();
 		
 		if (preg_match("/gr/i", $trlang) || preg_match("/el/i", $trlang)) {
