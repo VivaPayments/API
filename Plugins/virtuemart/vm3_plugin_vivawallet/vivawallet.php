@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 if (!class_exists('vmPSPlugin'))
 require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-class plgVmPaymentVivapay extends vmPSPlugin {
+class plgVmPaymentVivawallet extends vmPSPlugin {
 
 	// instance of class
 	public static $_this = false;
