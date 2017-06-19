@@ -8,6 +8,10 @@ At Vivawallet create a new payment source,
 Success page: checkout_process.php?act=vivawallet&status=success
 Fail page: checkout_process.php?act=vivawallet&status=fail
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/checkout_process.php?act=vivawallet&status=webhook
+
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:
