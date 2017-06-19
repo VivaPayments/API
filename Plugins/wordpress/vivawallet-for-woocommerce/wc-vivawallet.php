@@ -252,7 +252,13 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	$poststring['Amount'] = $amountcents;
 	$poststring['RequestLang'] = $formlang;
 	
-	$poststring['Email'] = $order->billing_email;
+	if (version_compare( $current_version, '3.0.0', '>=' )) {
+	$customer_mail = $order->get_billing_email();
+	} else {
+	$customer_mail = $order->billing_email;
+	}
+		
+	$poststring['Email'] = $customer_mail;
 	
 	$maxperiod = '1';
 	 $installogic = $this->vivawallet_instal;
@@ -333,7 +339,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
 		}	
 		
-		$query = "insert into {$wpdb->prefix}vivawallet_data (ref, ordercode, email, orderid, total_cost, currency, order_state, timestamp) values ('".$mref."', '".$OrderCode."','". $order->billing_email ."','". $order_id . "',$amountcents,'978','I', now())";
+		$query = "insert into {$wpdb->prefix}vivawallet_data (ref, ordercode, email, orderid, total_cost, currency, order_state, timestamp) values ('".$mref."', '".$OrderCode."','". $customer_mail ."','". $order_id . "',$amountcents,'978','I', now())";
 	    $wpdb->query($query);
 			
 		$args = array
