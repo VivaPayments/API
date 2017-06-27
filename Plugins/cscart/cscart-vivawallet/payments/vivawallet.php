@@ -40,6 +40,83 @@ if (defined('PAYMENT_NOTIFICATION')) {
 
 		fn_order_placement_routines($order_id);
 	}
+	
+	if ($mode == 'webhook') {
+	$payment_id = db_get_field("SELECT ?:payments.payment_id FROM ?:payments LEFT JOIN ?:payment_processors ON ?:payment_processors.processor_id = ?:payments.processor_id WHERE ?:payment_processors.processor_script = 'vivawallet.php'");
+    $processor_data = fn_get_payment_method_data($payment_id);
+	
+	$postdata = file_get_contents("php://input");
+
+	$MerchantID =  $processor_data['params']['merchant_id']
+	$Password =   html_entity_decode($processor_data['params']['password']);
+	$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
+
+	$curl = curl_init();
+	if (preg_match("/https/i", $curl_adr)) {
+	curl_setopt($curl, CURLOPT_PORT, 443);
+	}
+	curl_setopt($curl, CURLOPT_POST, false);
+	curl_setopt($curl, CURLOPT_URL, $posturl);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+	$curlversion = curl_version();
+	if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+	curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+	}
+	$response = curl_exec($curl);
+	
+	if(curl_error($curl)){
+	if (preg_match("/https/i", $curl_adr)) {
+	curl_setopt($curl, CURLOPT_PORT, 443);
+	}
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	$response = curl_exec($curl);
+	}
+	
+	curl_close($curl);
+	echo $response;
+	
+	try {
+		
+	if(is_object(json_decode($postdata))){
+		$resultObj=json_decode($postdata);
+	}
+	} catch( Exception $e ) {
+		echo $e->getMessage();
+	}
+			
+	if(sizeof($resultObj->EventData) > 0) {
+	$StatusId = $resultObj->EventData->StatusId;
+	$OrderCode = $resultObj->EventData->OrderCode;
+	$statustr = $this->vivawallet_processing;
+
+	$hpoid = db_get_row("SELECT hp_oid FROM vivawalletdata WHERE hp_code = '".$OrderCode."'");
+	$order_id = (strpos($hpoid['hp_oid'], '_')) ? substr($hpoid['hp_oid'], 0, strpos($hpoid['hp_oid'], '_')) : $hpoid['hp_oid'];
+		
+		$order_info = fn_get_order_info($order_id);
+		$processor_data = fn_get_payment_method_data($order_info['payment_id']);
+
+		if ($order_info['payment_info']['OrderCode'] == $OrderCode && $StatusId=='F') {
+			$pp_response['order_status'] = 'P';
+			$pp_response['reason_text'] = 'Processed';
+		} else {
+			$pp_response['order_status'] = 'F';
+			$pp_response['reason_text'] = fn_get_lang_var('vivawallet_transaction_fail');
+		}
+
+		if (fn_check_payment_script('vivawallet.php', $order_id)) {
+			fn_finish_payment($order_id, $pp_response, false);
+		}
+
+		fn_order_placement_routines($order_id);
+	}
+	}
 
 	if ($mode == 'fail' && isset($_GET['s']) && $_GET['s']!='') {
 	$hpordercode = addslashes($_GET['s']);
