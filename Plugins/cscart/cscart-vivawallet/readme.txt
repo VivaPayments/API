@@ -25,8 +25,8 @@ INSERT INTO `cscart_language_values` (`lang_code` ,`name` ,`value`) VALUES
 ('EL', 'vivawallet_transaction_fail', 'Transaction failed or has been cancelled');
 
 INSERT INTO `cscart_language_values` (`lang_code` ,`name` ,`value`) VALUES 
-('EN', 'text_vivawallet_notice', '<b>Note:</b> Please set the following information to payment source:<br />Success URL: <u>[success_url]</u><br /> Fail URL: <u>[failure_url]</u><br /><br />'), 
-('EL', 'text_vivawallet_notice', '<b>Note:</b> Please set the following information to payment source:<br />Success URL: <u>[success_url]</u><br /> Fail URL: <u>[failure_url]</u><br /><br />');
+('EN', 'text_vivawallet_notice', '<b>Note:</b> Please set the following information to payment source:<br />Success URL: <u>[success_url]</u><br /> Fail URL: <u>[failure_url]</u><br /><b>Optional:</b> Set the following information to the webhook URL:<br />Success URL: <u>[webhook_url]</u><br /><br />'), 
+('EL', 'text_vivawallet_notice', '<b>Note:</b> Please set the following information to payment source:<br />Success URL: <u>[success_url]</u><br /> Fail URL: <u>[failure_url]</u><br /><b>Optional:</b> Set the following information to the webhook URL:<br />Success URL: <u>[webhook_url]</u><br /><br /><br />');
 
 DROP TABLE IF EXISTS `vivawalletdata`;
 CREATE TABLE IF NOT EXISTS `vivawalletdata` (

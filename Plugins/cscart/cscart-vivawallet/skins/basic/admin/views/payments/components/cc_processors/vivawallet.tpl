@@ -2,7 +2,8 @@
 
 {assign var="success_url" value="`$config.http_location`/`$config.customer_index`?dispatch=payment_notification.success&payment=vivawallet"}
 {assign var="failure_url" value="`$config.http_location`/`$config.customer_index`?dispatch=payment_notification.fail&payment=vivawallet"}
-<p>{$lang.text_vivawallet_notice|replace:"[success_url]":$success_url|replace:"[failure_url]":$failure_url}</p>
+{assign var="webhook_url" value="`$config.http_location`/`$config.customer_index`?dispatch=payment_notification.webhook&payment=vivawallet"}
+<p>{$lang.text_vivawallet_notice|replace:"[success_url]":$success_url|replace:"[failure_url]":$failure_url|replace:"[webhook_url]":$webhook_url}</p>
 <hr />
 
 <div class="form-field">
