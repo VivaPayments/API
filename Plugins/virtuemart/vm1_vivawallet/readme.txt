@@ -1,4 +1,4 @@
--Upload the new files to according location with ftp/ssh
+-Upload these files to according location with ftp/ssh
 -Add a new payment method in Virtuemart, using the ps_vivawallet class
 -Select HTML-Form based
 -Configure the payment method

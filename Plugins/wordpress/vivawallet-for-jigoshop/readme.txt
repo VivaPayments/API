@@ -1,4 +1,5 @@
 INSTALLATION:
+-Save the directory vivawallet-for-jigoshop to a zipped package (vivawallet-for-jigoshop.zip).
 -Install new pluging through wp-admin (Upload - select vivawallet-for-jigoshop.zip) 
 -Activate the Jigoshop Vivawallet Payment Gateway
 -In Jigoshop - settings - Payment Gateways: select Vivawallet and configure the module

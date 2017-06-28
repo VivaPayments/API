@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `vivawalletdata` (
 -------------------------------------------------------------------------------
 3. Create a new source in the Viva Payments backoffice and specify success / fail URLs.
 -------------------------------------------------------------------------------
-4. Copy the file to your store root (no files are overwritten), copy the files that are inside the skins/basic
+4. Copy the files to your store root (no files are overwritten), copy the files that are inside the skins/basic
 also to your used template (skins/yourusedtemplate).
 -------------------------------------------------------------------------------
 5. Add a the new payment method through your store admin, 

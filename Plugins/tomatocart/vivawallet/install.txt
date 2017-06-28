@@ -1,7 +1,7 @@
 The module for receiving Vivawallet payments on TomatoCart
 
 Installation:
-1. Extract this folder contents to your TomatoCart installation keeping the folder structure.
+1. Copy these files to your TomatoCart installation keeping the folder structure.
 2. In Start-> Modules -> Payment Modules on the Admin page, click on [Install] opposite Vivawallet, then click [Edit] and enter your settings.
 3. At Vivawallet create a new payment source:
 

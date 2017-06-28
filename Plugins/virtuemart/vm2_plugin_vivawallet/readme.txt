@@ -1,8 +1,9 @@
 INSTALLATION:
-1) Install the [vm_plugin_vivawallet.zip] plugin through Joomla extension manager (Install).
-2) Activate the [VM - Payment, Vivawallet] plugin through Joomla extension manager (Manage). 
-3) Add the new payment method (Virtuemart/Shop/Payment Methods) and set parameters / configuration.
-4) Set a new source in the Vivawallet backoffice with following success / fail links:
+1) Save the files to a zipped package (vm_plugin_vivawallet.zip).
+2) Install the [vm_plugin_vivawallet.zip] plugin through Joomla extension manager (Install).
+3) Activate the [VM - Payment, Vivawallet] plugin through Joomla extension manager (Manage). 
+4) Add the new payment method (Virtuemart/Shop/Payment Methods) and set parameters / configuration.
+5) Set a new source in the Vivawallet backoffice with following success / fail links:
 
 Success page: 
 index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&bnkact=success

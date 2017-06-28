@@ -1,4 +1,5 @@
 INSTALLATION:
+-Save the files to a zipped package.
 -Install and configure the new payment plugin. 
 -Create a new payment source in your Viva Payments backoffice and use the following URLs:
 

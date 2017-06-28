@@ -1,6 +1,6 @@
 Installation:
-Install the module through your stores module manager (add new module)
-
+-Save the vivawallet directory to a zipped package (viva-payment.zip).
+-Install the module through your stores module manager (add new module)
 -The module will show in your store admin under modules / payments & gateways.
 -Enable and configure Vivawallet module.
 -At your Vivawallet backoffice create a new payment source:

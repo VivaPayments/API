@@ -1,6 +1,6 @@
 INSTALLATION:
 
-Upload the files to their corresponding locations.
+Upload the files to their corresponding locations on your server.
 Install the module through your admin / Modules / Payment and configure your settings
 
 At Vivawallet create a new payment source,
