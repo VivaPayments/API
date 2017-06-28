@@ -1,4 +1,5 @@
 INSTALLATION:
+-Save the files as a zipped archive (vivawallet-for-woocommerce.zip).
 -Install new pluging through wp-admin (Upload - select vivawallet-for-woocommerce.zip) 
 -Activate the WooCommerce Vivawallet Payment Gateway
 -In Woocommerce - settings - Payment Gateways: select Vivawallet and configure the module
