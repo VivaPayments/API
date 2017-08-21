@@ -587,7 +587,9 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			exit;
 			 }
 			}
-          }
+          	     } else {
+		  	exit();
+		  	}
 		}		
 				
 		if(preg_match("/fail/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
