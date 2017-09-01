@@ -21,7 +21,7 @@ $errors = '';
   $cartid = $transtat[0]['ref'];
   
 	if(substr(_PS_VERSION_,2,1) >= 5){
-	Context::getContext()->cart = new Cart((int)$cart_id);
+	Context::getContext()->cart = new Cart((int)$cartid);
 	Context::getContext()->customer = new Customer((int)Context::getContext()->cart->id_customer);
 	$address = new Address((int)Context::getContext()->cart->id_address_invoice);
 	Context::getContext()->country = new Country((int)$address->id_country);

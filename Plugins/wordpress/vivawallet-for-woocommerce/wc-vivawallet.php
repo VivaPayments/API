@@ -513,8 +513,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			
 			if ($this->vivawallet_testmode == 'yes') {
 			$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+			$posturl = 'http://demo.vivapayments.com/api/messages/config/token/';
 			} else {
 			$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
+			$posturl = 'https://www.vivapayments.com/api/messages/config/token/';
 			}
 		
 			$curl = curl_init();
