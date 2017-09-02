@@ -28,6 +28,10 @@ $errors = '';
 	$address = new Address((int)Context::getContext()->cart->id_address_invoice);
 	Context::getContext()->country = new Country((int)$address->id_country);
 	$secure_key = $customer->secure_key;
+		if ((int)Context::getContext()->cookie->id_cart > 0) 
+		{
+			Context::getContext()->cookie->__unset('id_cart');
+		}
 	}
   
   $details = array(
