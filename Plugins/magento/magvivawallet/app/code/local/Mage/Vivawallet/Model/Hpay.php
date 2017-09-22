@@ -65,6 +65,10 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
     {
         return $this->getConfigData('order_status');
     }
+	public function getOrderStatusSuccess()
+    {
+        return $this->getConfigData('order_status_success');
+    }
     public function getMerchantid()
     {
         return $this->getConfigData('merchantid');
