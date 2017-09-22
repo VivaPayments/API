@@ -67,7 +67,7 @@ class Mage_Vivawallet_HpayController extends Mage_Core_Controller_Front_Action
 		$orderComment = 'Viva OrderCode: ' . $tm_ref . '<br />';
 		
 		$newstatus='';
-		$newstatus=$this->getVivawallet()->getOrderStatus();
+		$newstatus=$this->getVivawallet()->getOrderStatusSuccess();
 		
 		if(!isset($newstatus) || $newstatus == ''){
 		$newstatus = 'pending';
