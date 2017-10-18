@@ -47,7 +47,7 @@ class VivaPayments(object):
    
     def get_redirect_url(self,order_code):
         """Returns the order code appended on the REDIRECT_URL_PREFIX"""
-        redirect_url = VivaPayments.DEMO_REDIRECT_URL if self.url == VivaPayments.DEMO_URL else VivaPayments.PRODUCT_REDIRET_URL
+        redirect_url = VivaPayments.DEMO_REDIRECT_URL if self.url == VivaPayments.DEMO_URL else VivaPayments.PRODUCT_REDIRECT_URL
         return redirect_url+str(order_code)
 
     ### UTILITY FUNCTIONS ###
