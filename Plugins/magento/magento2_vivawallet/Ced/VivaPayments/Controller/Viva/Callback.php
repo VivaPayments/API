@@ -139,7 +139,7 @@ class Callback extends AppAction
 		{
 			$this->_createVivaPaymentsComment($message);
             $this->_order->cancel()->save();
-			$this->messageManager->addError("<strong>Error:</strong> $txMsg <br/>");
+			$this->messageManager->addError("<strong>Error:</strong>" .$message. "<br/>");
 			$redirectUrl = $this->_paymentMethod->getCancelUrl();
 			$this->_redirect($redirectUrl);
 		}		
