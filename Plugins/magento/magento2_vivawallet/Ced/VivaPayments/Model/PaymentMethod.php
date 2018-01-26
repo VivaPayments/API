@@ -5,6 +5,8 @@
  */
 namespace Ced\VivaPayments\Model;
 
+use Exception;
+
 class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
 {
 

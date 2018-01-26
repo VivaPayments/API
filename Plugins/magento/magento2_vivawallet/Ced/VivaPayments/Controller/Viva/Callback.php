@@ -3,8 +3,8 @@
 namespace Ced\VivaPayments\Controller\Viva;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-
 use Magento\Framework\App\Action\Action as AppAction;
+use Exception;
 
 class Callback extends AppAction
 {
