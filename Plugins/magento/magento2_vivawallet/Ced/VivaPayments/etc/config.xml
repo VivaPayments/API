@@ -22,7 +22,7 @@
                 <merchantsource>Source Code</merchantsource>
                 <Installments>90:3,180:6</Installments>
                 <title>Viva Payments Credit Card (redirect)</title>
-                <transaction_url>http://demo.vivapayments.com/api/transactions/</transaction_url>
+                <transaction_url>https://demo.vivapayments.com/api/transactions/</transaction_url>
                 <currency>EUR</currency>
             </paymentmethod>
             <!-- payment-config -->
