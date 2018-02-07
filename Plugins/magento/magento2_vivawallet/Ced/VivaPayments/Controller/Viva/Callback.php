@@ -143,7 +143,7 @@ class Callback extends AppAction
 			
 			$this->_createVivaPaymentsComment($message);
             $this->_order->cancel()->save();
-			$this->messageManager->addError("<strong>Error:</strong>" .$message. "<br/>");
+			$this->messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
 			$this->_redirect('checkout/cart');
 		}		
 		
