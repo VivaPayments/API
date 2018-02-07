@@ -240,7 +240,7 @@ class ControllerPaymentVivawallet extends Controller {
 		}
 		
 		if ( ! $this->request->post['vivawallet_url']) {
-			$this->error['url'] = $this->language->get('vivawallet_url');
+			$this->error['url'] = $this->language->get('error_url');
 		}
 		
 		if ( ! $this->error) {
