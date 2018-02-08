@@ -97,7 +97,10 @@ class Callback extends AppAction
 		curl_setopt($session, CURLOPT_URL, $request . $getargs);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_USERPWD, $MerchantID.':'.$APIKey);
-		curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+		$curlversion = curl_version();
+        if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+            curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+        }
 
 		$response = curl_exec($session);
 		curl_close($session);
@@ -140,7 +143,7 @@ class Callback extends AppAction
 			
 			$this->_createVivaPaymentsComment($message);
             $this->_order->cancel()->save();
-			$this->messageManager->addError("<strong>Error:</strong>" .$message. "<br/>");
+			$this->messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
 			$this->_redirect('checkout/cart');
 		}		
 		
