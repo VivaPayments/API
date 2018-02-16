@@ -33,6 +33,8 @@ class Callback extends AppAction
     */
     protected $_logger;
 	
+	private $_messageManager;
+	
 
     /**
     * @param \Magento\Framework\App\Action\Context $context
@@ -45,14 +47,16 @@ class Callback extends AppAction
     \Magento\Framework\App\Action\Context $context,
     \Magento\Sales\Model\OrderFactory $orderFactory,
     \Ced\VivaPayments\Model\PaymentMethod $paymentMethod,
-    \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,	
+    \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
+	\Magento\Framework\Message\ManagerInterface $messageManager,	
     \Psr\Log\LoggerInterface $logger
     ) {
     	
         $this->_paymentMethod = $paymentMethod;
         $this->_orderFactory = $orderFactory;
         $this->_client = $this->_paymentMethod->getClient();
-        $this->_orderSender = $orderSender;		
+        $this->_orderSender = $orderSender;	
+		$this->_messageManager = $messageManager;	
         $this->_logger = $logger;		
         parent::__construct($context);
     }
@@ -143,7 +147,7 @@ class Callback extends AppAction
 			
 			$this->_createVivaPaymentsComment($message);
             $this->_order->cancel()->save();
-			$this->messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
+			$this->_messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
 			$this->_redirect('checkout/cart');
 		}		
 		
