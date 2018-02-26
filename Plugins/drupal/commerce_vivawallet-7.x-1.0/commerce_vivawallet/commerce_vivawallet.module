@@ -7,28 +7,28 @@
  ****************************************************************************** 
  */
 
-module_load_include('inc', 'commerce_hellaspay', 'includes/commerce_hellaspay.admin');
+module_load_include('inc', 'commerce_vivawallet', 'includes/commerce_vivawallet.admin');
  
 /**
  * Implements hook_menu().
  */
 
-function commerce_hellaspay_menu() {
-   $items['hellaspay/success'] = array(
+function commerce_vivawallet_menu() {
+   $items['vivawallet/success'] = array(
      'title' => 'Successful payment',
-     'page callback' => 'commerce_hellaspay_success',
+     'page callback' => 'commerce_vivawallet_success',
      'access arguments' => array('access content'),
      'type' => MENU_CALLBACK,
-	 'file' => 'commerce_hellaspay.inc',
-     'file path' => drupal_get_path('module', 'commerce_hellaspay') . '/includes',
+	 'file' => 'commerce_vivawallet.inc',
+     'file path' => drupal_get_path('module', 'commerce_vivawallet') . '/includes',
   );
-   $items['hellaspay/fail'] = array(
+   $items['vivawallet/fail'] = array(
      'title' => 'Unsuccessful payment',
-     'page callback' => 'commerce_hellaspay_fail',
+     'page callback' => 'commerce_vivawallet_fail',
      'access arguments' => array('access content'),
      'type' => MENU_CALLBACK,
-	 'file' => 'commerce_hellaspay.inc',
-     'file path' => drupal_get_path('module', 'commerce_hellaspay') . '/includes',
+	 'file' => 'commerce_vivawallet.inc',
+     'file path' => drupal_get_path('module', 'commerce_vivawallet') . '/includes',
    );
   return $items;
 }
@@ -36,10 +36,10 @@ function commerce_hellaspay_menu() {
 /**
  * Implements hook_commerce_payment_method_info().
  */
-function commerce_hellaspay_commerce_payment_method_info() {
+function commerce_vivawallet_commerce_payment_method_info() {
   $payment_methods = array();
-  $payment_methods['commerce_hellaspay'] = array(
-    'base' => 'commerce_hellaspay',
+  $payment_methods['commerce_vivawallet'] = array(
+    'base' => 'commerce_vivawallet',
     'title' => t('Viva Payments'),
     'short_title' => t('Viva Payments'),
     'display_title' => t('Viva Payments'),
@@ -55,13 +55,13 @@ function commerce_hellaspay_commerce_payment_method_info() {
 /**
  * Payment method callback; generation callback for the payment submission form.
  */
-function commerce_hellaspay_submit_form($payment_method, $pane_values, $checkout_pane, $order) {
+function commerce_vivawallet_submit_form($payment_method, $pane_values, $checkout_pane, $order) {
   $build = array();
   $text = theme('image', array(
-    'path' => drupal_get_path('module', 'commerce_hellaspay') . '/logo.gif',
+    'path' => drupal_get_path('module', 'commerce_vivawallet') . '/logo.gif',
     'alt' => t('Viva Payments'),
     'title' => t('Viva Payments'),
-    'attributes' => array('class' => 'logo-hellaspay'),
+    'attributes' => array('class' => 'logo-vivawallet'),
   ));
   $text .= '<div class="desc">' . t('Viva Payments - Payment Systems.') . '</div>';
   $build['print_receipt'] = array('#markup' => $text);
@@ -71,14 +71,14 @@ function commerce_hellaspay_submit_form($payment_method, $pane_values, $checkout
 /**
  * Payment method callback: redirect form.
  */
-function commerce_hellaspay_redirect_form($form, &$form_state, $order, $payment_method) {
-  return commerce_hellaspay_build_redirect_form($form, $form_state, $order, $payment_method['settings']);
+function commerce_vivawallet_redirect_form($form, &$form_state, $order, $payment_method) {
+  return commerce_vivawallet_build_redirect_form($form, $form_state, $order, $payment_method['settings']);
 }
 
 /**
  * Payment method callback; generation callback for the payment redirect form.
  */
-function commerce_hellaspay_build_redirect_form($form, &$form_state, $order, $settings) {
+function commerce_vivawallet_build_redirect_form($form, &$form_state, $order, $settings) {
 global $language, $user;
 
   $wrapper = entity_metadata_wrapper('commerce_order', $order);
@@ -93,8 +93,8 @@ global $language, $user;
   
   if(strtoupper($currency_code)!='EUR'){
   $errormsg = 'Only Euro currency supported';
-  drupal_set_message(commerce_hellaspay_get_settings('commerce_hellaspay_card_error') . $errormsg);
-  drupal_goto(commerce_hellaspay_get_settings('commerce_hellaspay_redirect_error'));
+  drupal_set_message(commerce_vivawallet_get_settings('commerce_vivawallet_card_error') . $errormsg);
+  drupal_goto(commerce_vivawallet_get_settings('commerce_vivawallet_redirect_error'));
   }
 
   $MerchantRef = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
@@ -104,15 +104,15 @@ global $language, $user;
   $amount = $wrapper->commerce_order_total->amount->value();
   $amount = commerce_currency_amount_to_decimal($amount, $currency_code);
 
-    $MerchantID = commerce_hellaspay_get_settings('hellaspay_mid');
-	$Password =  html_entity_decode(commerce_hellaspay_get_settings('hellaspay_pass'));
+    $MerchantID = commerce_vivawallet_get_settings('vivawallet_mid');
+	$Password =  html_entity_decode(commerce_vivawallet_get_settings('vivawallet_pass'));
 	
 	$poststring['Amount'] = number_format($amount, 2, '.', '')*100;
 	$poststring['RequestLang'] = $my_lang;
 	
 	$poststring['Email'] = substr($order->mail, 0, 255);
 	
-	if(commerce_hellaspay_get_settings('hellaspay_instalments')=='2'){
+	if(commerce_vivawallet_get_settings('vivawallet_instalments')=='2'){
 	$poststring['MaxInstallments'] = '1';
 	} else {
 	$poststring['MaxInstallments'] = '36';
@@ -120,10 +120,10 @@ global $language, $user;
 	
 	$poststring['MerchantTrns'] = $order->order_id;
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
-	$poststring['SourceCode'] = commerce_hellaspay_get_settings('hellaspay_source');
+	$poststring['SourceCode'] = commerce_vivawallet_get_settings('vivawallet_source');
 	$poststring['PaymentTimeOut'] = '300';
 	
-	if(commerce_hellaspay_get_settings('hellaspay_mode')=='Test'){
+	if(commerce_vivawallet_get_settings('vivawallet_mode')=='Test'){
 	$curl = curl_init("http://demo.vivapayments.com/api/orders");
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
@@ -142,7 +142,7 @@ global $language, $user;
 	curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
 	}
 	
-	if(commerce_hellaspay_get_settings('hellaspay_mode')!='Test'){
+	if(commerce_vivawallet_get_settings('vivawallet_mode')!='Test'){
 	//curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); 
 	}
 
@@ -185,7 +185,7 @@ global $language, $user;
     'Ref' => $OrderCode,
   );	
 	    
-    if(commerce_hellaspay_get_settings('hellaspay_mode')=='Test'){
+    if(commerce_vivawallet_get_settings('vivawallet_mode')=='Test'){
 	$form['#action'] = "http://demo.vivapayments.com/web/newtransaction.aspx";
 	} else {
 	$form['#action'] = "https://www.vivapayments.com/web/newtransaction.aspx";
@@ -203,13 +203,13 @@ global $language, $user;
     '#value' => t('Pay via Viva Payments'),
   );
   
-$mref = db_query("SELECT status FROM {commerce_hellaspay} WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode))->fetchField();
+$mref = db_query("SELECT status FROM {commerce_vivawallet} WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode))->fetchField();
   if (!empty($mref)) {
-      db_query("UPDATE {commerce_hellaspay} set status = 'formerror' WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode));
+      db_query("UPDATE {commerce_vivawallet} set status = 'formerror' WHERE OrderCode = :OrderCode", array(':OrderCode' => $OrderCode));
   }
   else {
-	db_query("DELETE FROM {commerce_hellaspay} WHERE order_id = :order_id", array(':order_id' => $order->order_id));
-	db_query("INSERT INTO {commerce_hellaspay} (order_id, OrderCode, amount, currency, status) VALUES (:order_id, :ref, :amount, :currency, :status)", array(':order_id' => $order->order_id, ':ref' => $OrderCode, ':amount' => $poststring['Amount'], ':currency' => '978', ':status' => 'formok'));
+	db_query("DELETE FROM {commerce_vivawallet} WHERE order_id = :order_id", array(':order_id' => $order->order_id));
+	db_query("INSERT INTO {commerce_vivawallet} (order_id, OrderCode, amount, currency, status) VALUES (:order_id, :ref, :amount, :currency, :status)", array(':order_id' => $order->order_id, ':ref' => $OrderCode, ':amount' => $poststring['Amount'], ':currency' => '978', ':status' => 'formok'));
   }  
 
   return $form;
@@ -220,7 +220,7 @@ $mref = db_query("SELECT status FROM {commerce_hellaspay} WHERE OrderCode = :Ord
  *
  * Removes drupal-related form_ids from final redirect.
  */
-function commerce_hellaspay_form_commerce_checkout_form_payment_alter(&$form, &$form_state, $form_id){
+function commerce_vivawallet_form_commerce_checkout_form_payment_alter(&$form, &$form_state, $form_id){
   unset($form["#form_id"]);
   unset($form["form_id"]);
   unset($form["form_token"]);
@@ -230,7 +230,7 @@ function commerce_hellaspay_form_commerce_checkout_form_payment_alter(&$form, &$
 /**
  * Helper to returs statuses.
  */
-function commerce_hellaspay_statuses() {
+function commerce_vivawallet_statuses() {
 foreach (commerce_order_state_get_title() as $name => $title) {
     foreach (commerce_order_statuses(array('state' => $name)) as $order_status) {
       $options[check_plain($title)][$order_status['name']] = check_plain($order_status['title']);
@@ -246,9 +246,9 @@ foreach (commerce_order_state_get_title() as $name => $title) {
  *
  * @return setting value.
  */
-function commerce_hellaspay_get_settings($settings) {
+function commerce_vivawallet_get_settings($settings) {
   $output = '';
-  $vars = commerce_payment_method_instance_load('commerce_hellaspay|commerce_payment_commerce_hellaspay','settings');
+  $vars = commerce_payment_method_instance_load('commerce_vivawallet|commerce_payment_commerce_vivawallet','settings');
   if (!empty($vars)) {
  
     foreach ($vars['settings'] as $key=>$val) {
@@ -262,13 +262,13 @@ function commerce_hellaspay_get_settings($settings) {
 }
 
 /**
- * Creates an hellaspay payment transaction for the specified charge amount.
+ * Creates an vivawallet payment transaction for the specified charge amount.
  */
-function commerce_hellaspay_create_transaction($order_id, $status) {
+function commerce_vivawallet_create_transaction($order_id, $status) {
   $order = commerce_order_load($order_id);
   $payment_method = commerce_payment_method_instance_load($order->data['payment_method']);
 
-  $transaction = commerce_payment_transaction_new('commerce_hellaspay', $order->order_id);
+  $transaction = commerce_payment_transaction_new('commerce_vivawallet', $order->order_id);
   $transaction->instance_id = $payment_method['instance_id'];
 
   $wrapper = entity_metadata_wrapper('commerce_order', $order);
@@ -287,6 +287,6 @@ function commerce_hellaspay_create_transaction($order_id, $status) {
 /**
  * Returns an array of possible currency codes.
  */
-function _commerce_hellaspay_currency_array() {
+function _commerce_vivawallet_currency_array() {
   return drupal_map_assoc(array('EUR'));
 }
