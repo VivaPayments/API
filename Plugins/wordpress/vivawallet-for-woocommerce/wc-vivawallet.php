@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Vivawallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.0.1
+Version: 3.3.5
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
@@ -13,7 +13,7 @@ Domain Path: /languages
 /*  Copyright 2017  Vivawallet.com 
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
- * @package    Vivawallet v3.0.1
+ * @package    Vivawallet v3.3.5
  * @author     Viva Wallet
  * @copyright  Copyright (c)2017 Vivawallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
@@ -483,9 +483,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$order->reduce_order_stock();
 			
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
-			add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
+			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
+			update_post_meta( $inv_id, '_transaction_id', wc_clean($tm_ref) );
 			
-			$order->payment_complete();
+			$order->payment_complete(wc_clean($tm_ref));
 			$woocommerce->cart->empty_cart();
 			}
 			
@@ -579,9 +580,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$order->reduce_order_stock();
 			
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
-			add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
+			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
+			update_post_meta( $inv_id, '_transaction_id', wc_clean($tm_ref) );
 			
-			$order->payment_complete();
+			$order->payment_complete(wc_clean($tm_ref));
 			$woocommerce->cart->empty_cart();
 			$current_version = get_option( 'woocommerce_version', null );
 			exit;
