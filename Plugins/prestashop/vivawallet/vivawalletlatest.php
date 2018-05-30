@@ -364,7 +364,7 @@ class vivawallet extends PaymentModule
 		$logo = Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/vivawallet.gif');
 
         $newOption = new PaymentOption();
-        $newOption->setCallToActionText($this->trans('Pay by Viva', array(), 'Modules.Vivawallet.Admin'))
+        $newOption->setCallToActionText($this->l('Pay by Viva'))
 		->setLogo($logo)
 		->setForm('<form id="vivawallet_confirmation_form" name="vivawallet_confirmation" data-ajax="false" action="'.Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__.'modules/vivawallet/pay.php" method="post">'.$formpost.'</form>');
 
