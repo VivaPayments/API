@@ -72,7 +72,12 @@ typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDi
   *
   *  @warning orderCode should be the 64-bit encapsulated NSNumber which -[MobileAPI createOrderWithAmount:params:completion:] returned
   */
-- (void) createTransactionWithOrderCode:(NSNumber *)orderCode sourceCode:(NSString *)sourceCode installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock;
+- (void) createTransactionWithOrderCode:(NSNumber *)orderCode isRecurrentPayment:(Boolean *)isRecurrentPayment sourceCode:(NSString *)sourceCode installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock;
 
+/**
+ *  Creates a transaction (Charges the credit card) using a transaction id from a previously completed order that is AllowsRecurring: True
+ *
+ */
+- (void) createRecurringTransaction:(unsigned long long)amountInEuroCents params:(NSDictionary *)params installments:(NSInteger)installments transactionID:(NSString *)transactionID completion:(VPCompletionBlock)completionBlock;
 
 @end

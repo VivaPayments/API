@@ -69,7 +69,7 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 	
 	[paramsDict setObject:[NSNumber numberWithUnsignedLongLong:amountInEuroCents]
 				   forKey:@"Amount"];
-	
+
 	NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
 	
 	if (paramsData)
@@ -120,7 +120,7 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 }
 
 
-- (void) createTransactionWithOrderCode:(NSNumber *)orderCode sourceCode:(NSString *)sourceCode installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock
+- (void) createTransactionWithOrderCode:(NSNumber *)orderCode sourceCode:(NSString *)sourceCode isRecurrentPayment:(Boolean *)isRecurrentPayment installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock
 {
 	NSMutableURLRequest *request = [self createTransactionRequest];
 	
@@ -139,6 +139,10 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 	if (creditCardToken.length)
 		[paramsDict setObject:@{@"Token" : creditCardToken}
 					   forKey:@"CreditCard"];
+    
+    if (isRecurrentPayment)
+    [paramsDict setObject:@YES
+                   forKey:@"AllowsRecurring"];
 	
 	NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
 	
@@ -146,6 +150,26 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
 		[request setHTTPBody:paramsData];
 
 	[self executeRequestInBackground:request completion:completionBlock];
+}
+
+- (void) createRecurringTransaction:(unsigned long long)amountInEuroCents params:(NSDictionary *)params installments:(NSInteger)installments transactionID:(NSString *)transactionID completion:(VPCompletionBlock)completionBlock
+{
+    NSMutableURLRequest *request = [self createRecurringTransactionRequest: transactionID];
+    
+    NSMutableDictionary *paramsDict = [[NSMutableDictionary alloc] initWithDictionary:params copyItems:YES];
+
+    [paramsDict setObject:[NSNumber numberWithUnsignedLongLong:amountInEuroCents]
+                   forKey:@"Amount"];
+    
+    [paramsDict setObject:[NSString stringWithFormat:@"%ld", (long)installments]
+                   forKey:@"Installments"];
+    
+    NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
+    
+    if (paramsData)
+        [request setHTTPBody:paramsData];
+    
+    [self executeRequestInBackground:request completion:completionBlock];
 }
 
 
@@ -205,6 +229,23 @@ static NSString *demoURL = @"http://demo.vivapayments.com";
    forHTTPHeaderField:@"Authorization"];
 
 	return request;
+}
+
+- (NSMutableURLRequest *)createRecurringTransactionRequest:(NSString *)transactionID
+{
+    
+    NSString *combined = [NSString stringWithFormat:@"%@%@", @"/api/Transactions/", transactionID];
+
+    
+    NSURL *ordersURL = [self.apiURL URLByAppendingPathComponent:combined];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
+    [request setValue:[self authenticationHeaderForUsername:self.merchantID password:self.apiKey]
+   forHTTPHeaderField:@"Authorization"];
+    
+    return request;
 }
 
 
