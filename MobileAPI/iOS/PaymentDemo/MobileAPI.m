@@ -1,292 +1,83 @@
 //
-//  MobileAPI.m
+//  MobileAPI.h
 //  MobileAPI
 //
 //  Created by MacRealize on 25/11/14.
 //  Copyright (c) 2014 Viva Payments. All rights reserved.
 //
 
-#import "MobileAPI.h"
+#import <Foundation/Foundation.h>
 
-static NSString *productionURL = @"https://www.vivapayments.com";
-static NSString *demoURL = @"http://demo.vivapayments.com";
-
-#if !defined(__has_feature) || ! __has_feature(objc_arc)
-#error This Class requires ARC. Either turn on ARC for the project or use -fobjc-arc flag
-#endif
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-#error This code requires iOS 7 or later. If you insist on compiling for older iOS versions, make sure you replace the -[NSData base64EncodedStringWithOptions:] function
-#endif
-
-@interface MobileAPI ()
-
-@property (nonatomic, strong) NSURL *apiURL;
-@property (nonatomic, strong) NSString *merchantID;
-@property (nonatomic, strong) NSString *apiKey;
-@property (nonatomic, strong) NSString *publicKey;
-
-@end
-
-@implementation MobileAPI
-
-#pragma mark Public Functions
+typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDictionary *response, NSError *error);
 
 
-+ (instancetype) newProductionInstance
-{
-	return [[self alloc] initWithBaseURLString:productionURL];
-}
-
-+ (instancetype) newDemoInstance
-{
-	return [[self alloc] initWithBaseURLString:demoURL];
-}
-
-- (instancetype)initWithBaseURLString:(NSString *)urlString
-{
-	if (self = [self init])
-	{
-		_apiURL = [NSURL URLWithString:urlString];
-	}
-	return self;
-}
+@interface MobileAPI : NSObject
 
 
-- (void) setMerchantID:(NSString *)merchantID apiKey:(NSString *)apiKey publicKey:(NSString *)publicKey
-{
-	_merchantID = [merchantID copy];
-	_apiKey = [apiKey copy];
-	_publicKey = [publicKey copy];
-}
+/**
+  *  Create a MobileAPI instance for the Viva Payments production (real) enviroment.
+  *
+  *  Don't forget to call -[MobileAPI setMerchantID:apiKey:publicKey:] to configure the API with the necessary credentials
+  */
++ (instancetype) newProductionInstance;
 
 
-- (void) createOrderWithAmount:(unsigned long long)amountInEuroCents params:(NSDictionary *)params completion:(VPCompletionBlock)completionBlock
-{
-	NSMutableURLRequest *request = [self createOrderRequest];
-	
-	NSMutableDictionary *paramsDict = [[NSMutableDictionary alloc] initWithDictionary:params copyItems:YES];
-	
-	[paramsDict setObject:[NSNumber numberWithUnsignedLongLong:amountInEuroCents]
-				   forKey:@"Amount"];
 
-	NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
-	
-	if (paramsData)
-		[request setHTTPBody:paramsData];
-	
-	[self executeRequestInBackground:request completion:completionBlock];
-}
+/**
+  *  Create a MobileAPI instance for the Viva Payments DEMO enviroment.
+  *
+  *  Don't forget to call -[MobileAPI setMerchantID:apiKey:publicKey:] to configure the API with the necessary credentials
+  */
++ (instancetype) newDemoInstance;
 
 
-- (void) createCardTokenForCardNumber:(NSString *)cardNumber cvc:(NSString *)cvc expirationDateString:(NSString *)expirationDateString cardHolderName:(NSString *)cardHolderName completion:(VPCompletionBlock)completionBlock
-{
-	NSMutableURLRequest *request = [self createCardRequest];
-	
-	NSMutableDictionary *paramsDict = [NSMutableDictionary new];
-	
-	if (cardNumber.length)
-		[paramsDict setObject:cardNumber
-					   forKey:@"Number"];
-
-	if (cvc.length)
-		[paramsDict setObject:cvc forKey:@"CVC"];
-	
-	if (expirationDateString.length)
-		[paramsDict setObject:expirationDateString
-					   forKey:@"ExpirationDate"];
-	
-	if (cardHolderName.length)
-		[paramsDict setObject:cardHolderName
-					   forKey:@"CardHolderName"];
-	
-	NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
-
-	if (paramsData)
-		[request setHTTPBody:paramsData];
-	
-	[self executeRequestInBackground:request completion:completionBlock];
-
-}
-
-- (void) checkInstallmentsForCard:(NSString *)cardNumber completion:(VPCompletionBlock)completionBlock
-{
-	NSMutableURLRequest *request = [self createInstallmentsRequest];
-
-	if (cardNumber)
-		[request setValue:cardNumber forHTTPHeaderField:@"CardNumber"];
-	
-	[self executeRequestInBackground:request completion:completionBlock];
-}
+/**
+  *  Configures the MobileAPI instance with your credentials.
+  *
+  *  Make sure you call this function with the correct credentials or all other calls will fail
+  */
+- (void) setMerchantID:(NSString *)username apiKey:(NSString *)password publicKey:(NSString *)apiKey;
 
 
-- (void) createTransactionWithOrderCode:(NSNumber *)orderCode sourceCode:(NSString *)sourceCode isRecurrentPayment:(Boolean *)isRecurrentPayment installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock
-{
-	NSMutableURLRequest *request = [self createTransactionRequest];
-	
-	NSMutableDictionary *paramsDict = [NSMutableDictionary new];
-	
-	[paramsDict setObject:orderCode
-				   forKey:@"OrderCode"];
-	
-	if (sourceCode.length)
-		[paramsDict setObject:sourceCode
-					   forKey:@"SourceCode"];
 
-	[paramsDict setObject:[NSString stringWithFormat:@"%ld", (long)installments]
-				   forKey:@"Installments"];
-
-	if (creditCardToken.length)
-		[paramsDict setObject:@{@"Token" : creditCardToken}
-					   forKey:@"CreditCard"];
-    
-    if (isRecurrentPayment)
-    [paramsDict setObject:@YES
-                   forKey:@"AllowsRecurring"];
-	
-	NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
-	
-	if (paramsData)
-		[request setHTTPBody:paramsData];
-
-	[self executeRequestInBackground:request completion:completionBlock];
-}
-
-- (void) createRecurringTransaction:(unsigned long long)amountInEuroCents params:(NSDictionary *)params installments:(NSInteger)installments transactionID:(NSString *)transactionID completion:(VPCompletionBlock)completionBlock
-{
-    NSMutableURLRequest *request = [self createRecurringTransactionRequest: transactionID];
-    
-    NSMutableDictionary *paramsDict = [[NSMutableDictionary alloc] initWithDictionary:params copyItems:YES];
-
-    [paramsDict setObject:[NSNumber numberWithUnsignedLongLong:amountInEuroCents]
-                   forKey:@"Amount"];
-    
-    [paramsDict setObject:[NSString stringWithFormat:@"%ld", (long)installments]
-                   forKey:@"Installments"];
-    
-    NSData *paramsData = [NSJSONSerialization dataWithJSONObject:paramsDict options:0 error:0];
-    
-    if (paramsData)
-        [request setHTTPBody:paramsData];
-    
-    [self executeRequestInBackground:request completion:completionBlock];
-}
+/**
+  *  Creates an order.
+  *
+  *  Pass the amount in EURO Cents (ex specify 100 for 1 euro) and any other parameters as a NSDictionary (like RequestLang or SourceCode).
+  *
+  *  @warning The amount is a 64-bit unsigned integer. Please use -[NSNumber unsignedLongLongValue] to convert your NSNumber.
+  *  @warning The response dictionary contains the order code as a NSNumber (64-bit unsigned number). If you want to convert this to a number make sure you use 'uint64_t' or 'long long' types.
+  */
+- (void) createOrderWithAmount:(unsigned long long)amountInEuroCents params:(NSDictionary *)params completion:(VPCompletionBlock)completionBlock;
 
 
-#pragma mark Helpers / Private Functions
+
+/**
+  *  Creates a token for a credit card.
+  *
+  */
+- (void) createCardTokenForCardNumber:(NSString *)cardNumber cvc:(NSString *)cvc expirationDateString:(NSString *)expirationDateString cardHolderName:(NSString *)cardHolderName completion:(VPCompletionBlock)completionBlock;
 
 
-- (NSMutableURLRequest *)createOrderRequest
-{
-	NSURL *ordersURL = [self.apiURL URLByAppendingPathComponent:@"/api/orders"];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
-	[request setHTTPMethod:@"POST"];
-	[request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-	[request setValue:[self authenticationHeaderForUsername:self.merchantID password:self.apiKey]
-   forHTTPHeaderField:@"Authorization"];
-	
-	return request;
-}
+/**
+  *  Returns the maximum number of installments for a credit card
+  *
+  */
+- (void) checkInstallmentsForCard:(NSString *)cardNumber completion:(VPCompletionBlock)completionBlock;
 
 
-- (NSMutableURLRequest *)createCardRequest
-{
-	NSAssert(self.publicKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
 
-	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards?key=%@", self.apiURL.absoluteString, self.publicKey];
-	NSURL *ordersURL = [NSURL URLWithString:urlString];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
-	[request setHTTPMethod:@"POST"];
-	[request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-	
-	return request;
-}
+/**
+  *  Creates a transaction (Charges the credit card)
+  *
+  *  @warning orderCode should be the 64-bit encapsulated NSNumber which -[MobileAPI createOrderWithAmount:params:completion:] returned
+  */
+- (void) createTransactionWithOrderCode:(NSNumber *)orderCode isRecurrentPayment:(Boolean *)isRecurrentPayment sourceCode:(NSString *)sourceCode installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock;
 
-
-- (NSMutableURLRequest *)createInstallmentsRequest
-{
-	NSAssert(self.publicKey, @"Viva Payments API Key is not specified. Did you forget to call -[MobileAPI setUsername:password:apiKey:] ?");
-
-	NSString *urlString = [NSString stringWithFormat:@"%@/api/cards/installments?key=%@", self.apiURL.absoluteString, self.publicKey];
-	NSURL *ordersURL = [NSURL URLWithString:urlString];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
-	
-	return request;
-}
-
-
-- (NSMutableURLRequest *)createTransactionRequest
-{
-	NSURL *ordersURL = [self.apiURL URLByAppendingPathComponent:@"/api/Transactions"];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
-	[request setHTTPMethod:@"POST"];
-	[request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-	[request setValue:[self authenticationHeaderForUsername:self.merchantID password:self.apiKey]
-   forHTTPHeaderField:@"Authorization"];
-
-	return request;
-}
-
-- (NSMutableURLRequest *)createRecurringTransactionRequest:(NSString *)transactionID
-{
-    
-    NSString *combined = [NSString stringWithFormat:@"%@%@", @"/api/Transactions/", transactionID];
-
-    
-    NSURL *ordersURL = [self.apiURL URLByAppendingPathComponent:combined];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:ordersURL];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-    [request setValue:[self authenticationHeaderForUsername:self.merchantID password:self.apiKey]
-   forHTTPHeaderField:@"Authorization"];
-    
-    return request;
-}
-
-
-- (void) executeRequestInBackground:(NSURLRequest *)request completion:(VPCompletionBlock)completionBlock
-{
-	[NSURLConnection sendAsynchronousRequest:request
-									   queue:[NSOperationQueue mainQueue]
-						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-	 {
-		 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-		 NSDictionary *responseDictionary = nil;
-		 
-		 if (data)
-			 responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
-		 
-		 if (completionBlock)
-		 {
-			 BOOL success = (responseDictionary != nil &&
-							httpResponse.statusCode == 200 &&
-			                [[responseDictionary objectForKey:@"ErrorCode"] intValue] == 0);
-			 
-			 completionBlock(success,
-							 response,
-							 responseDictionary,
-							 connectionError);
-		 }
-	 }];
-}
-
-
-- (NSString *)authenticationHeaderForUsername:(NSString *)username password:(NSString *)password
-{
-	NSAssert(username, @"Viva Payments API username is not specified. Did you forget to call -[MobileAPI setMerchantID:apikey:publicKey:] ?");
-	NSAssert(password, @"Viva Payments API username is not specified. Did you forget to call -[MobileAPI setMerchantID:apikey:publicKey:] ?");
-	
-	NSString *userAndPass = [NSString stringWithFormat:@"%@:%@", username, password];
-	
-	NSString *base64UserNamePassword = [[userAndPass dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
-	
-	return [NSString stringWithFormat:@"Basic %@", base64UserNamePassword];
-}
-
+/**
+ *  Creates a transaction (Charges the credit card) using a transaction id from a previously completed order that is AllowsRecurring: True
+ *
+ */
+- (void) createRecurringTransaction:(unsigned long long)amountInEuroCents params:(NSDictionary *)params installments:(NSInteger)installments transactionID:(NSString *)transactionID completion:(VPCompletionBlock)completionBlock;
 
 @end
