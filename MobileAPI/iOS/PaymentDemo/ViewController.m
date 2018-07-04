@@ -115,7 +115,7 @@ static NSString *publicKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 		 
 		 if (success)
 		 {
-             transactionId = [response objectForKey:@"TransactionId"];
+			 transactionId = [response objectForKey:@"TransactionId"];
 			 NSString *StatusId = [response objectForKey:@"StatusId"];
 			 NSLog(@"Completed transaction with id %@, status %@", transactionId, StatusId);
 		 }
