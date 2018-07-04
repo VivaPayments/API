@@ -48,7 +48,7 @@ typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDi
   *  @warning The amount is a 64-bit unsigned integer. Please use -[NSNumber unsignedLongLongValue] to convert your NSNumber.
   *  @warning The response dictionary contains the order code as a NSNumber (64-bit unsigned number). If you want to convert this to a number make sure you use 'uint64_t' or 'long long' types.
   */
-- (void) createOrderWithAmount:(unsigned long long)amountInEuroCents params:(NSDictionary *)params completion:(VPCompletionBlock)completionBlock;
+- (void) createOrderWithAmount:(unsigned long long)amountInEuroCents params:(NSDictionary *)params isRecurrentPayment:(BOOL)isRecurrentPayment completion:(VPCompletionBlock)completionBlock;
 
 
 
@@ -72,7 +72,14 @@ typedef void (^VPCompletionBlock)(BOOL success, NSURLResponse *urlResponse, NSDi
   *
   *  @warning orderCode should be the 64-bit encapsulated NSNumber which -[MobileAPI createOrderWithAmount:params:completion:] returned
   */
-- (void) createTransactionWithOrderCode:(NSNumber *)orderCode sourceCode:(NSString *)sourceCode installments:(NSInteger)installments creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock;
+- (void) createTransactionWithOrderCode:(NSNumber *)orderCode sourceCode:(NSString *)sourceCode installments:(NSInteger)installments isRecurrentPayment:(BOOL)isRecurrentPayment creditCardToken:(NSString *)creditCardToken completion:(VPCompletionBlock)completionBlock;
+
+/**
+  *  Creates a transaction (Charges the credit card)
+  *
+  *  @warning transactionID should be the transactionID from a previously completed transaction with OrderCode with is isRecurrentPayment: true which -[MobileAPI createTransactionWithOrderCode:completion:] returned
+  */
+- (void) createRecurringTransaction:(unsigned long long)amountInEuroCents params:(NSDictionary *)params installments:(NSInteger)installments transactionID:(NSString *)transactionID completion:(VPCompletionBlock)completionBlock;
 
 
 @end
