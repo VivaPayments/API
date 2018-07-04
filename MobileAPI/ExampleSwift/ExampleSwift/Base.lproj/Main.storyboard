@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,16 +22,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aKj-iR-XP7">
-                                <rect key="frame" x="163" y="309.5" width="49" height="48"/>
+                                <rect key="frame" x="164" y="309.5" width="47" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="Pay"/>
                                 <connections>
                                     <action selector="payButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sHV-sd-vk6"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wY4-MR-ror">
+                                <rect key="frame" x="99" y="389.5" width="178" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="Recurring Pay"/>
+                                <connections>
+                                    <action selector="payRecurringButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QkG-5a-Jkc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="wY4-MR-ror" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3mf-Gf-GLz"/>
+                            <constraint firstItem="wY4-MR-ror" firstAttribute="top" secondItem="aKj-iR-XP7" secondAttribute="bottom" constant="32" id="N43-IX-psq"/>
                             <constraint firstItem="aKj-iR-XP7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Sc8-c0-AIT"/>
                             <constraint firstItem="aKj-iR-XP7" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ljd-pd-bCJ"/>
                         </constraints>

@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     var cardHolder = "John Papadopoulos"
     var cardToken = ""
     var orderCode: NSNumber = 0
+    var transactionId = ""
     var mobileApi = MobileAPI.newDemoInstance()
     
     
@@ -38,13 +39,17 @@ class ViewController: UIViewController {
         viva()
     }
     
+    @IBAction func payRecurringButton(_ sender: Any) {
+        createRecurringTransaction()
+    }
+    
     func viva() {
         
         let amountInCents = UInt64(10037)
         
         mobileApi?.setMerchantID(merchantID, apiKey: apiKey, publicKey: publicKey)
         
-        mobileApi?.createOrder(withAmount: amountInCents, params: nil) { (success, urlResponse, response, error) in
+        mobileApi?.createOrder(withAmount: amountInCents, params: nil, isRecurrentPayment: false) { (success, urlResponse, response, error) in
             print("Create order response = \(response ?? [:])")
             
             if success {
@@ -65,8 +70,6 @@ class ViewController: UIViewController {
                 
             }
         }
-        
-        
     }
     
     func checkInstallments() {
@@ -88,7 +91,29 @@ class ViewController: UIViewController {
     
     func createTransaction() {
         
-        mobileApi?.createTransaction(withOrderCode: orderCode as NSNumber, sourceCode: "Default", installments: 1, creditCardToken: cardToken) { (success, urlResponse, response, error) in
+        mobileApi?.createTransaction(withOrderCode: orderCode as NSNumber, sourceCode: "Default", installments: 1, isRecurrentPayment: false, creditCardToken: cardToken) { (success, urlResponse, response, error) in
+            print("Create transaction reponse = \(response ?? [:])")
+            
+            if success {
+                
+                self.transactionId = response?["TransactionId"] as! String
+                let StatusId      = response?["StatusId"]
+                print("Completed transaction with id \(self.transactionId), status \(StatusId ?? [:])");
+                
+            }
+        }
+    }
+    
+    func createRecurringTransaction() {
+        
+        if transactionId == "" {
+            print("First create a successfull payment with isRecurrentPayment: true")
+            return
+        }
+        
+        let amountInCents = UInt64(10037)
+        
+        mobileApi?.createRecurringTransaction(amountInCents, params: nil, installments: 1, transactionID: transactionId) { (success, urlResponse, response, error) in
             print("Create transaction reponse = \(response ?? [:])")
             
             if success {
@@ -100,8 +125,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    
     
     
 }
