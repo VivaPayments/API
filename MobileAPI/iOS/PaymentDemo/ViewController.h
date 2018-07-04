@@ -14,7 +14,7 @@
 	MobileAPI *mobileApi;
 	NSNumber  *orderCode;
 	NSString  *cardToken;
-    NSString  *transactionId;
+	NSString  *transactionId;
 }
 
 @end
