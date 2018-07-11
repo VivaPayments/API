@@ -13,7 +13,6 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
 	protected $_hpokBlockType = 'vivawallet/hpay_hpok';
 	protected $_hpnokBlockType = 'vivawallet/hpay_hpnok';
 	
-    protected $_allowCurrencyCode = array('EUR');
 	protected $_isInitializeNeeded = true; //no invoice 06/2013
 
 	//no invoice 06/2013
@@ -59,7 +58,8 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
     }
 	public function getAllowedCurrency()
     {
-        return $this->getConfigData(explode(",", Currency));
+        $this->moduleAllowedCurrency = explode(",", $this->getConfigData('Currency'));
+		return $this->moduleAllowedCurrency;
     }
 	public function getOrderStatus()
     {
@@ -163,6 +163,15 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
 		case 'EUR':
    		$currency_symbol = 978;
    		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
 		default:
         $currency_symbol = 978;
 		}
@@ -195,6 +204,7 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
 		$poststring['MaxInstallments'] = $instal;
 		$poststring['MerchantTrns'] = $order_id;
 		$poststring['SourceCode'] = $vivasource;
+		$poststring['CurrencyCode'] = $currency_symbol;
 		$poststring['PaymentTimeOut'] = '300';
 	
 		
@@ -203,7 +213,7 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
 		curl_setopt($curl, CURLOPT_PORT, 443);
 		}
 		
-		$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+		$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 		
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -277,9 +287,11 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
     {
         parent::validate();
         $currency_code = $this->getQuote()->getBaseCurrencyCode();
-        if (isset($currency_code) && $currency_code!='' && !in_array($currency_code,$this->_allowCurrencyCode)) {
-            Mage::throwException(Mage::helper('vivawallet')->__('Selected currency code ('.$currency_code.') is not compatible'));
+		
+        if (isset($currency_code) && $currency_code!='' && !in_array($currency_code,$this->getAllowedCurrency())) {
+            Mage::throwException(Mage::helper('jcc')->__('Selected currency code ('.$currency_code.') is not compatible'));
         }
+		
 		$postData = Mage::app()->getRequest()->getPost();
 		if (isset($postData['cc_installments']) && $postData['cc_installments']!='') {
 		$this->moduleInstallmentsPassed = $postData['cc_installments'];
