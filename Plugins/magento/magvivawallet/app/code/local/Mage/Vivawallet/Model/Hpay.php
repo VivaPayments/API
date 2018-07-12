@@ -289,7 +289,7 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
         $currency_code = $this->getQuote()->getBaseCurrencyCode();
 		
         if (isset($currency_code) && $currency_code!='' && !in_array($currency_code,$this->getAllowedCurrency())) {
-            Mage::throwException(Mage::helper('jcc')->__('Selected currency code ('.$currency_code.') is not compatible'));
+            Mage::throwException(Mage::helper('vivawallet')->__('Selected currency code ('.$currency_code.') is not compatible'));
         }
 		
 		$postData = Mage::app()->getRequest()->getPost();
