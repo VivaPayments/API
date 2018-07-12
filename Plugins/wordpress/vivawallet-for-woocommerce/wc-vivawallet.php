@@ -84,10 +84,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	 */
 	function is_valid_for_use()
 	{
-		if (!in_array(get_option('woocommerce_currency'), array('EUR')))
-		{
-			return false;
-		}
+		if (!in_array( get_woocommerce_currency(), array('GBP', 'BGN', 'RON', 'EUR'))) return false;
+		
 		return true;
 	}
 	
@@ -277,10 +275,30 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	}
 	} 	
 	
+		$currency_symbol ='';
+		$currency_code = get_woocommerce_currency();
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+	
 	
 	$poststring['MaxInstallments'] = $maxperiod;
 	$poststring['MerchantTrns'] = $order_id;
 	$poststring['SourceCode'] = $this->vivawallet_source;
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 
 	$curl = curl_init($curl_adr);
@@ -289,7 +307,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
