@@ -137,8 +137,6 @@ class vivawallet extends PaymentModule
 		global $smarty, $cart, $cookie;
 		
 		$currency = Currency::getCurrencyInstance($cart->id_currency);
-		if ($currency->iso_code != 'EUR')
-		return false;
 		
 		$delivery = new Address(intval($cart->id_address_delivery));
 		$invoice = new Address(intval($cart->id_address_invoice));
@@ -174,20 +172,24 @@ class vivawallet extends PaymentModule
 		$eb_total ='';
 		$ebfullname ='';
 		
+		$currency_symbol ='';
 		switch ($dest_currency['iso_code']) {
 		case 'EUR':
    		$currency_symbol = 978;
    		break;
-		case 'USD':
-   		$currency_symbol = 840;
-   		break;
 		case 'GBP':
    		$currency_symbol = 826;
    		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
 		default:
         $currency_symbol = 978;
-		}      
-			
+		}
+		
 		$currency = new Currency((int)($cart->id_currency));
 		$amount = $cart->getOrderTotal(true, Cart::BOTH);
 		$id_currency_max = $id_dest_currency;
@@ -235,13 +237,14 @@ class vivawallet extends PaymentModule
 
 	$poststring['MerchantTrns'] = $cart->id;
 	$poststring['SourceCode'] = Configuration::get('VIVAWALLET_SOURCE');
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';	
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300&DisableIVR=true';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300&DisableIVR=true';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -295,7 +298,7 @@ class vivawallet extends PaymentModule
 	$seckey = Context::getContext()->customer->secure_key;
 	}
 	
-	$tmquery = "insert into vivawallet_data (secure_key, OrderCode, ErrorCode, ErrorText, Timestamp, ref, total_cost, currency, order_state) values ('".$seckey."','".$OrderCode."','".$ErrorCode."','".$ErrorText."',now(),'".$cart->id."','".$wb_total_cents."','978','I')";
+	$tmquery = "insert into vivawallet_data (secure_key, OrderCode, ErrorCode, ErrorText, Timestamp, ref, total_cost, currency, order_state) values ('".$seckey."','".$OrderCode."','".$ErrorCode."','".$ErrorText."',now(),'".$cart->id."','".$wb_total_cents."','".$dest_currency['iso_code']."','I')";
 	Db::getInstance()->execute($tmquery); //tommodps15
 	
 	$this->VivawalletUrl = 'https://www.vivapayments.com/web/newtransaction.aspx';
@@ -393,8 +396,6 @@ class vivawallet extends PaymentModule
 		global $smarty, $cart, $cookie;
 		
 		$currency = Currency::getCurrencyInstance($cart->id_currency);
-		if ($currency->iso_code != 'EUR')
-		return false;
 		
 		$delivery = new Address(intval($cart->id_address_delivery));
 		$invoice = new Address(intval($cart->id_address_invoice));
@@ -430,15 +431,19 @@ class vivawallet extends PaymentModule
 		$eb_total ='';
 		$ebfullname ='';
 		
+		$currency_symbol ='';
 		switch ($dest_currency['iso_code']) {
 		case 'EUR':
    		$currency_symbol = 978;
    		break;
-		case 'USD':
-   		$currency_symbol = 840;
-   		break;
 		case 'GBP':
    		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
    		break;
 		default:
         $currency_symbol = 978;
@@ -500,13 +505,14 @@ class vivawallet extends PaymentModule
 
 	$poststring['MerchantTrns'] = $cart->id;
 	$poststring['SourceCode'] = Configuration::get('VIVAWALLET_SOURCE');
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';	
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300&DisableIVR=true';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300&DisableIVR=true';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -560,7 +566,7 @@ class vivawallet extends PaymentModule
 	$seckey = Context::getContext()->customer->secure_key;
 	}
 	
-	$tmquery = "insert into vivawallet_data (secure_key, OrderCode, ErrorCode, ErrorText, Timestamp, ref, total_cost, currency, order_state) values ('".$seckey."','".$OrderCode."','".$ErrorCode."','".$ErrorText."',now(),'".$cart->id."','".$wb_total_cents."','978','I')";
+	$tmquery = "insert into vivawallet_data (secure_key, OrderCode, ErrorCode, ErrorText, Timestamp, ref, total_cost, currency, order_state) values ('".$seckey."','".$OrderCode."','".$ErrorCode."','".$ErrorText."',now(),'".$cart->id."','".$wb_total_cents."','".$dest_currency['iso_code']."','I')";
 	Db::getInstance()->execute($tmquery); //tommodps15
 	
 	$this->VivawalletUrl = 'https://www.vivapayments.com/web/newtransaction.aspx';
@@ -718,7 +724,7 @@ class vivawallet extends PaymentModule
 
 		$modCurrencies				= $this->l('Currencies');
 		$modUpdateSettings 			= $this->l('Update settings');
-		$modCurrenciesDescription	=$this->l('Currencies authorized for Vivawallet payment. At the moment Vivawallet only accepts Euro!!!');
+		$modCurrenciesDescription	=$this->l('Currencies authorized for Vivawallet payment.');
 		$modAuthorizedCurrencies	= $this->l('Authorized currencies');		
 		
 		$this->_html .=
