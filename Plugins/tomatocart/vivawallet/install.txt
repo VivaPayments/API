@@ -1,12 +1,16 @@
 The module for receiving Vivawallet payments on TomatoCart
 
 Installation:
-1. Extract this folder contents to your TomatoCart installation keeping the folder structure.
+1. Copy these files to your TomatoCart installation keeping the folder structure.
 2. In Start-> Modules -> Payment Modules on the Admin page, click on [Install] opposite Vivawallet, then click [Edit] and enter your settings.
 3. At Vivawallet create a new payment source:
 
 Success page: checkout.php?callback&module=vivawallet&success
 Fail page: checkout.php?callback&module=vivawallet&fail
+
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/checkout.php?callback&module=vivawallet&webhook
 
 ----------------------------------------------------------------------------------------------------------
 

@@ -1,5 +1,6 @@
 INSTALLATION:
 -If applies, uninstall previous installed VivaWallet / Viva Payments payment module (admin/modules)
+-Download the files to a commerce_vivawallet directory, save it as a zipped package (commerce_vivawallet-7.x-1.0.zip).
 -Install the new module (Modules - Install new module - Upload a module - select commerce_vivawallet-7.x-1.0.zip)
 -Enable the Viva Payments payment module (admin/modules)
 -Enable and configure the Viva Payments payment module (store/configuration/payment methods)

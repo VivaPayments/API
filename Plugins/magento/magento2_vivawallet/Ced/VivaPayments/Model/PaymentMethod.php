@@ -5,6 +5,8 @@
  */
 namespace Ced\VivaPayments\Model;
 
+use Exception;
+
 class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
 {
 
@@ -56,6 +58,20 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $this->_objectManager = $objectManager;
 
     }
+	
+	public function getsupportedCurrencyCodes()
+    {
+        return explode(",", $this->getConfigData('allowed_currency'));
+    }
+
+    public function canUseForCurrency($currencyCode)
+    {
+        if (!in_array($currencyCode, $this->getsupportedCurrencyCodes())) {
+            return false;
+        }
+        return true;
+    }	
+	
     public function initialize($paymentAction, $stateObject)
     {
         $payment = $this->getInfoInstance();
@@ -76,13 +92,34 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $amountcents = round($order->getGrandTotal() * 100);
         $MerchantID = $this->getConfigData('merchantid');
         $Password =   $this->getConfigData('merchantpass');
-        $currency = $this->getConfigData('currency');
         $trlang = $this->_localeResolver->getLocale();
         $billingAddress = $order->getBillingAddress();;
         $firstName = $billingAddress->getFirstname();
         $lastName = $billingAddress->getLastname();
 
         $vivapayments_url = $this->getConfigData('cgi_url');
+		
+		$currency_code = $order->getBaseCurrencyCode();
+		
+		$currency_symbol ='';
+        $language_code ='';
+        
+        switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 
         
         if ($trlang=='el-GR') {
@@ -116,7 +153,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $poststring['IsPreAuth'] = true;
         $poststring['Amount'] = $amountcents;
         $poststring['MerchantTrns'] = $order->getIncrementId();
-        
+		$poststring['CurrencyCode'] = $currency_symbol;
         $poststring['SourceCode'] = $this->getConfigData('merchantsource');
 
         $order_url = $this->getConfigData('order_url');
@@ -124,7 +161,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $curl = curl_init($order_url);
         curl_setopt($curl, CURLOPT_PORT, 443);
         
-        $postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut='.urlencode($poststring['PaymentTimeOut']);
+        $postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut='.urlencode($poststring['PaymentTimeOut']);
 
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -178,7 +215,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
                     'email_address'=>$billingAddress->getEmail(), 
                     'order_id'=> $order->getIncrementId(), 
                     'total_cost'=>$amountcents, 
-                    'currency'=>978, 
+                    'currency'=>$currency_symbol, 
                     'order_state'=> 'Pending_payment', 
                     'timestamp'=>date('Y-m-d H:i:s')
                 ];
@@ -240,6 +277,14 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         if (!$this->canUseForCountry($billing_Country)) {
             throw new \Magento\Framework\Validator\Exception(__('Selected payment type is not allowed for billing country.'));
         }
+		
+		$currency_code = $data->getQuote()->getBaseCurrencyCode();
+        if (isset($currency_code) && $currency_code!='' && !in_array($currency_code, $this->getsupportedCurrencyCodes())) {
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Selected currency code ('.$currency_code.') is not compatible.')
+            );
+        }
+		
         return $this;
     }
 }

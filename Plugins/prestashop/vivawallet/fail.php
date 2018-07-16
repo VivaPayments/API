@@ -21,11 +21,15 @@ $errors = '';
   $cartid = $transtat[0]['ref'];
   
 	if(substr(_PS_VERSION_,2,1) >= 5){
-	Context::getContext()->cart = new Cart((int)$cart_id);
+	Context::getContext()->cart = new Cart((int)$cartid);
 	Context::getContext()->customer = new Customer((int)Context::getContext()->cart->id_customer);
 	$address = new Address((int)Context::getContext()->cart->id_address_invoice);
 	Context::getContext()->country = new Country((int)$address->id_country);
 	$secure_key = $customer->secure_key;
+	    if ((int)Context::getContext()->cookie->id_cart > 0) 
+		{
+			Context::getContext()->cookie->__unset('id_cart');
+		}
 	}
 
   $errors = 'Transaction failed or cancelled';

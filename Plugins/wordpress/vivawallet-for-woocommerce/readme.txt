@@ -1,4 +1,5 @@
 INSTALLATION:
+-Save the vivawallet-for-woocommerce directory in a zipped archive (vivawallet-for-woocommerce.zip).
 -Install new pluging through wp-admin (Upload - select vivawallet-for-woocommerce.zip) 
 -Activate the WooCommerce Vivawallet Payment Gateway
 -In Woocommerce - settings - Payment Gateways: select Vivawallet and configure the module
@@ -7,6 +8,9 @@ INSTALLATION:
 SUCCESS URL: index.php?wc-api=wc_vivawallet&vivawallet=success
 FAIL URL: index.php?wc-api=wc_vivawallet&vivawallet=fail
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?wc-api=wc_vivawallet&vivawallet=webhook
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:

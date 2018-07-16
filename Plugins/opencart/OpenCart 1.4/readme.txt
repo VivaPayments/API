@@ -1,4 +1,4 @@
-1. Copy the contents of this package to your opencart installation keeping the folder structure.
+1. Copy the files to your opencart installation keeping the folder structure.
 2. Overwrite files/folders as necessary (no core opencart files will be overwritten)
 3. Login to the Open Cart admin section and go to Extensions > Payments
 4. Find Vivawallet in the list of extensions

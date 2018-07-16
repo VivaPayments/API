@@ -2,6 +2,7 @@ Vivawallet redirection for JoomShopping
 Developed for JoomShopping Version 4
 
 INSTALLATION:
+-Save the files to a zipped package.
 -Login to admin and open control panel of JoomShopping
 -Click on "Install and Update" link 
 -Select the zip file of addon and install it.

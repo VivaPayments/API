@@ -3,8 +3,8 @@
 namespace Ced\VivaPayments\Controller\Viva;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-
 use Magento\Framework\App\Action\Action as AppAction;
+use Exception;
 
 class Callback extends AppAction
 {
@@ -33,6 +33,8 @@ class Callback extends AppAction
     */
     protected $_logger;
 	
+	private $_messageManager;
+	
 
     /**
     * @param \Magento\Framework\App\Action\Context $context
@@ -45,14 +47,16 @@ class Callback extends AppAction
     \Magento\Framework\App\Action\Context $context,
     \Magento\Sales\Model\OrderFactory $orderFactory,
     \Ced\VivaPayments\Model\PaymentMethod $paymentMethod,
-    \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,	
+    \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
+	\Magento\Framework\Message\ManagerInterface $messageManager,	
     \Psr\Log\LoggerInterface $logger
     ) {
     	
         $this->_paymentMethod = $paymentMethod;
         $this->_orderFactory = $orderFactory;
         $this->_client = $this->_paymentMethod->getClient();
-        $this->_orderSender = $orderSender;		
+        $this->_orderSender = $orderSender;	
+		$this->_messageManager = $messageManager;	
         $this->_logger = $logger;		
         parent::__construct($context);
     }
@@ -78,7 +82,7 @@ class Callback extends AppAction
 		$transactionId = $this->getRequest()->getParam('t');
        
 		$OrderCode = $payment_order;	
-		$Lang = $this->getRequest()->getParam('Lang');
+		$Lang = $this->getRequest()->getParam('lang');
         $order_id = $this->getOrderId();
         $update_order = $this->_objectManager->create('Ced\VivaPayments\Model\VivaPayments')->load($OrderCode, 'ordercode');
         $this->_loadOrder($order_id);
@@ -97,7 +101,10 @@ class Callback extends AppAction
 		curl_setopt($session, CURLOPT_URL, $request . $getargs);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($session, CURLOPT_USERPWD, $MerchantID.':'.$APIKey);
-		curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+		$curlversion = curl_version();
+        if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+            curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+        }
 
 		$response = curl_exec($session);
 		curl_close($session);
@@ -121,7 +128,7 @@ class Callback extends AppAction
                     $update_order->setOrderState('paid')->save();
 				}
 			} else {
-                 $update_order->setOrderState('failed')->save();
+				$update_order->setOrderState('failed')->save();
 				$message = 'No transactions found. Make sure the order code exists and is created by your account.';
 			}
 		} else {
@@ -129,7 +136,7 @@ class Callback extends AppAction
 			$message = 'The following error occured: <strong>' . $resultObj->ErrorCode . '</strong>, ' . $resultObj->ErrorText;
 		}
         
-		if(strtoupper($StatusId) == 'F')
+		if(isset($StatusId) && strtoupper($StatusId) == 'F')
 		{	
     		$this->_registerPaymentCapture($TransactionId, $Amount, $message);
     		$redirectUrl = $this->_paymentMethod->getSuccessUrl();
@@ -137,11 +144,11 @@ class Callback extends AppAction
 		}
 		else
 		{
+			
 			$this->_createVivaPaymentsComment($message);
             $this->_order->cancel()->save();
-			$this->messageManager->addError("<strong>Error:</strong> $txMsg <br/>");
-			$redirectUrl = $this->_paymentMethod->getCancelUrl();
-			$this->_redirect($redirectUrl);
+			$this->_messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
+			$this->_redirect('checkout/cart');
 		}		
 		
 	}

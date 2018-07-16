@@ -1,8 +1,9 @@
 Copyright 2017  Vivawallet.com<br>
 http://www.vivawallet.com<br>
+Compatible with Magento 2.1.x and 2.2.x<br>
 <br>
 INSTALLATION:<br>
-1 - unzip the package in your Magento installation, only new files will be added to the app/code/Ced/VivaPayments folder<br>
+1 - upload the files to your Magento installation, only new files will be added to the app/code/Ced/VivaPayments folder<br>
 2 - enable module: bin/magento module:enable --clear-static-content Ced_VivaPayments<br>
 3 - upgrade database: bin/magento setup:upgrade<br>
 4 - re-run compile command: bin/magento cache:flush<br>

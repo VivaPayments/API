@@ -1,4 +1,5 @@
 INSTALLATION:
+-Save the directory vivawallet-for-jigoshop to a zipped package (vivawallet-for-jigoshop.zip).
 -Install new pluging through wp-admin (Upload - select vivawallet-for-jigoshop.zip) 
 -Activate the Jigoshop Vivawallet Payment Gateway
 -In Jigoshop - settings - Payment Gateways: select Vivawallet and configure the module
@@ -7,6 +8,9 @@ INSTALLATION:
 SUCCESS URL: ?js-api=JS_Gateway_Vivawallet&success
 FAIL URL: ?js-api=JS_Gateway_Vivawallet&fail
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?js-api=JS_Gateway_Vivawallet&webhook
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:

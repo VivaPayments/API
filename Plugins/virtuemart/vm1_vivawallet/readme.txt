@@ -1,4 +1,4 @@
--Upload the new files to according location with ftp/ssh
+-Upload these files to according location with ftp/ssh
 -Add a new payment method in Virtuemart, using the ps_vivawallet class
 -Select HTML-Form based
 -Configure the payment method
@@ -7,6 +7,9 @@
 Success page: index.php?option=com_virtuemart&page=checkout.vivawallet&stat=ok
 Fail page: index.php?option=com_virtuemart&page=checkout.vivawallet&stat=nok
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?option=com_virtuemart&page=checkout.vivawallet&stat=webhook
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:

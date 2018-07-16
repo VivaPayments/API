@@ -1,7 +1,8 @@
 INSTALLATION:
-1) Install the [plg_viva_hikashop.zip] plugin through Joomla extension manager (Install).
-2) Activate and configure the Hikashop Viva Payment Plugin (HikaShop / System / Payment methods). 
-3) Create a new payment source in your Viva Payments backoffice, use URLs formed as shown in the modules configuration.
+1) Save the files to a zipped package (plg_viva_hikashop.zip).
+2) Install the [plg_viva_hikashop.zip] plugin through Joomla extension manager (Install).
+3) Activate and configure the Hikashop Viva Payment Plugin (HikaShop / System / Payment methods). 
+4) Create a new payment source in your Viva Payments backoffice, use URLs formed as shown in the modules configuration.
 
 Vivawallet setup:
 You can find your Merchant ID and API Key when you login your business account under Settings - API Access.

@@ -1,8 +1,9 @@
 INSTALLATION:
-1) Install the [vm_plugin_vivawallet.zip] plugin through Joomla extension manager (Install).
-2) Activate the [VM - Payment, Vivawallet] plugin through Joomla extension manager (Manage). 
-3) Add the new payment method (Virtuemart/Shop/Payment Methods) and set parameters / configuration.
-4) Set a new source in the Vivawallet backoffice with following success / fail links:
+1) Save the files to a zipped package (vm_plugin_vivawallet.zip).
+2) Install the [vm_plugin_vivawallet.zip] plugin through Joomla extension manager (Install).
+3) Activate the [VM - Payment, Vivawallet] plugin through Joomla extension manager (Manage). 
+4) Add the new payment method (Virtuemart/Shop/Payment Methods) and set parameters / configuration.
+5) Set a new source in the Vivawallet backoffice with following success / fail links:
 
 Success page: 
 index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&bnkact=success
@@ -10,6 +11,9 @@ index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&
 Failure page: 
 index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&bnkact=fail
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&bnkact=webhook
 --------------------------------
 Optional multilanguage support.
 -In case you use English and Greek languages and the URLs contain the language code, create two

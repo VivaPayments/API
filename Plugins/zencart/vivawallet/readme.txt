@@ -1,12 +1,15 @@
 INSTALLATION:
 
-Upload the files to their corresponding locations.
+Upload the files to their corresponding locations on your server.
 Install the module through your admin / Modules / Payment and configure your settings
 
 At Vivawallet create a new payment source,
 Success page: index.php?main_page=checkout_process&act=vivawallet&status=success
 Fail page: index.php?main_page=checkout_process&act=vivawallet&status=fail
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled
+correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/index.php?main_page=checkout_process&act=vivawallet&status=webhook
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:

@@ -1,6 +1,6 @@
 Installation:
-Install the module through your stores module manager (add new module)
-
+-Save the vivawallet directory to a zipped package (viva-payment.zip).
+-Install the module through your stores module manager (add new module)
 -The module will show in your store admin under modules / payments & gateways.
 -Enable and configure Vivawallet module.
 -At your Vivawallet backoffice create a new payment source:
@@ -8,6 +8,8 @@ Install the module through your stores module manager (add new module)
 Success page: modules/vivawallet/success.php
 Fail page: modules/vivawallet/fail.php
 
+-An optinal webhook URL can be set in your Vivawallet backoffice -> Settings/API Access/Webhooks, this assures the order will be handled correctly in case the customer does not return to the estore after the transaction:
+WEBHOOK URL: http(s)://(www.)your_domain.com/modules/vivawallet/webhook.php
 ----------------------------------------------------------------------------------------------------------
 
 Vivawallet setup:

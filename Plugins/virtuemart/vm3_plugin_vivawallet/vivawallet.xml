@@ -76,15 +76,12 @@
 				   label="VMPAYMENT_VIVAWALLET_STATUS_SUCCESS" description="VMPAYMENT_VIVAWALLET_STATUS_SUCCESS_EXPLAIN"/>
 			<field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"
 				   label="VMPAYMENT_VIVAWALLET_STATUS_FAILED" description="VMPAYMENT_VIVAWALLET_STATUS_FAILED_EXPLAIN"/>
-		</fieldset>
-		
-		<fieldset name="template">
 			<field name="payment_logos" type="imagelist" label="VMPAYMENT_VIVAWALLET_LOGOS" multiple="true"
-				   description="Upload payment logo to images/stories/virtuemart/payment first"
-				   directory="/images/stories/virtuemart/payment"
-				   default="" hide_default="1" hide_none="1"
-				   stripext="0" exclude="^_"/>
-		</fieldset>   
+                           description="Upload payment logo to images/virtuemart/payment first"
+                           directory="/images/virtuemart/payment"
+                           default="" hide_default="1" hide_none="1"
+                           stripext="0" exclude="^_"/>	   
+		</fieldset>
 		
 	  </fields>
     </vmconfig>	

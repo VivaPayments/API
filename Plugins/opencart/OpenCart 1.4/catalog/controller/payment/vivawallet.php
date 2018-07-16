@@ -34,9 +34,29 @@ class ControllerPaymentVivawallet extends Controller {
 	$poststring['MaxInstallments'] = $maxinastal;
 	}
 	
+	$currency_symbol ='';
+	$currency_code = strtoupper($order_info['currency_code']);
+	switch ($currency_code) {
+	case 'EUR':
+	$currency_symbol = 978;
+	break;
+	case 'GBP':
+	$currency_symbol = 826;
+	break;
+	case 'BGN':
+	$currency_symbol = 975;
+	break;
+	case 'RON':
+	$currency_symbol = 946;
+	break;
+	default:
+	$currency_symbol = 978;
+	}
+	
 	$poststring['MerchantTrns'] = $vivawallet_orderid;
 	$poststring['SourceCode'] = $this->config->get('vivawallet_source');
 	$poststring['PaymentTimeOut'] = '300';
+	$poststring['CurrencyCode'] = $currency_symbol;
 	
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($order_info['email']);
 	
@@ -46,6 +66,7 @@ class ControllerPaymentVivawallet extends Controller {
 	
 	$postargs .= '&MerchantTrns='.urlencode($poststring['MerchantTrns']);
 	$postargs .= '&SourceCode='.urlencode($poststring['SourceCode']);
+	$postargs .= '&CurrencyCode='.urlencode($poststring['CurrencyCode']);
 	$postargs .= '&PaymentTimeOut=300';
 
 	$curl = curl_init($this->config->get('vivawallet_orderurl'));

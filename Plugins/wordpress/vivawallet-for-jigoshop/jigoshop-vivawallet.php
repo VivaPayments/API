@@ -387,9 +387,92 @@ private $allowed_currency = array( 'EUR' );
 			$check_query = $wpdb->get_results("SELECT order_state, orderid FROM ". $wpdb->prefix . "vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
-			if($check_query[0]['order_state']=='I') {
+			if($check_query[0]['order_state']=='I' || $check_query[0]['order_state']=='P') {
+			$inv_id = $check_query[0]['orderid'];
+			$order = new jigoshop_order($inv_id);
 			
+			if($check_query[0]['order_state']=='I'){
 			$query = "update ". $wpdb->prefix . "vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
+		    $wpdb->query($query);
+			$order->add_order_note(__('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-jigoshop'));
+			jigoshop_log( "VIVA: payment authorized for Order ID: " . $order->id );
+			$order->payment_complete();
+			jigoshop_cart::empty_cart();
+			$args = array(
+				'key' => $order->order_key,
+				'order' => $order->id,
+			);
+			}
+			wp_safe_redirect( esc_url_raw(add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('thanks') ) ) ) ));
+			} else {
+			$order->update_status( 'on-hold', sprintf(__('Failed payment %s via Vivawallet.', 'vivawallet-for-jigoshop'), $tm_ref) );
+		    jigoshop_log( "VIVA: payment failed for Order ID: " . $order->id );
+			jigoshop::add_error(__('An error occured, please try again.', 'vivawallet-for-jigoshop'));
+			wp_safe_redirect( esc_url_raw(add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('checkout') ) ) ) ));
+			}
+			exit;
+			
+			}
+          }
+		  
+		if(preg_match("/webhook/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
+		{
+			
+			$postdata = file_get_contents("php://input");
+
+			$MerchantID =  $this->vivawallet_merchantid;
+			$Password =   html_entity_decode($this->vivawallet_merchantpass);
+			
+			$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+		
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_PORT, 443);
+			curl_setopt($curl, CURLOPT_POST, false);
+			curl_setopt($curl, CURLOPT_URL, $posturl);
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+			$curlversion = curl_version();
+			if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
+			curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
+			}
+			$response = curl_exec($curl);
+			
+			if(curl_error($curl)){
+			curl_setopt($curl, CURLOPT_PORT, 443);
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			$response = curl_exec($curl);
+			}
+			
+			curl_close($curl);
+			echo $response;
+			
+			try {
+				
+			if(is_object(json_decode($postdata))){
+				$resultObj=json_decode($postdata);
+			}
+			} catch( Exception $e ) {
+				echo $e->getMessage();
+			}
+		
+		
+			if(sizeof($resultObj->EventData) > 0) {
+			$StatusId = $resultObj->EventData->StatusId;
+			$OrderCode = $resultObj->EventData->OrderCode;
+			$statustr = $this->vivawallet_processing;
+	  
+			$check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($OrderCode)."'", ARRAY_A);
+			$check_query_count = count($check_query);
+			if($check_query_count >= 1){
+			if($check_query[0]['order_state']=='I' && $StatusId=='F') {
+			
+			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($OrderCode)."'";
 		    $wpdb->query($query);
 			
 			$inv_id = $check_query[0]['orderid'];
@@ -402,17 +485,11 @@ private $allowed_currency = array( 'EUR' );
 				'key' => $order->order_key,
 				'order' => $order->id,
 			);
-			wp_safe_redirect( esc_url_raw(add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('thanks') ) ) ) ));
-			} else {
-			$order->update_status( 'on-hold', sprintf(__('Failed payment %s via Vivawallet.', 'vivawallet-for-jigoshop'), $tm_ref) );
-		    jigoshop_log( "VIVA: payment failed for Order ID: " . $order->id );
-			jigoshop::add_error(__('An error occured, please try again.', 'vivawallet-for-jigoshop'));
-			wp_safe_redirect( esc_url_raw(add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('checkout') ) ) ) ));
-			}
 			exit;
-			
+			 }
 			}
           }
+		}		  
 				
 		if(preg_match("/fail/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{

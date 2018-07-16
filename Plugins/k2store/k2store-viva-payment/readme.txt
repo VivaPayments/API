@@ -1,8 +1,9 @@
 INSTALLATION:
-1) Install the [k2store-viva-payment.zip] plugin through Joomla extension manager (Install).
-2) Activate the Credit card Viva Payments plugin (Manage/k2store folder). 
-3) Configure the PLG_K2STORE_PAYMENTS_VIVA payment option (K2store/Orders/Setup/Payment). 
-4) Create a new payment source in your Viva account (use the source code in the plugin).
+1) Save the files to a zipped package (k2store-viva-payment.zip).
+2) Install the [k2store-viva-payment.zip] plugin through Joomla extension manager (Install).
+3) Activate the Credit card Viva Payments plugin (Manage/k2store folder). 
+4) Configure the PLG_K2STORE_PAYMENTS_VIVA payment option (K2store/Orders/Setup/Payment). 
+5) Create a new payment source in your Viva account (use the source code in the plugin).
 
 SUCCESS URL: plugins/k2store/payment_viva/return.php?viva=success
 FAIL URL: plugins/k2store/payment_viva/return.php?viva=fail
