@@ -17,7 +17,7 @@ $errors = '';
   $transtat_query = "select * from vivawallet_data where OrderCode='".$OrderCode."' ORDER BY id DESC";
   $transtat = Db::getInstance()->executeS($transtat_query, $array = true, $use_cache = 0);
 
-  $currency_payment = Db::getInstance()->getValue('SELECT id_currency FROM '._DB_PREFIX_.'currency WHERE iso_code = "EUR"');
+  $currency_payment = Db::getInstance()->getValue('SELECT id_currency FROM '._DB_PREFIX_.'currency WHERE iso_code = "'.$transtat[0]['currency'].'"');
   $total = floatval(number_format(($transtat[0]['total_cost'] / 100), 2, '.', ''));
   $secure_key = $transtat[0]['secure_key'];
   $cartid = $transtat[0]['ref'];
