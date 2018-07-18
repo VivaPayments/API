@@ -6,6 +6,7 @@ class vivawallet {
   function vivawallet() {
     $this->code = 'vivawallet';
     $this->title = MODULE_PAYMENT_VIVAWALLET_TEXT_TITLE;
+	$this->trcurrency = MODULE_PAYMENT_VIVAWALLET_CURRENCY;
     $this->description = '';
 	$this->password = MODULE_PAYMENT_VIVAWALLET_PASSWORD;
     $this->enabled = (MODULE_PAYMENT_VIVAWALLET_STATUS == 'True') ? true : false;
@@ -88,7 +89,7 @@ class vivawallet {
     $tm_ref_id = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	
-	$amount_standard = $order->info['total'];
+	$amount_standard = number_format(($currencies->get_value($this->trcurrency) * $order->info['total']), 2, '.', '')
 	$vivawallet_amount = round($amount_standard * 100);
 	
     $language_query = tep_db_query("select code from " . TABLE_LANGUAGES . " where languages_id = '" . (int)$languages_id . "'");
@@ -106,6 +107,25 @@ class vivawallet {
 	$instal = 1;
 	}
 	
+	$currency_symbol ='';
+		$currency_code = $this->trcurrency;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+	
 	$poststring['Amount'] = $vivawallet_amount;
 	$poststring['RequestLang'] = $languagecode;
 	
@@ -113,6 +133,7 @@ class vivawallet {
 	$poststring['MaxInstallments'] = $instal;
 	$poststring['MerchantTrns'] = $tm_ref_id;
 	$poststring['SourceCode'] = MODULE_PAYMENT_VIVAWALLET_SOURCE;
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = MODULE_PAYMENT_VIVAWALLET_TIMEOUT;
 
 	if(MODULE_PAYMENT_VIVAWALLET_MODE=='True'){
@@ -122,7 +143,7 @@ class vivawallet {
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -331,7 +352,7 @@ class vivawallet {
 
 	tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Vivawallet SourceCode', 'MODULE_PAYMENT_VIVAWALLET_SOURCE', '', 'Source code as specified in Vivawallet Web-care', '6', '45', now())");
 
-	tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Currency', 'MODULE_PAYMENT_VIVAWALLET_CURRENCY', '978', 'The currency used for this shop (default 978 for Euro)', '6', '50', now())");	
+	tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Currency', 'MODULE_PAYMENT_VIVAWALLET_CURRENCY', 'EUR', 'The currency used for transactions (default EUR for Euro)', '6', '50', now())");	
 	
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Max allowed Instalments', 'MODULE_PAYMENT_VIVAWALLET_INSTAL', '120:3,240:6,360:9,480:12', 'Specify comma separated instalment order total:months like:<br>120:3,240:6,360:9,480:12', '6', '70', now())");
 
