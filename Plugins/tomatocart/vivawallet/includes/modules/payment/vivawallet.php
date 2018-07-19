@@ -75,6 +75,25 @@
         $currency = MODULE_PAYMENT_VIVAWALLET_CURRENCY;
       }
 	  
+	  $currency_symbol ='';
+		$currency_code = $currency;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+	  
 	  $vivawallet_amount = round($osC_Currencies->formatRaw($osC_ShoppingCart->getTotal(), $currency), 2) * 100;
 	  
       $order = $this->_order_id;
@@ -107,6 +126,7 @@
 	}
 	$poststring['MerchantTrns'] = $order;
 	$poststring['SourceCode'] = MODULE_PAYMENT_VIVAWALLET_SOURCE;
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 
 	if(MODULE_PAYMENT_VIVAWALLET_MODE=='Testing'){
@@ -116,7 +136,7 @@
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
