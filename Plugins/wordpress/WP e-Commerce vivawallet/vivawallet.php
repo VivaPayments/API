@@ -29,10 +29,26 @@ function gateway_vivawallet($separator, $sessionid)
 	// Get Currency details abd price
 	$currency_code = $wpdb->get_results("SELECT `code` FROM `".WPSC_TABLE_CURRENCY_LIST."` WHERE `id`='".get_option('currency_type')."' LIMIT 1",ARRAY_A);
 	$local_currency_code = $currency_code[0]['code'];
-	$vivawallet_currency_code = 'EUR';
+	
+	$currency_symbol ='';
+		$currency_code = $local_currency_code;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 
-	// ChronoPay only processes in the set currency.  This is USD or EUR dependent on what the Chornopay account is set up with.
-	// This must match the ChronoPay settings set up in wordpress.  Convert to the chronopay currency and calculate total.
 	$curr=new CURRENCYCONVERTER();
 	$decimal_places = 2;
 	$total_price = 0;
@@ -138,6 +154,7 @@ function gateway_vivawallet($separator, $sessionid)
 	}
 	$poststring['MerchantTrns'] = $vivawallet_ref;
 	$poststring['SourceCode'] = get_option('vivawallet_source');
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 
 	if(get_option('vivawallet_mode')=='Test'){
@@ -147,7 +164,7 @@ function gateway_vivawallet($separator, $sessionid)
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -202,7 +219,7 @@ function gateway_vivawallet($separator, $sessionid)
 	$vivawallet_url = "https://www.vivapayments.com/web/newtransaction.aspx";
 	}
 	
-	$query = "insert into ". $wpdb->prefix . "vivawallet_data (ref, ordercode, email, total_cost, currency, order_state, sessionid, timestamp) values ('".$vivawallet_ref."','".$OrderCode."','". $datadp['CardHolderEmail'] ."','".$vivawallet_amount."','978','I','". $sessionid . "', now())";
+	$query = "insert into ". $wpdb->prefix . "vivawallet_data (ref, ordercode, email, total_cost, currency, order_state, sessionid, timestamp) values ('".$vivawallet_ref."','".$OrderCode."','". $datadp['CardHolderEmail'] ."','".$vivawallet_amount."','".$local_currency_code."','I','". $sessionid . "', now())";
 	$wpdb->query($query);	
 	
 	// Create Form to post to vivawallet
