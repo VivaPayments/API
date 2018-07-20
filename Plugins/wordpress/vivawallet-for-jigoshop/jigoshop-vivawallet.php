@@ -49,7 +49,7 @@ function add_vivawallet_gateway( $methods ) {
 }
 	
 class vivawallet extends jigoshop_payment_gateway {
-private $allowed_currency = array( 'EUR' );
+private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 
 	public function __construct()
 	{
@@ -94,8 +94,8 @@ private $allowed_currency = array( 'EUR' );
 			echo '<div class="error"><p>'.__('The Vivawallet gateway does not have values entered for <strong>Source Code</strong> and the gateway is set to enabled.  Please enter your credentials for this or the gateway <strong>will not</strong> be available on the Checkout.  Disable the gateway to remove this warning.', 'vivawallet-for-jigoshop').'</p></div>';
 		}
 
-		if (!in_array($this->currency, array('EUR'))) {
-			echo '<div class="error"><p>'.sprintf(__('The Vivawallet gateway accepts payments in currencies of %s.  Your current currency is %s.  Vivawallet won\'t work until you change the Jigoshop currency to an accepted one.  Vivawallet is <strong>currently disabled</strong> on the Payment Gateways settings tab.', 'vivawallet-for-jigoshop'), 'EUR', $this->currency).'</p></div>';
+		if (!in_array($this->currency, array('EUR','GBP','BGN','RON'))) {
+			echo '<div class="error"><p>'.sprintf(__('The Vivawallet gateway accepts payments in currencies of %s.  Your current currency is %s.  Vivawallet won\'t work until you change the Jigoshop currency to an accepted one.  Vivawallet is <strong>currently disabled</strong> on the Payment Gateways settings tab.', 'vivawallet-for-jigoshop'), 'EUR/GBP/BGN/RON', $this->currency).'</p></div>';
 			$options->set('jigoshop_vivawallet_is_enabled', 'no');
 		}
 
@@ -126,7 +126,7 @@ private $allowed_currency = array( 'EUR' );
 			return false;
 		}
 
-		if (!in_array($this->currency, array('EUR'))) {
+		if (!in_array($this->currency, array('EUR','GBP','BGN','RON'))) {
 			return false;
 		}
 
@@ -264,6 +264,26 @@ private $allowed_currency = array( 'EUR' );
 	$MerchantID =  $this->vivawallet_merchantid;
 	$Password =   $this->vivawallet_merchantpass;
 	
+	
+	$currency_symbol ='';
+		$currency_code = $this->currency;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+	
 	$poststring['Amount'] = $amountcents;
 	$poststring['RequestLang'] = $formlang;
 	
@@ -275,6 +295,7 @@ private $allowed_currency = array( 'EUR' );
 	}
 	$poststring['MerchantTrns'] = $order_id;
 	$poststring['SourceCode'] = $this->vivawallet_source;
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 
 	if ($this->testmode == 'yes') {
@@ -284,7 +305,7 @@ private $allowed_currency = array( 'EUR' );
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -332,7 +353,7 @@ private $allowed_currency = array( 'EUR' );
 			throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
 		}	
 		
-		$query = "insert into ". $wpdb->prefix . "vivawallet_data (ref, ordercode, email, orderid, total_cost, currency, order_state, timestamp) values ('".$mref."', '".$OrderCode."','". $order->billing_email ."','". $order_id . "',$amountcents,'978','I', now())";
+		$query = "insert into ". $wpdb->prefix . "vivawallet_data (ref, ordercode, email, orderid, total_cost, currency, order_state, timestamp) values ('".$mref."', '".$OrderCode."','". $order->billing_email ."','". $order_id . "',$amountcents,'".$this->currency."','I', now())";
 	    $wpdb->query($query);
 			
 		echo '<form name="vivawallet" id="vivawallet_place_form" action="'.esc_url($action_adr).'" method="GET">
