@@ -46,5 +46,8 @@
 	<label for="currency_id">{$lang.currency}:</label>
 	<select name="payment_data[processor_params][currency_id]" id="currency_id">
 		<option value="EUR"{if $processor_params.currency_id eq "EUR"} selected="selected"{/if}>EUR</option>
+        <option value="GBP"{if $processor_params.currency_id eq "GBP"} selected="selected"{/if}>GBP</option>
+        <option value="RON"{if $processor_params.currency_id eq "RON"} selected="selected"{/if}>RON</option>
+        <option value="BGN"{if $processor_params.currency_id eq "BGN"} selected="selected"{/if}>BGN</option>
 	</select>
 </div>
