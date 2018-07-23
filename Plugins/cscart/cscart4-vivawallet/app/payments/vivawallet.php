@@ -97,6 +97,24 @@ if (defined('PAYMENT_NOTIFICATION')) {
 	$vivawallet_total = number_format((float)$amount, 2, '.', '');
 	}
 	
+	$currency_symbol ='';
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+	
 	$mref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	$amountcents = round($vivawallet_total * 100);
@@ -113,9 +131,10 @@ if (defined('PAYMENT_NOTIFICATION')) {
 	}
 	$poststring['MerchantTrns'] = $cart_order_id . "_REF".substr(md5(uniqid(rand(), true)), 0, 9);
 	$poststring['SourceCode'] = $processor_data['processor_params']['source'];
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	$pp_response = array();
 
