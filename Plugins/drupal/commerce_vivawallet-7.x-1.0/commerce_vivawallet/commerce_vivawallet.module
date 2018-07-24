@@ -91,15 +91,32 @@ global $language, $user;
   
   $currency_code = $wrapper->commerce_order_total->currency_code->value();
   
-  if(strtoupper($currency_code)!='EUR'){
-  $errormsg = 'Only Euro currency supported';
+  if(commerce_vivawallet_get_settings('vivawallet_currency')!= $currency_code){
+  $errormsg = 'Only '.commerce_vivawallet_get_settings('vivawallet_currency').' currency supported';
   drupal_set_message(commerce_vivawallet_get_settings('commerce_vivawallet_card_error') . $errormsg);
   drupal_goto(commerce_vivawallet_get_settings('commerce_vivawallet_redirect_error'));
   }
+ 
+  $currency_symbol ='';
+		$currency_code = $currency_code;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 
   $MerchantRef = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
-  $currency_symbol = '978';
-
   
   $amount = $wrapper->commerce_order_total->amount->value();
   $amount = commerce_currency_amount_to_decimal($amount, $currency_code);
@@ -121,6 +138,7 @@ global $language, $user;
 	$poststring['MerchantTrns'] = $order->order_id;
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	$poststring['SourceCode'] = commerce_vivawallet_get_settings('vivawallet_source');
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 	
 	if(commerce_vivawallet_get_settings('vivawallet_mode')=='Test'){
@@ -130,7 +148,7 @@ global $language, $user;
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -209,7 +227,7 @@ $mref = db_query("SELECT status FROM {commerce_vivawallet} WHERE OrderCode = :Or
   }
   else {
 	db_query("DELETE FROM {commerce_vivawallet} WHERE order_id = :order_id", array(':order_id' => $order->order_id));
-	db_query("INSERT INTO {commerce_vivawallet} (order_id, OrderCode, amount, currency, status) VALUES (:order_id, :ref, :amount, :currency, :status)", array(':order_id' => $order->order_id, ':ref' => $OrderCode, ':amount' => $poststring['Amount'], ':currency' => '978', ':status' => 'formok'));
+	db_query("INSERT INTO {commerce_vivawallet} (order_id, OrderCode, amount, currency, status) VALUES (:order_id, :ref, :amount, :currency, :status)", array(':order_id' => $order->order_id, ':ref' => $OrderCode, ':amount' => $poststring['Amount'], ':currency' => $currency_code, ':status' => 'formok'));
   }  
 
   return $form;
@@ -288,5 +306,5 @@ function commerce_vivawallet_create_transaction($order_id, $status) {
  * Returns an array of possible currency codes.
  */
 function _commerce_vivawallet_currency_array() {
-  return drupal_map_assoc(array('EUR'));
+  return drupal_map_assoc(array('EUR','GBP','BGN','RON'));
 }
