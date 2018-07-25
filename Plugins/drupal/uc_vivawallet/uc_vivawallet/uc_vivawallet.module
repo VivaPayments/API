@@ -206,8 +206,9 @@ function uc_vivawallet_form(&$form_state, $order) {
   $order = uc_order_load($order->order_id);
   
   $currency_code = variable_get('uc_currency_code', '');
-  if(strtoupper($currency_code)!='EUR'){
-  $errormsg = 'Only Euro currency supported';
+  
+  if(variable_get('uc_vivawallet_currency', '')!= $currency_code){
+  $errormsg = 'Only '.variable_get('uc_vivawallet_currency', '').' currency supported';
   drupal_set_message($errormsg);
   drupal_goto('cart');
   }
@@ -220,8 +221,26 @@ function uc_vivawallet_form(&$form_state, $order) {
   
   $MerchantRef = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
   $TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
-  $currency_symbol = '978';
   $url = variable_get('uc_vivawallet_url', '');
+  
+  $currency_symbol ='';
+		$currency_code = $currency_code;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 
 	$MerchantID = variable_get('uc_vivawallet_mid', '');
 	$Password =  html_entity_decode(variable_get('uc_vivawallet_pass', ''));
@@ -237,12 +256,13 @@ function uc_vivawallet_form(&$form_state, $order) {
 	}
 	$poststring['MerchantTrns'] = $order->order_id;
 	$poststring['SourceCode'] = variable_get('uc_vivawallet_source', '');
+	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
 	
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -316,7 +336,7 @@ function uc_vivawallet_form(&$form_state, $order) {
   }
   else {
 	db_query("DELETE FROM {uc_vivawallet} WHERE order_id = '".$order->order_id."'");
-	db_query("INSERT INTO {uc_vivawallet} (order_id, OrderCode, amount, currency, status) VALUES ('".$order->order_id."', '".$OrderCode."', '".$poststring['Amount']."', '978', 'formok')");
+	db_query("INSERT INTO {uc_vivawallet} (order_id, OrderCode, amount, currency, status) VALUES ('".$order->order_id."', '".$OrderCode."', '".$poststring['Amount']."', '".$currency_code."', 'formok')");
   }
   
   //header('Location: https://www.vivapayments.com/web/newtransaction.aspx?Ref='.$OrderCode);
@@ -330,5 +350,5 @@ function uc_vivawallet_form(&$form_state, $order) {
  * Returns an array of possible currency codes.
  */
 function _uc_vivawallet_currency_array() {
-  return drupal_map_assoc(array('EUR'));
+  return drupal_map_assoc(array('EUR','GBP','BGN','RON'));
 }
