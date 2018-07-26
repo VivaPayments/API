@@ -11,7 +11,7 @@ class plgHikashoppaymentViva extends JPlugin
 {
 	var $accepted_currencies = array
 	(
-		'EUR'
+		'EUR','GBP','RON''BGN'
 	);
 
 	var $debugData = array();
@@ -124,6 +124,25 @@ class plgHikashoppaymentViva extends JPlugin
 		$tramount = number_format($tramount, 2, '.', '');
 		$tramountformat = round($tramount * 100);
 		
+		$currency_symbol ='';
+		$currency_code = $currency;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+		
 		if (preg_match("/gr/i", $locale)) {
 		$formlang = 'el-GR';
 		} else {
@@ -136,7 +155,7 @@ class plgHikashoppaymentViva extends JPlugin
 		$period = '1';
 		}
 		
-		$postargs = 'Amount='.urlencode($tramountformat).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($user->user_email).'&MaxInstallments='.urlencode($period).'&MerchantTrns='.urlencode($order->order_id).'&SourceCode='.urlencode($mcode).'&PaymentTimeOut=300';
+		$postargs = 'Amount='.urlencode($tramountformat).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($user->user_email).'&MaxInstallments='.urlencode($period).'&MerchantTrns='.urlencode($order->order_id).'&SourceCode='.urlencode($mcode).'&CurrencyCode='.urlencode($currency_symbol).'&PaymentTimeOut=300';
 		
 		$curl = curl_init("https://www.vivapayments.com/api/orders");
 		curl_setopt($curl, CURLOPT_PORT, 443);
@@ -195,7 +214,7 @@ class plgHikashoppaymentViva extends JPlugin
 		$query = $db->getQuery(true);
 		$query->insert('`#__vivadata`');
 		$query->columns('`ref`,`orderid`,`ordercode`, `total_cost`, `locale`, `period`, `itemid`, `currency`, `order_state`, `timestamp`');
-		$query->values('"'.$mref.'","'.$order->order_id.'","'.$OrderCode.'","'.$tramount.'","'.$locale.'","'.$period.'","'.$Itemid.'","978","I",now()');
+		$query->values('"'.$mref.'","'.$order->order_id.'","'.$OrderCode.'","'.$tramount.'","'.$locale.'","'.$period.'","'.$Itemid.'","'.$currency_code.'","I",now()');
 		$db->setQuery($query);
 		$db->execute();
 		
