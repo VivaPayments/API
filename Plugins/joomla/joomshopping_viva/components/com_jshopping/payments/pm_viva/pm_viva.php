@@ -98,11 +98,29 @@ class pm_viva extends PaymentRoot{
 		$empinstal = '1';
 		}
 		
-		$set_currency = 'EUR';
 		$MerchantID   = $pmconfigs['merchantid'];
 		$mpass        = html_entity_decode($pmconfigs['merchantpass']);
 		$msource      = $pmconfigs['merchantsource'];
 		$orderid      = $order->order_id;
+		
+		$currency_symbol ='';
+		$currency_code = $order->currency_code_iso;
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 		
 		if (preg_match("/gr/i", $locale)) {
 		$formlang = 'el-GR';
@@ -126,7 +144,7 @@ class pm_viva extends PaymentRoot{
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
-	$postargs = 'Amount='.urlencode($amountcents).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($customer_mail).'&MaxInstallments='.urlencode($empinstal).'&MerchantTrns='.urlencode($orderid).'&SourceCode='.urlencode($msource).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($amountcents).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($customer_mail).'&MaxInstallments='.urlencode($empinstal).'&MerchantTrns='.urlencode($orderid).'&SourceCode='.urlencode($msource).'&CurrencyCode='.urlencode($currency_symbol).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -178,7 +196,7 @@ class pm_viva extends PaymentRoot{
 		$query = $db->getQuery(true);
 		$query->insert('`#__vivadata`');
 		$query->columns('`ref`,`orderid`, `total_cost`, `locale`, `period`, `ordercode`, `errorcode`, `errortext`, `okurl`, `failurl`, `gatewayurl`, `currency`, `order_state`, `timestamp`');
-		$query->values('"'.$mref.'","'.$order->order_id.'","'.$tramount.'","'.$locale.'","'.$empinstal.'","'.$OrderCode.'","'.$ErrorCode.'","'.$ErrorText.'","'.$successurl.'","'.$failurl.'","'.$host.'","EUR","I",now()');
+		$query->values('"'.$mref.'","'.$order->order_id.'","'.$tramount.'","'.$locale.'","'.$empinstal.'","'.$OrderCode.'","'.$ErrorCode.'","'.$ErrorText.'","'.$successurl.'","'.$failurl.'","'.$host.'","'.$currency_code.'","I",now()');
 		$db->setQuery($query);
 		$db->execute();
 		

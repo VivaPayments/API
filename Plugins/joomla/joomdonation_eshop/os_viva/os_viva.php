@@ -45,7 +45,25 @@ class os_viva extends os_payment
 		$params = new JRegistry;
 		$params->loadString($param_query[0]->params);
 		
-		$set_currency = 'EUR';
+		$currency_symbol ='';
+		$currency_code = $data['currency_code'];
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
+		
 		$MerchantID =  trim($params->get('viva_mid'));
 		$Password =   trim(html_entity_decode($params->get('viva_pass')));
 		$Source =   trim($params->get('viva_source'));
@@ -69,9 +87,10 @@ class os_viva extends os_payment
 		}
 		$poststring['MerchantTrns'] = $oid;
 		$poststring['SourceCode'] = $Source;
+		$poststring['CurrencyCode'] = $currency_symbol;
 
 		
-		$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&PaymentTimeOut=300';
+		$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 		
 		$curl = curl_init("https://www.vivapayments.com/api/orders");
 		curl_setopt($curl, CURLOPT_PORT, 443);
