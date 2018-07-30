@@ -56,6 +56,25 @@ class plgK2StorePayment_viva extends K2StorePaymentPlugin
 
         $vars->currency_code =$currency_values['currency_code'];
         $vars->orderpayment_amount = $this->getAmount($order->orderpayment_amount, $currency_values['currency_code'], $currency_values['currency_value'], $currency_values['convert']);
+		
+        $currency_code =$currency_values['currency_code'];
+		$currency_symbol ='';
+		switch ($currency_code) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 
         $vars->orderpayment_type = $this->_element;
 
@@ -87,7 +106,6 @@ class plgK2StorePayment_viva extends K2StorePaymentPlugin
 		$period = '';
 		}
 
-		$set_currency = 'EUR';
 		$MerchantID = $this->vimerchantid;
 		$Password =   $this->vipassword;
 		$SourceCode =   $this->visource;
@@ -96,7 +114,7 @@ class plgK2StorePayment_viva extends K2StorePaymentPlugin
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
-	$postargs = 'Amount='.urlencode($amountcents).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($customer_mail).'&MaxInstallments='.urlencode($vivainstal).'&MerchantTrns='.urlencode($data['orderpayment_id']).'&SourceCode='.urlencode($SourceCode).'&PaymentTimeOut=300';
+	$postargs = 'Amount='.urlencode($amountcents).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($customer_mail).'&MaxInstallments='.urlencode($vivainstal).'&MerchantTrns='.urlencode($data['orderpayment_id']).'&SourceCode='.urlencode($SourceCode).'&CurrencyCode='.urlencode($currency_symbol).'&PaymentTimeOut=300';
 	
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -149,7 +167,7 @@ class plgK2StorePayment_viva extends K2StorePaymentPlugin
 		$query = $db->getQuery(true);
 		$query->insert('`#__vivadata`');
 		$query->columns('`mref`,`orderid`, `locale`, `period`, `ordercode`, `itemid`, `CurrencyCode`, `MerchantReference`, `Amount`, `Installments`, `Status`');
-		$query->values('"'.$mref.'","'.$data['orderpayment_id'].'","'.$locale.'","'.$period.'","'.$OrderCode.'","'.$Itemid.'","978","'.$mref.'","'.$tramount.'","'.$period.'","preorder"');
+		$query->values('"'.$mref.'","'.$data['orderpayment_id'].'","'.$locale.'","'.$period.'","'.$OrderCode.'","'.$Itemid.'","'.$currency_code.","'.$mref.'","'.$tramount.'","'.$period.'","preorder"');
 		$db->setQuery($query);
 		$db->execute();
 		
@@ -297,7 +315,7 @@ class plgK2StorePayment_viva extends K2StorePaymentPlugin
 		
         $currency_code =$currency_values['currency_code'];
         $orderpayment_amount = $this->getAmount($order->orderpayment_amount, $currency_values['currency_code'], $currency_values['currency_value'], $currency_values['convert']);
-				
+		
 		$vars = new JObject();
 		
 		$instal_viva_show = 'no';
@@ -415,7 +433,7 @@ class plgK2StorePayment_viva extends K2StorePaymentPlugin
 	}
 	
     public function getAcceptedCurrencies() {
-    	$currencies = array('EUR');
+    	$currencies = array('EUR','GBP','RON','BGN');
     	return $currencies;
     }	
 	
