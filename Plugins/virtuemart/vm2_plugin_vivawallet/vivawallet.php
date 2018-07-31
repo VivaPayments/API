@@ -133,6 +133,24 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 		$db = &JFactory::getDBO();
 		$db->setQuery($q);
 		$currency_code_3 = $db->loadResult();
+		
+		$currency_symbol ='';
+		switch ($currency_code_3) {
+		case 'EUR':
+   		$currency_symbol = 978;
+   		break;
+		case 'GBP':
+   		$currency_symbol = 826;
+   		break;
+		case 'BGN':
+   		$currency_symbol = 975;
+   		break;
+		case 'RON':
+   		$currency_symbol = 946;
+   		break;
+		default:
+        $currency_symbol = 978;
+		}
 
 		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
 		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, false), 2);
@@ -183,7 +201,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 		  $Installments = '1';
 		  }
 	  
-		$postargs = 'Amount='.urlencode($vivawallet_amount).'&RequestLang='.urlencode($vivawallet_lang).'&Email='.urlencode($order['details']['BT']->email).'&MaxInstallments='.urlencode($Installments).'&MerchantTrns='.urlencode($order['details']['BT']->order_number).'&SourceCode='.urlencode($method->vivawallet_source).'&PaymentTimeOut=300';
+		$postargs = 'Amount='.urlencode($vivawallet_amount).'&RequestLang='.urlencode($vivawallet_lang).'&Email='.urlencode($order['details']['BT']->email).'&MaxInstallments='.urlencode($Installments).'&MerchantTrns='.urlencode($order['details']['BT']->order_number).'&SourceCode='.urlencode($method->vivawallet_source).'&CurrencyCode='.urlencode($currency_symbol).'&PaymentTimeOut=300';
 	
 		if($method->vivawallet_production=='1'){
 		$curl = curl_init("http://demo.vivapayments.com/api/orders");
@@ -249,7 +267,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 		$dbValues['vivawallet_ErrorText'] = "$ErrorText";
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
-		$dbValues['payment_currency'] = '978';
+		$dbValues['payment_currency'] = $currency_symbol;
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData($dbValues);
