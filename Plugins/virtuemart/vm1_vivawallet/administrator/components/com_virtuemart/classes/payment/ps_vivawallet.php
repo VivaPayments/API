@@ -212,8 +212,8 @@ Copy and Paste</BUTTON>            </td>
    function process_payment($order_number, $order_total, &$d) {
    global $vendor_currency;
    
-   if($vendor_currency!='EUR'){
-   $displayMsg = 'Only Euro currency supported.';
+   if($vendor_currency!='EUR' && $vendor_currency!='GBP' && $vendor_currency!='RON' && $vendor_currency!='BGN'){
+   $displayMsg = 'Currency not supported!';
    echo $displayMsg;
 	$d["error"] = $displayMsg;
 	$vmLogger->err($displayMsg);
