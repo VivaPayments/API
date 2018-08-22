@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 if (!class_exists('vmPSPlugin'))
 require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-class plgVmPaymentHellaspay extends vmPSPlugin {
+class plgVmPaymentVivawallet extends vmPSPlugin {
 
 	// instance of class
 	public static $_this = false;
@@ -70,7 +70,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 	public function getVmPluginCreateTableSQL() {
 		
 		$this->getVmPluginDropTableSQL();
-		return $this->createTableSQL('Payment HellasPay Table');
+		return $this->createTableSQL('Payment Vivawallet Table');
 	}
 
 //EB TABLE FIELDS
@@ -186,7 +186,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 		$vivawallet_lang = 'en-US';
 		}
 		
-		$this->_getHellaspayIntoSession();
+		$this->_getVivawalletIntoSession();
 		if($this->_ebrinstalments > 1){
 		$vivawallet_period = $this->_ebrinstalments;
 		$vivawallet_period_note = '- Instalments: ' . $this->_ebrinstalments;
@@ -745,7 +745,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 	}
 
 //EB STORE RESPONSE DATA
-	function _storeHellaspayInternalData($method, $vivawallet_data, $virtuemart_order_id) {
+	function _storeVivawalletInternalData($method, $vivawallet_data, $virtuemart_order_id) {
 
 		// get all know columns of the table
 		$db = JFactory::getDBO();
@@ -801,7 +801,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 	if (!empty($plugin->$plugin_desc)) {
 	    $description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
 	}
-	$this->_getHellaspayIntoSession();
+	$this->_getVivawalletIntoSession();
 	$extrainfo=$this->getExtraPluginNameInfo($plugin);
 	$pluginName = $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' . $description;
 	$pluginName.=  $extrainfo ;
@@ -815,7 +815,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 			return null; // Another method was selected, do nothing
 		}
 
-		if (!($paymentTable = $this->_getHellaspayInternalData($virtuemart_order_id) )) {
+		if (!($paymentTable = $this->_getVivawalletInternalData($virtuemart_order_id) )) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
@@ -839,7 +839,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 	}
 
 //EB GET STORED RESPONSE DATA FUNCTION
-	function _getHellaspayInternalData($virtuemart_order_id, $order_number='') {
+	function _getVivawalletInternalData($virtuemart_order_id, $order_number='') {
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
 		if ($order_number) {
@@ -867,7 +867,7 @@ class plgVmPaymentHellaspay extends vmPSPlugin {
 	}	
 	
 //EB GET URL FUNCTION
-	function _getHellaspayUrl($method) {
+	function _getVivawalletUrl($method) {
 
 		$url = $method->vivawallet_production == '1' ? $method->vivawallet_production_url : $method->vivawallet_test_url;
 
@@ -962,7 +962,7 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 	JHTML::script('vmcreditcard.js', 'components/com_virtuemart/assets/js/', false);
 	JFactory::getLanguage()->load('com_virtuemart');
 	vmJsApi::jCreditCard();
-	$this->_getHellaspayIntoSession(); //get session vars
+	$this->_getVivawalletIntoSession(); //get session vars
 	$htmla = '';
 	$html = array();
 	foreach ($this->methods as $method) {
@@ -1058,15 +1058,15 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 	}	
 
 //EB SESSION PAYMENT OPTIONS ON CHECKOUT
-    function _setHellaspayIntoSession() {
+    function _setVivawalletIntoSession() {
 	$session = JFactory::getSession();
-	$sessionHellaspay = new stdClass();
-	$sessionHellaspay->ebrinstalments = $this->_ebrinstalments;
-	$session->set('vivawallet', serialize($sessionHellaspay), 'vm');
+	$sessionVivawallet = new stdClass();
+	$sessionVivawallet->ebrinstalments = $this->_ebrinstalments;
+	$session->set('vivawallet', serialize($sessionVivawallet), 'vm');
     }
 
 //EB SESSION PAYMENT OPTIONS ON CHECKOUT  
-	function _getHellaspayIntoSession() {
+	function _getVivawalletIntoSession() {
 	$session = JFactory::getSession();
 	$vivawalletSession = $session->get('vivawallet', 0, 'vm');
 	if (!empty($vivawalletSession)) {
@@ -1081,7 +1081,7 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 	if (!$this->selectedThisByMethodId( $cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
 	}
-	$this->_getHellaspayIntoSession();
+	$this->_getVivawalletIntoSession();
     }
 
 //EB DISPLAY SAVED PAYMENT INFO
@@ -1114,7 +1114,7 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
     }
 
 //EB CLEAR SESSION
-    function _clearHellaspaySession() {
+    function _clearVivawalletSession() {
 	$session = JFactory::getSession();
 	$session->clear('vivawallet', 'vm');
     }		
@@ -1148,10 +1148,10 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 		$this->addpricecurrency = '';
 		
 		if(isset($this->_ebrinstalments) && $this->_ebrinstalments > 0){
-		$this->_setHellaspayIntoSession();
+		$this->_setVivawalletIntoSession();
 		}
 		
-		$this->_getHellaspayIntoSession();
+		$this->_getVivawalletIntoSession();
 		if(isset($this->_ebrinstalments) && $this->_ebrinstalments > 0){
 		
 		$instalmentcharge = $this->_getInstalmentCharge($method);
@@ -1191,7 +1191,7 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 		if(!in_array($this->_ebrinstalments ,$term_array)){
 		$this->addprice = '';
 		$this->addpricecurrency = '';
-		$this->_clearHellaspaySession();
+		$this->_clearVivawalletSession();
 		}
 		
 		$method->cost_per_transaction += $this->addprice;
