@@ -180,31 +180,24 @@ class vivawallet extends PaymentModule
 		$delivery = new Address(intval($cart->id_address_delivery));
 		$invoice = new Address(intval($cart->id_address_invoice));
 		$customer = new Customer(intval($cart->id_customer));		
-		
-		$id_eur_currency = 0; // EUR currency ID
-    	$id_dest_currency = -1;
 
 		$currencies = $this->getCurrency((int)$cart->id_currency);
 		$authorized_currencies = array_flip(explode(',', $this->currencies));
         $currencies_used = array();
-
-			
-         foreach ($currencies as $key => $currency) {
-         if (isset($authorized_currencies[$currency['id_currency']])) {
-                    $currencies_used[] = $currencies[$key];    
-         if ($currency['iso_code'] == 'EUR') {
-            $id_eur_currency = $currency['id_currency'];
-          }
-          if ($currency['id_currency'] == $cart->id_currency) {
-            $id_dest_currency = $cart->id_currency;
-          }
-        }
-      }
-      $smarty->assign('currencies_used',$currencies_used);
-
-      if ($id_dest_currency < 0) $id_dest_currency = $id_eur_currency;
-
-      $dest_currency = Currency::getCurrency(intval($id_dest_currency));
+		
+	  
+	  //currency correction
+	  $authorized_currencies = explode(",", $this->currencies);
+	  if(in_array((int)$currency->id, $authorized_currencies)){
+	   $dest_currency['iso_code'] = $currency->iso_code;
+	   $currency_override = '';
+	  } else {
+	   $currency = Currency::getCurrencyInstance((int)$authorized_currencies[0]);
+	   $currencycart = Currency::getCurrencyInstance((int)$cart->id_currency);
+	   $dest_currency['iso_code'] = $currency->iso_code;
+	   $dest_currency['id'] = $currency->id;
+	   $currency_override = $currency->id;
+	  }
 	  
       	$currency_symbol ='';
 		$language_code ='';
@@ -229,16 +222,14 @@ class vivawallet extends PaymentModule
         $currency_symbol = 978;
 		}     
 			
-		$currency = new Currency((int)($cart->id_currency));
 		$amount = $cart->getOrderTotal(true, Cart::BOTH);
-		$id_currency_max = $id_dest_currency;
 
-		if ($currency->id != $id_currency_max)
+		//currency correction
+		if (isset($currency_override) && $currency_override!='')
 		{
-			$amount = $amount / $currency->conversion_rate;
-			$amount = Tools::convertPrice($amount, new Currency((int)($id_currency_max)));
-			//$cart->id_currency = $id_currency_max;
-		}	
+			$amount = ($amount / $currencycart->conversion_rate) * $currency->conversion_rate;
+			$amount = Tools::convertPrice($amount, new Currency((int)($dest_currency['id'])));
+		}		
 		
 		$wb_total = number_format($amount, 2, '.', '');		
 		$wb_instal_total = round($amount);
