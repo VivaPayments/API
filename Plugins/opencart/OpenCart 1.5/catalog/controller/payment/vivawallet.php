@@ -9,7 +9,7 @@ class ControllerPaymentVivawallet extends Controller {
 	$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 	$vivawallet_merchantreference = 'REF'.substr(md5(uniqid(rand(), true)), 0, 9);
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
-	$vivawallet_total_eur = $this->currency->format($order_info['total'], 'EUR', '',false);
+	$vivawallet_total_eur = $this->currency->format($order_info['total'], strtoupper($order_info['currency_code']), '',false);
 	$vivawallet_total_cents = round($vivawallet_total_eur * 100);
 	$vivawallet_orderid = $this->session->data['order_id'];
 	
@@ -27,7 +27,7 @@ class ControllerPaymentVivawallet extends Controller {
 	
 	$poststring['Email'] = $order_info['email'];
 	
-	$vivawallet_total_eur = $this->currency->format($order_info['total'], 'EUR', '',false);
+	$vivawallet_total_eur = $this->currency->format($order_info['total'], strtoupper($order_info['currency_code']), '',false);
 	$charge = number_format($vivawallet_total_eur, '2', '.', '');
 	$maxperiod = '';
 	 $installogic = $this->config->get('vivawallet_maxinstal');
