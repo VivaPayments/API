@@ -420,7 +420,9 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 			require( VMPATH_ADMIN . DS . 'models' . DS . 'orders.php' );
 		}
 		
-		$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
+		//$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
+		$vmorders= new VirtueMartModelOrders();
+		$order=$vmorders->getOrder($virtuemart_order_id);
 		$order_status_code = $order['items'][0]->order_status;
 		
 		if ($order_status_code == 'P') { // not processed
@@ -490,7 +492,9 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 			require( VMPATH_ADMIN . DS . 'models' . DS . 'orders.php' );
 		}		
 		
-		$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
+		//$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
+		$vmorders= new VirtueMartModelOrders();
+		$order=$vmorders->getOrder($virtuemart_order_id);
 		$order_status_code = $order['items'][0]->order_status;
 		
 		if ($order_status_code == 'P') { // not processed
@@ -607,7 +611,9 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 			require( VMPATH_ADMIN . DS . 'models' . DS . 'orders.php' );
 		}		
 		
-		$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
+		//$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
+		$vmorders= new VirtueMartModelOrders();
+		$order=$vmorders->getOrder($virtuemart_order_id);
 		$order_status_code = $order['items'][0]->order_status;
 		
 		if ($order_status_code == 'P' && $StatusId=='F') { // not processed
