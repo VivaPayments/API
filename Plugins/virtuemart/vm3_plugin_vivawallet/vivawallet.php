@@ -1296,11 +1296,19 @@ public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 		$this->_clearVivapaySession();
 		}
 		
+		if(isset($this->_currentMethod->cost_per_transaction) && (float)$this->_currentMethod->cost_per_transaction > 0){
 		$this->_currentMethod->cost_per_transaction += $this->addprice;
-		
-		if(!empty($cart_prices['withTax'])){
-		$cart_prices['withTax'] = $cart_prices['withTax'] + $this->_currentMethod->cost_per_transaction;
 		} else {
+		$this->_currentMethod->cost_per_transaction = 0;
+		}
+		
+		if (is_numeric($this->_currentMethod->cost_per_transaction) && is_numeric($this->addprice)) {
+		 $this->_currentMethod->cost_per_transaction += $this->addprice;
+		}
+		
+		if(is_numeric($cart_prices['withTax']) && is_numeric($this->_currentMethod->cost_per_transaction)){
+		$cart_prices['withTax'] = $cart_prices['withTax'] + $this->_currentMethod->cost_per_transaction;
+		} elseif (is_numeric($this->_currentMethod->cost_per_transaction)) {
 		$cart_prices['salesPrice'] = $cart_prices['salesPrice'] + $this->_currentMethod->cost_per_transaction;
 		}
 		
@@ -1311,7 +1319,9 @@ public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 		}
 		$cartPrice = !empty($cart_prices['withTax'])? $cart_prices['withTax']:$cart_prices['salesPrice'];
 		
-		return ($this->_currentMethod->cost_per_transaction + ($cartPrice * $method->cost_percent_total * 0.01));
+		if (is_numeric($this->_currentMethod->cost_per_transaction)) {
+		return ($this->_currentMethod->cost_per_transaction + ((float)$cartPrice * (float)$method->cost_percent_total * 0.01));
+		}
 	}
 	
 
