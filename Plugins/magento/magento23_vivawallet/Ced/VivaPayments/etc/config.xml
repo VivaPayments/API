@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Store/etc/config.xsd">
+    <default>
+        <payment>
+                <paymentmethod>
+                <active>1</active>
+                <title>PaymentMethod</title>
+                <order_status>pending_payment</order_status>
+<!--                 <instructions>Instruction.</instructions> -->
+                <payment_action>true</payment_action>
+                <model>Ced\VivaPayments\Model\PaymentMethod</model>
+                <order_url>https://demo.vivapayments.com/api/orders</order_url>
+                <cgi_url>https://demo.vivapayments.com/web/newtransaction.aspx</cgi_url>
+                <merchantid>MerchantID</merchantid>
+                <merchantpass>API Key</merchantpass>
+                <merchantsource>Source Code</merchantsource>
+                <Installments>90:3,180:6</Installments>
+                <title>Viva Payments Credit Card (redirect)</title>
+                <transaction_url>https://demo.vivapayments.com/api/transactions/</transaction_url>
+                <currency>EUR</currency>
+            </paymentmethod>
+            <!-- payment-config -->
+        </payment>
+    </default>
+</config>
