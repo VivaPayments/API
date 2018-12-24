@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <form id="native-checkout-form" method="post" asp-controller="home" asp-action="chargecard">
+             <div class="form-group">
+                <label>Cardholder's name</label>
+                <input data-vp="cardholder" class="form-control js-cardholder">
+             </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Card number</label>
+                        <input data-vp="cardnumber" class="js-card-number form-control" maxlength="19" value="4111111111111111">
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>Cvv</label>
+                        <input data-vp="cvv" class="form-control js-cvv" maxlength="4">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Expires</label>
+                        <div class="row"> 
+                            <div class="col-md-6" style="padding-right: 5px;">
+                                <input data-vp="month" class="js-expiration-month form-control" maxlength="2" placeholder="month">
+                            </div>
+                            <div class="col-md-6" style="padding-left: 0px;">
+                                <input data-vp="year" class="js-expiration-year form-control" maxlength="4" placeholder="year">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group js-installments" style="display: none;">
+                        <label>Installments</label>
+                        <select class="form-control">
+                            <option selected>1</option>
+                        </select>
+                    </div>
+                </div>
+             </div>
+
+            <input class="js-charge-token" type="hidden" name="chargetoken" value=""/>
+
+            <button type="button" class="btn btn-primary js-btn-chargecard">Charge card</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div id="threed-pane" class="col-md-12">
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="js-charge-result alert" role="alert" style="display:none;">
+
+    </div>
+</div>
+
+<script>
+    window.accessToken = '@ViewData["access_token"]';
+</script>
