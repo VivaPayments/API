@@ -11,7 +11,7 @@ class plgHikashoppaymentViva extends JPlugin
 {
 	var $accepted_currencies = array
 	(
-		'EUR','GBP','RON''BGN'
+		'EUR','GBP','RON','BGN'
 	);
 
 	var $debugData = array();
