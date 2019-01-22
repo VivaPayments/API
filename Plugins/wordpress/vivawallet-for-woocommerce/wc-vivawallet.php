@@ -379,7 +379,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		
 		$woocommerce->add_inline_js( '
 			jQuery("body").block({
-					message: "<img src=\"' . esc_url( apply_filters( 'woocommerce_ajax_loader_url', $woocommerce->plugin_url() . '/assets/images/ajax-loader.gif' ) ) . '\" alt=\"Redirecting&hellip;\" style=\"float:left; margin-right: 10px;\" />'.__( 'Thank you for your order. We are now redirecting you to make your payment.', 'vivawallet-for-woocommerce' ).'",
+					message: "'.__( 'Thank you for your order. We are now redirecting you to make your payment.', 'vivawallet-for-woocommerce' ).'",
 					overlayCSS:
 					{
 						background: "#fff",
@@ -402,7 +402,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		
 		wc_enqueue_js( '
 			jQuery("body").block({
-					message: "<img src=\"' . esc_url( apply_filters( 'woocommerce_ajax_loader_url', $woocommerce->plugin_url() . '/assets/images/ajax-loader.gif' ) ) . '\" alt=\"Redirecting&hellip;\" style=\"float:left; margin-right: 10px;\" />'.__( 'Thank you for your order. We are now redirecting you to make your payment.', 'vivawallet-for-woocommerce' ).'",
+					message: "'.__( 'Thank you for your order. We are now redirecting you to make your payment.', 'vivawallet-for-woocommerce' ).'",
 					overlayCSS:
 					{
 						background: "#fff",
