@@ -3,19 +3,19 @@
 Plugin Name: WooCommerce Vivawallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.3.5
+Version: 3.5.4
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
 Domain Path: /languages
 */
 
-/*  Copyright 2017  Vivawallet.com 
+/*  Copyright 2019  Vivawallet.com 
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
- * @package    Vivawallet v3.3.5
+ * @package    Vivawallet v3.5.4
  * @author     Viva Wallet
- * @copyright  Copyright (c)2017 Vivawallet http://www.vivawallet.com/
+ * @copyright  Copyright (c)2019 Vivawallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
  ****************************************************************************** 
 */
@@ -374,7 +374,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 
-		$current_version = get_option( 'woocommerce_version', null );
 		if (version_compare( $current_version, '2.3.0', '<' )) { //older version
 		
 		$woocommerce->add_inline_js( '
@@ -480,6 +479,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	function check_ipn_response()
 	{
 		global $woocommerce, $wpdb;
+		$current_version = get_option( 'woocommerce_version', null );
 
 		if(preg_match("/success/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
@@ -498,7 +498,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
 		    $wpdb->query($query);
 			$order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
-			$order->reduce_order_stock();
+			
+			if (version_compare( $current_version, '3.0.0', '<' )) {
+				$order->reduce_order_stock();
+				} 
 			
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
 			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
@@ -508,7 +511,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$woocommerce->cart->empty_cart();
 			}
 			
-			$current_version = get_option( 'woocommerce_version', null );
+			
 			if (version_compare( $current_version, '2.1.0', '<' )) { //older version
 			wp_redirect(esc_url_raw(add_query_arg('key', $order->order_key, add_query_arg('order', $inv_id, get_permalink(get_option('woocommerce_thanks_page_id'))))));
 			} elseif (version_compare( $current_version, '3.0.0', '<' )) { //older version
@@ -595,7 +598,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$inv_id = $check_query[0]['orderid'];
 			$order = new WC_Order($inv_id);
 			$order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $OrderCode, 'vivawallet-for-woocommerce'));
-			$order->reduce_order_stock();
+			
+			if (version_compare( $current_version, '3.0.0', '<' )) {
+				$order->reduce_order_stock();
+				} 
 			
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
 			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
@@ -603,7 +609,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			
 			$order->payment_complete(wc_clean($tm_ref));
 			$woocommerce->cart->empty_cart();
-			$current_version = get_option( 'woocommerce_version', null );
 			exit;
 			 }
 			}
@@ -627,7 +632,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$order = new WC_Order($inv_id);
 			//$order->update_status('failed', __('Payment failed', 'vivawallet-for-woocommerce'));
 			
-			$current_version = get_option( 'woocommerce_version', null );
 			if (version_compare( $current_version, '2.3.0', '<' )) { //older version
 			$woocommerce->add_error(__('An error occured, please try again.', 'vivawallet-for-woocommerce'));
 			} else {
