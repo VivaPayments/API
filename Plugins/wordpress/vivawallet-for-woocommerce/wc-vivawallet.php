@@ -222,8 +222,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		if (version_compare( $current_version, '3.0.0', '>=' )) {
 		define( 'WOOCOMMERCE_CHECKOUT', true );
 		WC()->cart->calculate_totals();
-		$amountcents = round(WC()->cart->total * 100);
-		$charge = number_format(WC()->cart->total, '2', '.', '');
+		$amountcents = round($order->get_total() * 100);
+		$charge = number_format($order->get_total(), '2', '.', '');	
 		} else {
 		$amountcents = round($order->order_total * 100);
 		$charge = number_format($order->order_total, '2', '.', '');
