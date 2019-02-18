@@ -280,15 +280,16 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $data = $this->getInfoInstance();    
         if ($data instanceof \Magento\Sales\Model\Order\Payment) {
             $billing_Country = $data->getOrder()->getBillingAddress()->getCountryId();
+			$currency_code = $data->getOrder()->getBaseCurrencyCode();
         } else {
             $billing_Country = $data->getQuote()->getBillingAddress()->getCountryId();
+			$currency_code = $data->getQuote()->getBaseCurrencyCode();
         }
 
         if (!$this->canUseForCountry($billing_Country)) {
             throw new \Magento\Framework\Validator\Exception(__('Selected payment type is not allowed for billing country.'));
         }
 		
-		$currency_code = $this->getQuote()->getBaseCurrencyCode();
         if (isset($currency_code) && $currency_code!='' && !in_array($currency_code, $this->getsupportedCurrencyCodes())) {
             throw new \Magento\Framework\Exception\LocalizedException(
                 __('Selected currency code ('.$currency_code.') is not compatible.')
