@@ -287,7 +287,10 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		$html.= ' document.vm_vivawallet_form.submit();';
 		$html.= ' </script></body></html>';
 
-		return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $dbValues['payment_name'], $new_status);
+		//7.1 fix
+		//return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $dbValues['payment_name'], $new_status);
+		$this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $dbValues['payment_name'], $new_status);
+		vRequest::setVar('html', $html);
 
 	}
 
@@ -1049,7 +1052,7 @@ public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 	JFactory::getLanguage()->load('com_virtuemart');
 	vmJsApi::jCreditCard();
 	$this->_getVivapayIntoSession(); //get session vars
-	$htmla = '';
+	$htmla = array(); //7.1 fix
 	$html = array();
 	foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->cartPrices)) {
