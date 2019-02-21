@@ -1305,6 +1305,10 @@ public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 		$this->_currentMethod->cost_per_transaction = 0;
 		}
 		
+		if(!isset($this->_currentMethod->cost_percent_total) || $this->_currentMethod->cost_percent_total == ''){
+		$this->_currentMethod->cost_percent_total = 0;
+		}
+		
 		if (is_numeric($this->_currentMethod->cost_per_transaction) && is_numeric($this->addprice)) {
 		 $this->_currentMethod->cost_per_transaction += $this->addprice;
 		}
