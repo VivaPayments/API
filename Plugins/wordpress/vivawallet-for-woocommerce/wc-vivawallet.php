@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Vivawallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.5.4
+Version: 3.5.6
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
@@ -13,7 +13,7 @@ Domain Path: /languages
 /*  Copyright 2019  Vivawallet.com 
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
- * @package    Vivawallet v3.5.4
+ * @package    Vivawallet v3.5.6
  * @author     Viva Wallet
  * @copyright  Copyright (c)2019 Vivawallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
@@ -500,8 +500,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
 			
 			if (version_compare( $current_version, '3.0.0', '<' )) {
-				$order->reduce_order_stock();
-				} 
+			$order->reduce_order_stock();
+			} else {
+			wc_reduce_stock_levels( $order->get_id() );
+			}
 			
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
 			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
@@ -600,8 +602,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $OrderCode, 'vivawallet-for-woocommerce'));
 			
 			if (version_compare( $current_version, '3.0.0', '<' )) {
-				$order->reduce_order_stock();
-				} 
+			$order->reduce_order_stock();
+			} else {
+			wc_reduce_stock_levels( $order->get_id() );
+			}
 			
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
 			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
