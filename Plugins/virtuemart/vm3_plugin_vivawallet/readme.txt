@@ -48,7 +48,7 @@ You can create a new Payment Source from the menu My Sales - Payment Sources - N
 Code - use this code in your plugin
 Source Name - provide a logic name here
 Linked Wallet - link the payment source to the wallet you want to use with it
-Protocol - in case your e-commerce platform uses SSL on the checkout select https, otherwise use https
+Protocol - in case your e-commerce platform uses SSL on the checkout select https, otherwise use http
 Integration method - redirection
 Company Logo - your png company logo to display on the Vivawallet payment page
 Success URL - as described in the plugin instructions
