@@ -139,7 +139,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				'description' => array(
 					'title' => __( 'Description', 'woocommerce' ),
 					'type' => 'textarea',
-					'description' => __( 'This controls the description which the user sees during checkout. With multiple languages do not change the default string, make your changes to the vivawallet-for-woocommerce language files.', 'vivawallet-for-woocommerce' ),
+					'description' => __( 'This controls the description which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
 					'default' => __( 'Pay via Vivawallet - you can pay with your credit card.', 'vivawallet-for-woocommerce' )
 				),
 				'vivawallet_merchantid' => array
@@ -196,7 +196,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	function payment_fields()
 	{
 		if( isset($this->description) && $this->description!=''){
-		echo '<p>'.__('Pay via Vivawallet - you can pay with your credit card.', 'vivawallet-for-woocommerce').'</p>';
+		echo '<p>'.$this->description.'</p>';
 		}
 	}
 	/**
