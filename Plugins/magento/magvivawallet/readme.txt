@@ -21,7 +21,7 @@ You can find your Merchant ID and API Key when you login your business account u
 
 To connect the plugin with your e-commerce platform and Vivawallet you would have to create a new Payment Source in your Vivawallet business account, use the generated source code (usually a four digit number) in the plugin settings.
 
-You can create a new Payment Source from the menu My Sales - Payment Sources - New Website/App.
+You can create a new Payment Source from the menu Sales > Online Payments > Websites/Apps - New Website/App.
 Code - use this code in your plugin
 Source Name - provide a logic name here
 Linked Wallet - link the payment source to the wallet you want to use with it
