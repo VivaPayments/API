@@ -2,4 +2,4 @@ This repository contains sample projects for integrating [Viva Payments](https:/
 
 We welcome, also, your contribution for developing plugins that will allow easy integration with popular open source e-commerce platforms and content management tools.
 
-For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivapayments.com). You can also browse our [knowledgebase](https://support.vivapayments.com/hc/en-us), or post your questions to our online community for developers.
+For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivapayments.com). You can also browse our [knowledgebase](https://support.vivapayments.com/hc/en-us), or [post an issue](https://github.com/VivaPayments/API/issues) to be looked at by someone from our developer community.
