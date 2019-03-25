@@ -2,9 +2,9 @@
 
 If you're using one of the popular e-commerce platforms, we've developed numerous plugins to enable easy integration of Viva Wallet as checkout method. These plugins cover the following products/versions:
 
-<a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart-vivawallet">CScart</a><br/>
-<a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart4-vivawallet">CScart 4</a><br/>
-<a href="https://github.com/VivaPayments/API/tree/master/Plugins/drupal/commerce_vivawallet-7.x-1.0/commerce_vivawallet">Drupal Commerce</a><br/>
+ - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart-vivawallet">CScart</a><br/>
+ - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart4-vivawallet">CScart 4</a><br/>
+ - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/drupal/commerce_vivawallet-7.x-1.0/commerce_vivawallet">Drupal Commerce</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/drupal/uc_vivawallet">Drupal UberCart</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/drupal/uc3_vivawallet/uc_vivawallet">Drupal UberCart 3</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/hikashop/plg_viva_hikashop">HikaShop</a><br/>
