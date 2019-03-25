@@ -1,6 +1,6 @@
-If you're using one of the popular e-commerce platforms, we've developed numerous plugins to enable easy integration of Viva Payments as checkout method.
+![Viva Wallet logo](https://img.photobucket.com/albums/v46/matt_gourd/VivaWallet.png)
 
-These plugins cover the following products/versions:
+If you're using one of the popular e-commerce platforms, we've developed numerous plugins to enable easy integration of Viva Payments as checkout method. These plugins cover the following products/versions:
 
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart-vivawallet">CScart</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart4-vivawallet">CScart 4</a><br/>
