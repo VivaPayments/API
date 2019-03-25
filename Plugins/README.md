@@ -1,6 +1,6 @@
-In case you are using one of the existing e-Commerce platforms, there are numerous plugins that have been developed for allowing easy integration of Viva Payments as checkout method.
+If you're using one of the popular e-commerce platforms, we've developed numerous plugins to enable easy integration of Viva Payments as checkout method.
 
-These plugins cover the following platforms/versions:
+These plugins cover the following products/versions:
 
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart-vivawallet">CScart</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/cscart/cscart4-vivawallet">CScart 4</a><br/>
@@ -27,4 +27,4 @@ These plugins cover the following platforms/versions:
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/wordpress/vivawallet-for-jigoshop">WordPress Jigoshop</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/wordpress/vivawallet-for-woocommerce">WordPress WooCommerce</a><br/>
 <a href="https://github.com/VivaPayments/API/tree/master/Plugins/zencart/vivawallet">Zen Cart</a><br/>
-<a href="https://github.com/VivaPayments/API/wiki/Shopify-Integration">Shopify</a><br/>
+<a href="https://developer.vivapayments.com/e-commerce-plugins/shopify">Shopify</a><br/>
