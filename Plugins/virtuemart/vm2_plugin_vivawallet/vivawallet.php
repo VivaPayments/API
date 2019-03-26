@@ -963,7 +963,7 @@ function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 	JFactory::getLanguage()->load('com_virtuemart');
 	vmJsApi::jCreditCard();
 	$this->_getVivawalletIntoSession(); //get session vars
-	$htmla = '';
+	$htmla = array(); //7.1 fix
 	$html = array();
 	foreach ($this->methods as $method) {
 	    if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
