@@ -19,7 +19,7 @@ $errors = '';
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	curl_setopt($curl, CURLOPT_POST, false);
-	curl_setopt($curl, CURLOPT_URL, $posturl);
+	curl_setopt($curl, CURLOPT_URL, $curl_adr);
 	curl_setopt($curl, CURLOPT_HEADER, false);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
