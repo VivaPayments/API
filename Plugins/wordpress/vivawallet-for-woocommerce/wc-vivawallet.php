@@ -3,23 +3,21 @@
 Plugin Name: WooCommerce Vivawallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.5.6
+Version: 3.5.7
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
 Domain Path: /languages
 */
-
 /*  Copyright 2019  Vivawallet.com 
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
- * @package    Vivawallet v3.5.6
+ * @package    Vivawallet v3.5.7
  * @author     Viva Wallet
  * @copyright  Copyright (c)2019 Vivawallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
  ****************************************************************************** 
 */
-
 /* Add a custom payment class to WC
   ------------------------------------------------------------ */
 add_action('plugins_loaded', 'woocommerce_vivawallet', 0);
@@ -39,17 +37,14 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		$plugin_dir = plugin_dir_url(__FILE__);
 		
 		global $woocommerce;
-
 		$this->id = 'vivawallet';
 		$this->icon = apply_filters('woocommerce_vivawallet_icon', ''.$plugin_dir.'vivawallet.png');
 		$this->has_fields = false;
 		
 		// Load the form fields.
 		$this->init_form_fields();
-
 		// Load the settings.
 		$this->init_settings();
-
 		// Define user set variables
 		$this->title = $this->settings['title'];
 		$this->description = $this->settings['description'];
@@ -59,8 +54,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		$this->vivawallet_instal = $this->settings['vivawallet_instal'];
 		$this->vivawallet_testmode = $this->settings['testmode'];
 		$this->vivawallet_processing = $this->settings['vivawallet_processing'];
-
-
 		// Actions
 		add_action('valid-vivawallet-standard-ipn-reques', array($this, 'successful_request') );
 		add_action('woocommerce_receipt_vivawallet', array($this, 'receipt_page'));
@@ -72,7 +65,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		if ( !defined('PLUGINDIR') )
 		define( 'PLUGINDIR', 'wp-content/plugins' );
 		load_plugin_textdomain('vivawallet-for-woocommerce', PLUGINDIR.'/vivawallet-for-woocommerce/languages','vivawallet-for-woocommerce/languages');
-
 		if (!$this->is_valid_for_use())
 		{
 			$this->enabled = false;
@@ -117,7 +109,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		</table><!--/.form-table-->
 		<?php
     } // End admin_options()
-
 	function init_form_fields()
 	{
 		$this->form_fields = array
@@ -189,7 +180,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				)
 			);
 	}
-
 	/**
 	* There are no payment fields for sprypay, but we want to show the description if set.
 	**/
@@ -205,7 +195,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	public function generate_form($order_id)
 	{
 		global $woocommerce, $wpdb;
-
 		$order = new WC_Order( $order_id );
 		
 		if ($this->vivawallet_testmode == 'yes') {
@@ -215,7 +204,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$action_adr = "https://www.vivapayments.com/web/newtransaction.aspx";
 			$curl_adr	= "https://www.vivapayments.com/api/orders";
 		}
-
 		$mref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
 		$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 		$current_version = get_option( 'woocommerce_version', null );
@@ -300,9 +288,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	$poststring['SourceCode'] = $this->vivawallet_source;
 	$poststring['CurrencyCode'] = $currency_symbol;
 	$poststring['PaymentTimeOut'] = '300';
-
 	$curl = curl_init($curl_adr);
-
 	if (preg_match("/https/i", $curl_adr)) {
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
@@ -364,16 +350,12 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			(
 				'Ref' => $OrderCode,
 			);
-
 		$paypal_args = apply_filters('woocommerce_vivawallet_args', $args);
-
 		$args_array = array();
-
 		foreach ($args as $key => $value)
 		{
 			$args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
-
 		if (version_compare( $current_version, '2.3.0', '<' )) { //older version
 		
 		$woocommerce->add_inline_js( '
@@ -434,7 +416,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	function process_payment($order_id)
 	{
 		$order = new WC_Order($order_id);
-
 		$current_version = get_option( 'woocommerce_version', null );
 		if (version_compare( $current_version, '2.2.0', '<' )) { //older version
 			return array
@@ -480,7 +461,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	{
 		global $woocommerce, $wpdb;
 		$current_version = get_option( 'woocommerce_version', null );
-
 		if(preg_match("/success/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
 			$tm_ref = $_GET['s'];
@@ -531,7 +511,6 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		{
 			
 			$postdata = file_get_contents("php://input");
-
 			$MerchantID =  $this->vivawallet_merchantid;
 			$Password =   html_entity_decode($this->vivawallet_merchantpass);
 			
@@ -584,7 +563,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			}
 		
 		
-			if(sizeof($resultObj->EventData) > 0) {
+			if(!empty($resultObj->EventData) && sizeof($resultObj->EventData) > 0) {
 			$StatusId = $resultObj->EventData->StatusId;
 			$OrderCode = $resultObj->EventData->OrderCode;
 			$statustr = $this->vivawallet_processing;
@@ -650,10 +629,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			exit;
           }
 		}
-
 	}
 }
-
 /**
  * Add the gateway to WooCommerce
  **/
@@ -662,8 +639,6 @@ function add_vivawallet_gateway($methods)
 	$methods[] = 'WC_VIVAWALLET';
 	return $methods;
 }
-
 add_filter('woocommerce_payment_gateways', 'add_vivawallet_gateway');
 }
-
 ?>
