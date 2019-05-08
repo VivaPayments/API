@@ -138,7 +138,37 @@ class Callback extends AppAction
         
 		if(isset($StatusId) && strtoupper($StatusId) == 'F')
 		{	
-    		$this->_registerPaymentCapture($TransactionId, $Amount, $message);
+    		
+		//BOF Order Status
+		$orderComment = 'Viva Confirmed Transaction<br />';
+                $orderComment .= 'TxID: '.$transactionId.'<br />';
+				
+		$newstatus = '';
+		$newstatus =  $this->_objectManager->create('\Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/paymentmethod/order_status');
+	    	if(!isset($newstatus) || $newstatus == ''){
+                    $newstatus = 'pending';
+            	}
+			
+		if($newstatus =='complete'){
+                    $this->_order->setData('state', "complete");
+                    $this->_order->setStatus("complete");
+		    $this->_order->setBaseTotalPaid($Amount); 
+		    $this->_order->setTotalPaid($Amount);
+                    $history = $this->_order->addStatusHistoryComment($orderComment, false);
+                    $history->setIsCustomerNotified(true);
+
+                } else {
+                    $newstate = $newstatus;
+                    $this->_order->setData('state', $newstate);
+                    $this->_order->setStatus($newstate);
+  		    $this->_order->setBaseTotalPaid($Amount); 
+                    $this->_order->setTotalPaid($Amount);
+                    $history = $this->_order->addStatusHistoryComment($orderComment, false);
+                    $history->setIsCustomerNotified(true);
+                }
+		//EOF Order Status
+			
+		$this->_registerPaymentCapture($TransactionId, $Amount, $message);
     		$redirectUrl = $this->_paymentMethod->getSuccessUrl();
     		$this->_redirect($redirectUrl);
 		}
