@@ -16,5 +16,7 @@ class Pendingpayment extends Status
     /**
      * @var string[]
      */
-    protected $_stateStatuses = [Order::STATE_PENDING_PAYMENT];
+    //BOF Order Status
+	protected $_stateStatuses = [Order::STATE_PENDING_PAYMENT, Order::STATE_PROCESSING, Order::STATE_COMPLETE, Order::STATE_CLOSED, Order::STATE_CANCELED, Order::STATE_HOLDED, Order::STATE_PAYMENT_REVIEW];
+	//EOF Order Status
 }
