@@ -172,6 +172,9 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
                 }
 		//EOF Order Status
 			
+		$this->_order->setCanSendNewEmailFlag(true)->setEmailSent(true)->save();
+		$this->_orderSender->send($this->_order, true);
+			
 		$this->_registerPaymentCapture($TransactionId, $Amount, $message);
     		$redirectUrl = $this->_paymentMethod->getSuccessUrl();
     		$this->_redirect($redirectUrl);
@@ -179,10 +182,10 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		else
 		{
 			
-			$this->_createVivaPaymentsComment($message);
-            $this->_order->cancel()->save();
-			$this->_messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
-			$this->_redirect('checkout/cart');
+		$this->_createVivaPaymentsComment($message);
+		$this->_order->cancel()->save();
+		$this->_messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
+		$this->_redirect('checkout/cart');
 		}		
 		
 	}
