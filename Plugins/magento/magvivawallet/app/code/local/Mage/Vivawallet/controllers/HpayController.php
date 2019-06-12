@@ -147,13 +147,16 @@ class Mage_Vivawallet_HpayController extends Mage_Core_Controller_Front_Action
 		$order->loadByIncrementId($tm_orderid);
 		
 		$orderComment = 'Transaction failed';
-		$order->cancel()->save();
-        $order->setStatus(Mage_Sales_Model_Order::STATE_CANCELED)
-                    ->addStatusHistoryComment($orderComment)
-                    ->save();
-					
-        $session->unsQuoteId();
-        $this->_redirect('checkout/onepage/failure');
+		
+		$helper = Mage::helper('vivawallet/checkout');
+        $helper->cancelCurrentOrder($orderComment);
+        if ($helper->restoreQuote()) {
+            $this->_redirect('checkout/onepage/failure');
+        } else {
+			$this->_redirect('checkout/onepage/failure');
+		}
+
+
 		} else { 
 			$session->unsQuoteId();
         	$this->_redirect('checkout/onepage/failure'); }
