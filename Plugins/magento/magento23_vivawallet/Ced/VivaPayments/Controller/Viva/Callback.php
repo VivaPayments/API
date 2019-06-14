@@ -16,6 +16,8 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     * @var \Ced\VivaPayments\Model\PaymentMethod
     */
     protected $_paymentMethod;
+	protected $_checkoutSession;
+    protected $_resultPageFactory;
 
     /**
     * @var \Magento\Sales\Model\Order
@@ -53,7 +55,9 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     \Ced\VivaPayments\Model\PaymentMethod $paymentMethod,
     \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
 	\Magento\Framework\Message\ManagerInterface $messageManager,	
-    \Psr\Log\LoggerInterface $logger
+    \Psr\Log\LoggerInterface $logger,
+	\Magento\Checkout\Model\Session $checkoutSession,
+    \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
     	
         $this->_paymentMethod = $paymentMethod;
@@ -62,6 +66,8 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
         $this->_orderSender = $orderSender;	
 		$this->_messageManager = $messageManager;	
         $this->_logger = $logger;		
+		$this->_checkoutSession = $checkoutSession;
+        $this->_resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 
@@ -171,7 +177,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
                     $history->setIsCustomerNotified(true);
                 }
 		//EOF Order Status
-			
+		
 		$this->_order->setCanSendNewEmailFlag(true)->setEmailSent(true)->save();
 		$this->_orderSender->send($this->_order, true);
 			
@@ -182,10 +188,13 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		else
 		{
 			
-		$this->_createVivaPaymentsComment($message);
-		$this->_order->cancel()->save();
-		$this->_messageManager->addError("<strong>Error: </strong>" .__('Your transaction failed or has been cancelled!'). "<br/>");
-		$this->_redirect('checkout/cart');
+			$checkoutHelper = $this->_objectManager->create('Ced\VivaPayments\Helper\Checkout');
+			$checkoutHelper->cancelCurrentOrder($message);
+        	//https://github.com/magento/magento2/pull/12668/commits/2c1d6a4d115f1e97787349849d215e6c73ac1335
+			$checkoutHelper->restoreQuote();
+			
+			$this->_messageManager->addErrorMessage(__('Your transaction failed or has been cancelled!'));
+            $this->_redirect('checkout/cart');
 		}		
 		
 	}
