@@ -40,7 +40,11 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     protected $_logger;
 	
 	private $_messageManager;
-	
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $_scopeConfig;
 
     /**
     * @param \Magento\Framework\App\Action\Context $context
@@ -57,7 +61,8 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 	\Magento\Framework\Message\ManagerInterface $messageManager,	
     \Psr\Log\LoggerInterface $logger,
 	\Magento\Checkout\Model\Session $checkoutSession,
-    \Magento\Framework\View\Result\PageFactory $resultPageFactory
+    \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+    \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
     	
         $this->_paymentMethod = $paymentMethod;
@@ -68,6 +73,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
         $this->_logger = $logger;		
 		$this->_checkoutSession = $checkoutSession;
         $this->_resultPageFactory = $resultPageFactory;
+        $this->_scopeConfig = $scopeConfig;
         parent::__construct($context);
     }
 
@@ -97,11 +103,11 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
         $update_order = $this->_objectManager->create('Ced\VivaPayments\Model\VivaPayments')->load($OrderCode, 'ordercode');
         $this->_loadOrder($order_id);
 
-		$MerchantID = $this->_objectManager->create('\Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/paymentmethod/merchantid');
-	
-        $APIKey =  $this->_objectManager->create('\Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/paymentmethod/merchantpass');
-		
-        $request = $this->_objectManager->create('\Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/paymentmethod/transaction_url');
+        $MerchantID = $this->_scopeConfig->getValue('payment/paymentmethod/merchantid',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+        $APIKey =  $this->_scopeConfig->getValue('payment/paymentmethod/merchantpass',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+        $request = $this->_scopeConfig->getValue('payment/paymentmethod/transaction_url',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 		
 		$getargs = '?ordercode='.urlencode($OrderCode);
 
@@ -152,9 +158,8 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		//BOF Order Status
 		$orderComment = 'Viva Confirmed Transaction<br />';
             	$orderComment .= 'TxID: '.$transactionId.'<br />';
-				
-		$newstatus = '';
-		$newstatus =  $this->_objectManager->create('\Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/paymentmethod/order_status');
+
+		$newstatus =  $this->_scopeConfig->getValue('payment/paymentmethod/order_status',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 		if(!isset($newstatus) || $newstatus == ''){
                     $newstatus = 'pending';
             	}
