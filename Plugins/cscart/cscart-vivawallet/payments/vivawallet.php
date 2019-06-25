@@ -47,7 +47,7 @@ if (defined('PAYMENT_NOTIFICATION')) {
 	
 	$postdata = file_get_contents("php://input");
 
-	$MerchantID =  $processor_data['params']['merchant_id']
+	$MerchantID =  $processor_data['params']['merchant_id'];
 	$Password =   html_entity_decode($processor_data['params']['password']);
 	$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 
