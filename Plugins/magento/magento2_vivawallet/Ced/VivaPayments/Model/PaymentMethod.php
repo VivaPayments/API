@@ -122,7 +122,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
 		}
 
         
-        if ($trlang=='el-GR') {
+        if ($trlang=='el_GR') {
             $formlang = 'el-GR';
         } else {
             $formlang = 'en-US';
