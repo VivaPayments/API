@@ -157,7 +157,7 @@ class os_viva extends os_payment
 		}
 		
 		$query = $db->getQuery(true);
-		$query->insert('`#__webitmodirumdata`');
+		$query->insert('`#__vivadata`');
 		$query->columns('`ref`,`oid`,`total_cost`, `locale`, `email`, `currency`, `order_state`, `timestamp`');
 		$query->values('"'.$OrderCode.'","'.$oid.'","'.round($data['total'],2).'","'.$locale.'","'.$customer_mail.'","'.$currency_symbol.'","I",now()');
 		$db->setQuery($query);
