@@ -18,6 +18,22 @@ class os_viva extends os_payment
         );
 
         parent::__construct($params, $config);
+		
+		$db = JFactory::getDBO();
+		$db->setQuery("CREATE TABLE IF NOT EXISTS `#__vivadata` (
+		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		  `ref` varchar(150) NULL,
+		  `oid` varchar(150) NULL,
+		  `total_cost` varchar(50) NULL,
+		  `locale` varchar(50) NULL,
+		  `email` varchar(255) NULL,
+		  `currency` char(3) NULL,
+		  `order_state` char(1) NULL,
+		  `timestamp` datetime default null,
+		  `txid` varchar(255) NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+		$db->query();
 
 	}
 	/**
@@ -139,6 +155,13 @@ class os_viva extends os_payment
 		else{
 			throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
 		}
+		
+		$query = $db->getQuery(true);
+		$query->insert('`#__webitmodirumdata`');
+		$query->columns('`ref`,`oid`,`total_cost`, `locale`, `email`, `currency`, `order_state`, `timestamp`');
+		$query->values('"'.$OrderCode.'","'.$oid.'","'.round($data['total'],2).'","'.$locale.'","'.$customer_mail.'","'.$currency_symbol.'","I",now()');
+		$db->setQuery($query);
+		$db->execute();
 
 		$this->url = 'https://www.vivapayments.com/web/newtransaction.aspx?Ref='.$OrderCode;
 		$this->setData('Ref', $OrderCode);
@@ -160,13 +183,13 @@ class os_viva extends os_payment
 		$params = new JRegistry;
 		$params->loadString($param_query[0]->params);
 		
-		isset($_GET['s']) ? $oid = addslashes($_GET['s']) : $oid = '';
+		isset($_GET['s']) ? $ordercode = addslashes($_GET['s']) : $ordercode = '';
 		isset($_GET['t']) ? $txid = addslashes($_GET['t']) : $txid = '';
 
 		$MerchantID =  trim($params->get('viva_mid'));
 		$Password 	=  trim($params->get('viva_pass'));
 		
-		if (isset($oid) && $oid!=''){
+		if (isset($ordercode) && $ordercode!=''){
 		
 		$postargs = 'https://www.vivapayments.com/api/transactions/';
 		$postargs .= $txid;
@@ -221,9 +244,12 @@ class os_viva extends os_payment
 		}	
 		
 		
+			$db->setQuery("SELECT * FROM #__vivadata WHERE ref='".$ordercode."';");
+			$check_query = $db->loadObjectList();
+			$id = $check_query[0]->oid;
+			
 			$row = JTable::getInstance('Eshop', 'Order');
 			$siteUrl = JUri::root();
-			$id = $oid;
 			$amount = $OrderAmount;
 			$trstatus = 'ok';
 			
@@ -232,13 +258,15 @@ class os_viva extends os_payment
 			$row->load($id);
 			if ($row->order_status_id == EshopHelper::getConfigValue('complete_status_id'))
 				$trstatus = 'fail';
-			if ($currency->format($row->total, $row->currency_code, $row->currency_exchanged_value, false, '.', ',') > $amount)
-				$trstatus = 'fail';
 			if($OrderStatus!='A' && $OrderStatus!='F')
 				$trstatus = 'fail';
 				
 					
 			if($trstatus=='ok'){
+			$query = "UPDATE #__vivadata SET order_state = 'P', txid = '".$txid."' WHERE ref='".$ordercode."';";
+			$db->setQuery($query);
+			$db->query();
+			
 			$row->transaction_id = $txid;
 			$row->order_status_id = EshopHelper::getConfigValue('complete_status_id');
 			$row->store();
