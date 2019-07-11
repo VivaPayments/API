@@ -204,7 +204,7 @@ class vivawallet {
    global $HTTP_POST_VARS, $HTTP_GET_VARS;
    
 	if(!isset($_GET['act']) || $_GET['act']==''){
-	$actionurl = (MODULE_PAYMENT_VIVAWALLET_MODE == 'True') ? 'http://demo.vivapayments.com/web/newtransaction.aspx?Ref='.$_POST['OrderCode'] : 'https://www.vivapayments.com/web/newtransaction.aspx?Ref='.$_POST['OrderCode'];
+	$actionurl = (MODULE_PAYMENT_VIVAWALLET_MODE == 'True') ? 'https://demo.vivapayments.com/web/newtransaction.aspx?Ref='.$_POST['OrderCode'] : 'https://www.vivapayments.com/web/newtransaction.aspx?Ref='.$_POST['OrderCode'];
 	header("Location: $actionurl");
     exit();
 	} else {
@@ -247,7 +247,7 @@ class vivawallet {
 		$Password =  html_entity_decode(MODULE_PAYMENT_VIVAWALLET_PASSWORD);
 		
 		if(MODULE_PAYMENT_VIVAWALLET_MODE=='True'){
-		$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+		$curl_adr 	= 'https://demo.vivapayments.com/api/messages/config/token/';
 		} else {
 		$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 		}
