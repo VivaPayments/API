@@ -158,7 +158,8 @@ function gateway_vivawallet($separator, $sessionid)
 	$poststring['PaymentTimeOut'] = '300';
 
 	if(get_option('vivawallet_mode')=='Test'){
-	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	$curl = curl_init("https://demo.vivapayments.com/api/orders");
+	curl_setopt($curl, CURLOPT_PORT, 443);
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
@@ -214,7 +215,7 @@ function gateway_vivawallet($separator, $sessionid)
 		}
 	
 	if(get_option('vivawallet_mode')=='Test'){
-	$vivawallet_url = "http://demo.vivapayments.com/web/newtransaction.aspx";
+	$vivawallet_url = "https://demo.vivapayments.com/web/newtransaction.aspx";
 	} else {
 	$vivawallet_url = "https://www.vivapayments.com/web/newtransaction.aspx";
 	}
@@ -295,7 +296,7 @@ $postdata = file_get_contents("php://input");
 			$Password =  html_entity_decode(get_option('vivawallet_merchantpass'));
 			
 			if(get_option('vivawallet_mode')=='Test'){
-			$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+			$curl_adr 	= 'https://demo.vivapayments.com/api/messages/config/token/';
 			} else {
 			$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 			}
