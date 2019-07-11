@@ -137,7 +137,8 @@ class vivawallet {
 	$poststring['PaymentTimeOut'] = MODULE_PAYMENT_VIVAWALLET_TIMEOUT;
 
 	if(MODULE_PAYMENT_VIVAWALLET_MODE=='True'){
-	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	$curl = curl_init("https://demo.vivapayments.com/api/orders");
+	curl_setopt($curl, CURLOPT_PORT, 443);	
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
