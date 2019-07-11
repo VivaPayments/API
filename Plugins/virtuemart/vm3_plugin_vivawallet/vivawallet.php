@@ -199,7 +199,8 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		$postargs = 'Amount='.urlencode($vivawallet_amount).'&RequestLang='.urlencode($vivawallet_lang).'&Email='.urlencode($order['details']['BT']->email).'&MaxInstallments='.urlencode($Installments).'&MerchantTrns='.urlencode($order['details']['BT']->order_number).'&SourceCode='.urlencode($this->_currentMethod->vivawallet_source).'&CurrencyCode='.urlencode($currency_symbol).'&PaymentTimeOut=300';
 	
 		if($this->_currentMethod->vivawallet_production=='1'){
-		$curl = curl_init("http://demo.vivapayments.com/api/orders");
+		$curl = curl_init("https://demo.vivapayments.com/api/orders");
+		curl_setopt($curl, CURLOPT_PORT, 443);
 		} else {
 		$curl = curl_init("https://www.vivapayments.com/api/orders");
 		curl_setopt($curl, CURLOPT_PORT, 443);
@@ -271,7 +272,7 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		'Ref' => $OrderCode);
 
 		if($this->_currentMethod->vivawallet_production=='1'){
-		$url = "http://demo.vivapayments.com/web/newtransaction.aspx";
+		$url = "https://demo.vivapayments.com/web/newtransaction.aspx";
 		} else {
 		$url = "https://www.vivapayments.com/web/newtransaction.aspx";
 		}
@@ -521,7 +522,7 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		$Password 	=  html_entity_decode($method->vivawallet_merchant_pass);
 		
 		if($method->vivawallet_production=='1'){
-		$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+		$curl_adr 	= 'https://demo.vivapayments.com/api/messages/config/token/';
 		} else {
 		$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 		}
