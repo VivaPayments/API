@@ -198,8 +198,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		$order = new WC_Order( $order_id );
 		
 		if ($this->vivawallet_testmode == 'yes') {
-			$action_adr = "http://demo.vivapayments.com/web/newtransaction.aspx";
-			$curl_adr   = "http://demo.vivapayments.com/api/orders";
+			$action_adr = "https://demo.vivapayments.com/web/newtransaction.aspx";
+			$curl_adr   = "https://demo.vivapayments.com/api/orders";
 		} else {
 			$action_adr = "https://www.vivapayments.com/web/newtransaction.aspx";
 			$curl_adr	= "https://www.vivapayments.com/api/orders";
@@ -515,8 +515,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$Password =   html_entity_decode($this->vivawallet_merchantpass);
 			
 			if ($this->vivawallet_testmode == 'yes') {
-			$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
-			$posturl = 'http://demo.vivapayments.com/api/messages/config/token/';
+			$curl_adr 	= 'https://demo.vivapayments.com/api/messages/config/token/';
+			$posturl = 'https://demo.vivapayments.com/api/messages/config/token/';
 			} else {
 			$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 			$posturl = 'https://www.vivapayments.com/api/messages/config/token/';
