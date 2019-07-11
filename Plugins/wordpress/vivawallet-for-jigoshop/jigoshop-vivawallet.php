@@ -245,7 +245,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		$order = new jigoshop_order($order_id);
 		
 		if ($this->testmode == 'yes') {
-			$action_adr = "http://demo.vivapayments.com/web/newtransaction.aspx";
+			$action_adr = "https://demo.vivapayments.com/web/newtransaction.aspx";
 		} else {
 			$action_adr = "https://www.vivapayments.com/web/newtransaction.aspx";
 		}
@@ -299,7 +299,8 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 	$poststring['PaymentTimeOut'] = '300';
 
 	if ($this->testmode == 'yes') {
-	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	$curl = curl_init("https://demo.vivapayments.com/api/orders");
+	curl_setopt($curl, CURLOPT_PORT, 443);
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
@@ -444,7 +445,11 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			$MerchantID =  $this->vivawallet_merchantid;
 			$Password =   html_entity_decode($this->vivawallet_merchantpass);
 			
-			$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+			if ($this->testmode == 'yes') {
+			$action_adr = "https://demo.vivapayments.com/api/messages/config/token/";
+			} else {
+				$action_adr = "https://www.vivapayments.com/api/messages/config/token/";
+			}
 		
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_PORT, 443);
