@@ -20,7 +20,7 @@
           $this->form_action_url = 'https://www.vivapayments.com/web/newtransaction.aspx" method="get';
           break;
         case 'Testing':
-          $this->form_action_url = 'http://demo.vivapayments.com/web/newtransaction.aspx" method="get';
+          $this->form_action_url = 'https://demo.vivapayments.com/web/newtransaction.aspx" method="get';
           break;
       }
 
@@ -130,7 +130,8 @@
 	$poststring['PaymentTimeOut'] = '300';
 
 	if(MODULE_PAYMENT_VIVAWALLET_MODE=='Testing'){
-	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	$curl = curl_init("https://demo.vivapayments.com/api/orders");
+	curl_setopt($curl, CURLOPT_PORT, 443);
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
@@ -272,7 +273,7 @@
 		$Password =  html_entity_decode(MODULE_PAYMENT_VIVAWALLET_MERCHANTPASS);
 		
 		if(MODULE_PAYMENT_VIVAWALLET_MODE=='Testing'){
-		$curl_adr 	= 'http://demo.vivapayments.com/api/messages/config/token/';
+		$curl_adr 	= 'https://demo.vivapayments.com/api/messages/config/token/';
 		} else {
 		$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 		}
