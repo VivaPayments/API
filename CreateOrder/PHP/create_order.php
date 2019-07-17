@@ -11,7 +11,7 @@ $APIKey = 'xxxxxxxxxxxxx';
 //Set the Payment Amount
 $Amount = 100;	// Amount in cents
 
-//Set some optional parameters (Full list available here: https://github.com/VivaPayments/API/wiki/Optional-Parameters)
+//Set some optional parameters (Full list available here: https://developer.vivawallet.com/api-reference-guide/payment-api-details/#OP)
 $AllowRecurring = 'true'; // This flag will prompt the customer to accept recurring payments in tbe future.
 $RequestLang = 'en-US'; //This will display the payment page in English (default language is Greek)
 $Source = 'Default'; // This will assign the transaction to the Source with Code = "Default". If left empty, the default source will be used.
@@ -56,7 +56,7 @@ if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
 	$orderId = $resultObj->OrderCode;
 	echo 'Your Order Code is: <b>'. $orderId.'</b>';
 	echo '<br/><br/>';
-	echo 'To simulate a successfull payment, use the credit card 4111 1111 1111 1111, with a valid expiration date and 111 as CVV2.';
+	echo 'To simulate a successful payment, use the credit card 4111 1111 1111 1111, with a valid expiration date and 111 as CVV2.';
 	echo '</br/><a href="http://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
 }
 	
