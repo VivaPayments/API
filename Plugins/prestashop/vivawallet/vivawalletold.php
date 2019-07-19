@@ -21,7 +21,7 @@ class vivawallet extends PaymentModule
 		//hookDisplayPaymentEU - added compatible
 		$this->is_eu_compatible = 1;
 
-		$config = Configuration::getMultiple(array('VIVAWALLET_MERCHANTID','VIVAWALLET_MERCHANTPASS','VIVAWALLET_SOURCE','VIVAWALLET_INSTAL','VIVAWALLET_CURRENCIES'));	
+		$config = Configuration::getMultiple(array('VIVAWALLET_MERCHANTID','VIVAWALLET_MERCHANTPASS','VIVAWALLET_SOURCE','VIVAWALLET_INSTAL','VIVAWALLET_URL','VIVAWALLET_CURRENCIES'));	
 		
 		
 		
@@ -32,7 +32,9 @@ class vivawallet extends PaymentModule
 		if (isset($config['VIVAWALLET_SOURCE']))
 			$this->Source = $config['VIVAWALLET_SOURCE'];	
 		if (isset($config['VIVAWALLET_INSTAL']))
-			$this->wb_instal = $config['VIVAWALLET_INSTAL'];		
+			$this->wb_instal = $config['VIVAWALLET_INSTAL'];
+		if (isset($config['VIVAWALLET_URL']))
+			$this->wb_url = $config['VIVAWALLET_URL'];			
 		if (isset($config['VIVAWALLET_CURRENCIES']))
 			$this->currencies = $config['VIVAWALLET_CURRENCIES'];	
 		
@@ -88,6 +90,7 @@ class vivawallet extends PaymentModule
 		if (!Configuration::deleteByName('VIVAWALLET_MERCHANTID')
 			OR !Configuration::deleteByName('VIVAWALLET_MERCHANTPASS')
 			OR !Configuration::deleteByName('VIVAWALLET_INSTAL')
+			OR !Configuration::deleteByName('VIVAWALLET_URL')
 		    OR !Configuration::deleteByName('VIVAWALLET_SOURCE')
 			OR !Configuration::deleteByName('VIVAWALLET_CURRENCIES')
 			OR !parent::uninstall())
@@ -104,7 +107,9 @@ class vivawallet extends PaymentModule
 		{
 			
 			if ($wb_instal = Tools::getValue('vivawallet_wb_instal'))
-				Configuration::updateValue('VIVAWALLET_INSTAL', $wb_instal);	
+				Configuration::updateValue('VIVAWALLET_INSTAL', $wb_instal);
+			if ($wb_url = Tools::getValue('vivawallet_wb_url'))
+				Configuration::updateValue('VIVAWALLET_URL', $wb_url);		
 			if ($MerchantId = Tools::getValue('vivawallet_MerchantId'))
 				Configuration::updateValue('VIVAWALLET_MERCHANTID', $MerchantId);
 			if ($MerchantPass = Tools::getValue('vivawallet_MerchantPass'))
@@ -215,6 +220,7 @@ class vivawallet extends PaymentModule
 	
 	$MerchantID =  Configuration::get('VIVAWALLET_MERCHANTID');
 	$Password =   html_entity_decode(Configuration::get('VIVAWALLET_MERCHANTPASS'));
+	$BaseUrl =  trim(Configuration::get('VIVAWALLET_URL'));
 	
 	$poststring['Amount'] = $wb_total_cents;
 	$poststring['RequestLang'] = $languagecode;
@@ -232,7 +238,7 @@ class vivawallet extends PaymentModule
 	$poststring['PaymentTimeOut'] = '300';	
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	
-	$curl = curl_init("https://www.vivapayments.com/api/orders");
+	$curl = curl_init($BaseUrl."/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300&DisableIVR=true';
@@ -292,7 +298,7 @@ class vivawallet extends PaymentModule
 	$tmquery = "insert into vivawallet_data (secure_key, OrderCode, ErrorCode, ErrorText, Timestamp, ref, total_cost, currency, order_state) values ('".$seckey."','".$OrderCode."','".$ErrorCode."','".$ErrorText."',now(),'".$cart->id."','".$wb_total_cents."','".$dest_currency['iso_code']."','I')";
 	Db::getInstance()->execute($tmquery); //tommodps15
 	
-	$this->VivawalletUrl = 'https://www.vivapayments.com/web/newtransaction.aspx';
+	$this->VivawalletUrl = $BaseUrl.'/web/newtransaction.aspx';
 
 		$wbsubmitbutton = '';
 		$selectdisable = '';
@@ -465,6 +471,7 @@ class vivawallet extends PaymentModule
 	
 	$MerchantID =  Configuration::get('VIVAWALLET_MERCHANTID');
 	$Password =   Configuration::get('VIVAWALLET_MERCHANTPASS');
+	$BaseUrl =   trim(Configuration::get('VIVAWALLET_URL'));
 	
 	$poststring['Amount'] = $wb_total_cents;
 	$poststring['RequestLang'] = $languagecode;
@@ -491,7 +498,7 @@ class vivawallet extends PaymentModule
 	$poststring['PaymentTimeOut'] = '300';	
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 	
-	$curl = curl_init("https://www.vivapayments.com/api/orders");
+	$curl = curl_init($BaseUrl."/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300&DisableIVR=true';
@@ -551,7 +558,7 @@ class vivawallet extends PaymentModule
 	$tmquery = "insert into vivawallet_data (secure_key, OrderCode, ErrorCode, ErrorText, Timestamp, ref, total_cost, currency, order_state) values ('".$seckey."','".$OrderCode."','".$ErrorCode."','".$ErrorText."',now(),'".$cart->id."','".$wb_total_cents."','".$dest_currency['iso_code']."','I')";
 	Db::getInstance()->execute($tmquery); //tommodps15
 	
-	$this->VivawalletUrl = 'https://www.vivapayments.com/web/newtransaction.aspx';
+	$this->VivawalletUrl = $BaseUrl.'/web/newtransaction.aspx';
 
 		$wbsubmitbutton = '';
 		$selectdisable = '';
@@ -661,6 +668,7 @@ class vivawallet extends PaymentModule
 			Configuration::updateValue('VIVAWALLET_MERCHANTID', trim($_POST['vivawallet_MerchantId']));
 			Configuration::updateValue('VIVAWALLET_MERCHANTPASS', trim($_POST['vivawallet_MerchantPass']));
 			Configuration::updateValue('VIVAWALLET_INSTAL', trim($_POST['vivawallet_wb_instal']));
+			Configuration::updateValue('VIVAWALLET_URL', trim($_POST['vivawallet_wb_url']));
 			Configuration::updateValue('VIVAWALLET_SOURCE', trim($_POST['vivawallet_Source']));
 		}
 		elseif (isset($_POST['currenciesSubmit']))
@@ -700,6 +708,10 @@ class vivawallet extends PaymentModule
 		$modvivawalletDesc		= $this->l('Please specify the gateway settings');	
 		$modInstalLabel			= $this->l('Instalment logic');
 		$modInstalDescription	= $this->l('Instalment logic example: 300:3,600:6 -> Order total 300 euro: allow 3 instalments, order total 600: allow 3 and 6 instalments.');
+		
+		$modUrlLabel			= $this->l('Base URL');
+		$modUrlDescription	= $this->l('Use https://www.vivapayments.com for live and https://demo.vivapayments.com for demo environment.');
+		
 		$modMerchantId		= $this->l('MerchantId');
 		$modMerchantPass		= $this->l('API Key');
 		$modSource			= $this->l('Source Code');
@@ -732,7 +744,21 @@ class vivawallet extends PaymentModule
 	$this->_html .= '<input type="text" name="vivawallet_wb_instal" value="'.Tools::getValue('vivawallet_wb_instal', Configuration::get('VIVAWALLET_INSTAL')).'" />';
 											
 	$this->_html .= "<br /><br /></td>
-					</tr>";					
+					</tr>";		
+					
+	$this->_html .="<tr>
+						<td colspan='2'>
+							{$modUrlDescription}
+							<br />
+							<br />
+						</td>
+					</tr><tr>
+						<td width='130'>{$modUrlLabel}<br /><br /></td>
+						<td>";
+	$this->_html .= '<input type="text" name="vivawallet_wb_url" value="'.Tools::getValue('vivawallet_wb_url', Configuration::get('VIVAWALLET_URL')).'" />';
+											
+	$this->_html .= "<br /><br /></td>
+					</tr>";							
 					
 	$this->_html .="<tr>
 						<td width='130'>{$modMerchantId}<br /><br /></td>
