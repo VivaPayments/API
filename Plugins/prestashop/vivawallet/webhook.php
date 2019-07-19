@@ -12,7 +12,8 @@ $errors = '';
 
 	$MerchantID =  Configuration::get('VIVAWALLET_MERCHANTID');
 	$Password =   html_entity_decode(Configuration::get('VIVAWALLET_MERCHANTPASS'));
-	$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
+	$BaseUrl =  trim(Configuration::get('VIVAWALLET_URL'));
+	$curl_adr 	= $BaseUrl.'/api/messages/config/token/';
 
 	$curl = curl_init();
 	if (preg_match("/https/i", $curl_adr)) {
