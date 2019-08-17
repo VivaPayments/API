@@ -257,7 +257,7 @@ class vivawallet extends PaymentModule
 	$languagecode ='en-US';
 	}
 	
-	$MerchantID =  Configuration::get('VIVAWALLET_MERCHANTID');
+	$MerchantID =  trim(Configuration::get('VIVAWALLET_MERCHANTID'));
 	$Password =   html_entity_decode(Configuration::get('VIVAWALLET_MERCHANTPASS'));
 	$BaseUrl =  trim(Configuration::get('VIVAWALLET_URL'));
 	
