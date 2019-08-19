@@ -19,9 +19,10 @@ class vivawallet extends PaymentModule
 		$this->displayName = 'Vivawallet';		
 		$this->tab = 'payments_gateways';
 		$this->author = 'Viva Wallet';
-		$this->version = 1.7;
-        $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
-        $this->is_eu_compatible = 1;
+		$this->version = '1.7.6';
+		$this->controllers = array('pay', 'fail', 'success', 'webhook');
+        	$this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
+        	$this->is_eu_compatible = 1;
 
 		$config = Configuration::getMultiple(array('VIVAWALLET_MERCHANTID','VIVAWALLET_MERCHANTPASS','VIVAWALLET_SOURCE','VIVAWALLET_INSTAL','VIVAWALLET_URL','VIVAWALLET_CURRENCIES'));	
 		
