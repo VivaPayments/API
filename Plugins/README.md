@@ -1,4 +1,4 @@
-![Viva Wallet logo](https://img.photobucket.com/albums/v46/matt_gourd/VivaWallet.png)
+![Viva Wallet logo](https://user-images.githubusercontent.com/44943019/64185447-0f95b900-ce65-11e9-94ef-4e70bdf1a72e.png)
 
 If you're using one of the popular e-commerce platforms, we've developed numerous plugins to enable easy integration of Viva Wallet as checkout method. These plugins cover the following products/versions:
 
