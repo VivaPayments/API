@@ -145,11 +145,11 @@ global $language, $user;
 	$curl = curl_init("https://demo.vivapayments.com/api/orders");
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
-	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
 	
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
 	
+	curl_setopt($curl, CURLOPT_PORT, 443);
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
 	curl_setopt($curl, CURLOPT_HEADER, false);
