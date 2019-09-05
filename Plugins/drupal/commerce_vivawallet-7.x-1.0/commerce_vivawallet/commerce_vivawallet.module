@@ -142,7 +142,7 @@ global $language, $user;
 	$poststring['PaymentTimeOut'] = '300';
 	
 	if(commerce_vivawallet_get_settings('vivawallet_mode')=='Test'){
-	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	$curl = curl_init("https://demo.vivapayments.com/api/orders");
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
