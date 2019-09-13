@@ -326,14 +326,14 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		
 			$html = '<table>' . "\n";
 			$html .= '<thead><tr><td colspan="2" style="text-align: center;">' . vmText::_($msg) . '</td></tr></thead>';
-			$html .= $this->getHtmlRow('VIVAWALLET_ORDER_NUMBER', $order_id .'/'.$order_nr, 'style="width: 90px;" class="key"');
-			$html .= $this->getHtmlRow('VIVAWALLET_AMOUNT', $amount . ' ' . $currency_code_3, 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_ORDER_NUMBER', $order_id .'/'.$order_nr, 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_AMOUNT', $amount . ' ' . $currency_code_3, 'style="width: 90px;" class="key"');
 			//VM3 added
-            $html .= $this->getHtmlRow('VIVAWALLET_TXID', $txid, 'style="width: 90px;" class="key"');
+            $html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_TXID', $txid, 'style="width: 90px;" class="key"');
 			if(isset($period) && $period > 1){
-			$html .= $this->getHtmlRow('VIVAWALLET_PERIOD', $period, 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_PERIOD', $period, 'style="width: 90px;" class="key"');
 			}
-			$html .= $this->getHtmlRow('VIVAWALLET_DATE', $datenew[0], 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_DATE', $datenew[0], 'style="width: 90px;" class="key"');
 			
 			$html .= '</table>' . "\n";
 			$html .= '<p align="center"><a href="' . JURI::base(true) . '" title="' . vmText::_('VMPAYMENT_VIVAWALLET_HOME') . '">' . vmText::_('VMPAYMENT_VIVAWALLET_HOME') . '&raquo;</a></p>';
