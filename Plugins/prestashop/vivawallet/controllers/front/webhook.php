@@ -76,7 +76,8 @@ class VivawalletWebhookModuleFrontController extends ModuleFrontController
 						'transaction_id' => $TransactionId
 					);
 		
-		   $this->module->validateOrder($cart->id, _PS_OS_PAYMENT_, $total, $this->module->displayName, 'OrderCode: '.$OrderCode, $details,(int)$currency->id,false,$customer->secure_key);
+		   $this->context->shop = new Shop((int) $this->context->cart->id_shop); 
+		   $this->module->validateOrder($cart->id, _PS_OS_PAYMENT_, $total, $this->module->displayName, 'OrderCode: '.$OrderCode, $details,(int)$currency->id,false,$customer->secure_key, $this->context->shop);
 		
 		} 
 		}
