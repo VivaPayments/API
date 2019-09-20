@@ -1,8 +1,13 @@
 <?php
-ini_set('display_errors', '0');
 
 class VivawalletWebhookModuleFrontController extends ModuleFrontController
 {
+	 
+	public function display($template = null, $cache_id = null, $compile_id = null, $parent = null)
+    {
+	 return false;
+	}
+	 
 	/**
 	 * @see FrontController::postProcess()
 	 */
@@ -53,7 +58,7 @@ class VivawalletWebhookModuleFrontController extends ModuleFrontController
 		}
 	
 	
-		if(sizeof($resultObj->EventData) > 0) {
+		if(isset($resultObj->EventData->StatusId) && $resultObj->EventData->StatusId=='F') {
 		$StatusId = $resultObj->EventData->StatusId;
 		$OrderCode = $resultObj->EventData->OrderCode;
 		$TransactionId = $resultObj->EventData->TransactionId;
@@ -76,8 +81,7 @@ class VivawalletWebhookModuleFrontController extends ModuleFrontController
 						'transaction_id' => $TransactionId
 					);
 		
-		   $this->context->shop = new Shop((int) $this->context->cart->id_shop); 
-		   $this->module->validateOrder($cart->id, _PS_OS_PAYMENT_, $total, $this->module->displayName, 'OrderCode: '.$OrderCode, $details,(int)$currency->id,false,$customer->secure_key, $this->context->shop);
+		   $this->module->validateOrder($cart->id, _PS_OS_PAYMENT_, $total, $this->module->displayName, 'OrderCode: '.$OrderCode, $details,(int)$currency->id,false,$customer->secure_key);
 		
 		} 
 		}
