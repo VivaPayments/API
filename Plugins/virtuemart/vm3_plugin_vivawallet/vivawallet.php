@@ -326,14 +326,14 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		
 			$html = '<table>' . "\n";
 			$html .= '<thead><tr><td colspan="2" style="text-align: center;">' . vmText::_($msg) . '</td></tr></thead>';
-			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_ORDER_NUMBER', $order_id .'/'.$order_nr, 'style="width: 90px;" class="key"');
-			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_AMOUNT', $amount . ' ' . $currency_code_3, 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VIVAWALLET_ORDER_NUMBER', $order_id .'/'.$order_nr, 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VIVAWALLET_AMOUNT', $amount . ' ' . $currency_code_3, 'style="width: 90px;" class="key"');
 			//VM3 added
-            $html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_TXID', $txid, 'style="width: 90px;" class="key"');
+            $html .= $this->getHtmlRow('VIVAWALLET_TXID', $txid, 'style="width: 90px;" class="key"');
 			if(isset($period) && $period > 1){
-			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_PERIOD', $period, 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VIVAWALLET_PERIOD', $period, 'style="width: 90px;" class="key"');
 			}
-			$html .= $this->getHtmlRow('VMPAYMENT_VIVAWALLET_DATE', $datenew[0], 'style="width: 90px;" class="key"');
+			$html .= $this->getHtmlRow('VIVAWALLET_DATE', $datenew[0], 'style="width: 90px;" class="key"');
 			
 			$html .= '</table>' . "\n";
 			$html .= '<p align="center"><a href="' . JURI::base(true) . '" title="' . vmText::_('VMPAYMENT_VIVAWALLET_HOME') . '">' . vmText::_('VMPAYMENT_VIVAWALLET_HOME') . '&raquo;</a></p>';
@@ -345,11 +345,9 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 //EB DATA RESPONSE FAIL-SUCCESS
 	function plgVmOnPaymentResponseReceived(&$html) {
 	
+		
 		$tm_ref = vRequest::getString ('s', 0);
-		if (!isset($tm_ref)) {
-			return NULL;
-		}
-				
+		if (isset($tm_ref) && $tm_ref!='') {
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `#__virtuemart_payment_plg_vivawallet` WHERE `vivawallet_OrderCode`="' . $tm_ref . '" ';
 		$db->setQuery($q);
@@ -362,6 +360,17 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		$virtuemart_order_id = $paymentTable->virtuemart_order_id;
 		$order_number = $paymentTable->order_number;
 		$vendorId = 0;
+		}
+		
+		if(preg_match("/bnkact=webhook/i", $_SERVER['REQUEST_URI'])) { 
+		$db = JFactory::getDBO();
+		$q = 'SELECT * FROM `#__virtuemart_paymentmethods` WHERE `payment_element`="vivawallet" ';
+		$db->setQuery($q);
+		if (!($paymentTable = $db->loadObject())) {
+	    	return NULL;
+		}
+		$virtuemart_paymentmethod_id = $paymentTable->virtuemart_paymentmethod_id;
+		}
 		
 		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -369,6 +378,7 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		if (!$this->selectedThisElement($method->payment_element)) {
 			return NULL;
 		}		
+
 
 		if(preg_match("/bnkact=fail/i", $_SERVER['REQUEST_URI'])) { //fail routine
 	    
@@ -528,11 +538,9 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		}
 		
 		$curl = curl_init();
-		if (preg_match("/https/i", $curl_adr)) {
 		curl_setopt($curl, CURLOPT_PORT, 443);
-		}
 		curl_setopt($curl, CURLOPT_POST, false);
-		curl_setopt($curl, CURLOPT_URL, $posturl);
+		curl_setopt($curl, CURLOPT_URL, $curl_adr);
 		curl_setopt($curl, CURLOPT_HEADER, false);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
@@ -540,12 +548,10 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
 		curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
 		}
-		$response = curl_exec($curl);
+		$response = curl_exec($curl) or die(curl_error($curl));
 		
 		if(curl_error($curl)){
-		if (preg_match("/https/i", $curl_adr)) {
 		curl_setopt($curl, CURLOPT_PORT, 443);
-		}
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -556,7 +562,7 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		}
 		
 		curl_close($curl);
-		echo $response;
+		
 		
 		try {
 			
@@ -628,6 +634,7 @@ class plgVmPaymentVivawallet extends vmPSPlugin {
 		 $this->_clearVivapaySession();
 		} //end webhook routine
 		}
+		die($response);
 		}//end not processed webhook routine
 				
 		return null;
