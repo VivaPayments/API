@@ -31,7 +31,7 @@
             if ($('#paymentform').length)
                 VivaPayments.cards.setup({
                     publicKey: 'u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=',
-                    baseURL: 'http://demo.vivapayments.com/',
+                    baseURL: 'https://demo.vivapayments.com/',
                     cardTokenHandler: function (response) {
                         if (!response.Error) {
                             $('#hidToken').val(response.Token);
