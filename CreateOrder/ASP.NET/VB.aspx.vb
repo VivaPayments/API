@@ -14,11 +14,11 @@ Imports RestSharp
 Partial Public Class VB
     Inherits System.Web.UI.Page
     ' Redirect URL
-    Private vivaPaymentFormURL As String = "http://demo.vivapayments.com/web/newtransaction.aspx?ref="
+    Private vivaPaymentFormURL As String = "https://demo.vivapayments.com/web/newtransaction.aspx?ref="
     'Private vivaPaymentFormURL As String = "https://www.vivapayments.com/web/newtransaction.aspx?ref=" ' Production environment
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Dim cl = New RestClient("http://demo.vivapayments.com/")
+        Dim cl = New RestClient("https://demo.vivapayments.com/")
         'Dim cl = New RestClient("https://www.vivapayments.com/")   ' Production URL
 
         Dim req = New RestRequest("api/orders", Method.POST)
