@@ -1,7 +1,7 @@
 <?php 
 
 // The POST URL and parameters
-$request =  'http://demo.vivapayments.com/api/transactions/';	// demo environment URL
+$request =  'https://demo.vivapayments.com/api/transactions/';	// demo environment URL
 //$request =  'https://www.vivapayments.com/api/transactions';	// production environment URL
 
 // Your merchant ID and API Key can be found in the 'Security' settings on your profile.
