@@ -16,7 +16,7 @@ using RestSharp;
 public partial class _CSharp : System.Web.UI.Page
 {
     // Redirect URL
-    string vivaPaymentFormURL = "http://demo.vivapayments.com/web/newtransaction.aspx?ref=";
+    string vivaPaymentFormURL = "https://demo.vivapayments.com/web/newtransaction.aspx?ref=";
     //string vivaPaymentFormURL = "https://www.vivapayments.com/web/newtransaction.aspx?ref="; // production URL
     
     // class that contains the order options that will be sent
@@ -37,7 +37,7 @@ public partial class _CSharp : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        var cl = new RestClient("http://demo.vivapayments.com/");
+        var cl = new RestClient("https://demo.vivapayments.com/");
         //var cl = new RestClient("https://www.vivapayments.com/"); // production URL
 
         var req = new RestRequest("api/orders", Method.POST);
