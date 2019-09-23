@@ -7,12 +7,12 @@ class NativeCheckout {
 
 	private $merchantId = 'your_merchant_id';
 	private $apiKey = 'your_api_key'; 
-	private $baseApiUrl = "http://demo.vivapayments.com";
+	private $baseApiUrl = "https://demo.vivapayments.com";
     private $paymentsUrl = "/api/transactions";
     private $paymentsCreateOrderUrl = "/api/orders";
     // A Source for which its Integration method is 
     // set to "Native/Pay with Viva Wallet" option.
-    // See http://demo.vivapayments.com/selfcare/en-US/sources/paymentsources
+    // See https://demo.vivapayments.com/selfcare/en-US/sources/paymentsources
 	private $nativeCheckoutSourceCode = "Native";
 	private $resultObj = "";
 	
