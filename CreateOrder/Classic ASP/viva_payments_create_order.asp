@@ -1,6 +1,6 @@
 <%
 ' setup the URL
-baseUrl = "http://demo.vivapayments.com/api/orders"
+baseUrl = "https://demo.vivapayments.com/api/orders"
 
 'Response.Write baseUrl
 ' setup the request and authorization
