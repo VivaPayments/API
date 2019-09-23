@@ -9,8 +9,8 @@ class VivaPayments(object):
     """VivaPayments API Wrapper"""
 
     # Demo constants
-    DEMO_URL = 'http://demo.vivapayments.com/api/'
-    DEMO_REDIRECT_URL = 'http://demo.vivapayments.com/web/newtransaction.aspx?ref='
+    DEMO_URL = 'https://demo.vivapayments.com/api/'
+    DEMO_REDIRECT_URL = 'https://demo.vivapayments.com/web/newtransaction.aspx?ref='
 
     # Production constants
     PRODUCTION_URL = 'https://www.vivapayments.com/api/'
