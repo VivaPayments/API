@@ -1,6 +1,6 @@
 <%
 dim baseUrl
-baseUrl = "http://demo.vivapayments.com/api/transactions/"
+baseUrl = "https://demo.vivapayments.com/api/transactions/"
 
 dim MerchantId
 MerchantId = "XXXXXXXXXXXXXXXXXXXXXXX"
