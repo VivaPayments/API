@@ -57,7 +57,7 @@ if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
 	echo 'Your Order Code is: <b>'. $orderId.'</b>';
 	echo '<br/><br/>';
 	echo 'To simulate a successful payment, use the credit card 4111 1111 1111 1111, with a valid expiration date and 111 as CVV2.';
-	echo '</br/><a href="http://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
+	echo '</br/><a href="https://demo.vivapayments.com/web/newtransaction.aspx?ref='.$orderId.'" >Make Payment</a>';
 }
 	
 else{
