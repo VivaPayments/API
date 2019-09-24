@@ -6,7 +6,7 @@
 <head runat="server">
     <title></title>
     <script type="text/javascript" src="Scripts/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="http://demo.vivapayments.com/web/checkout/js"></script>
+    <script type="text/javascript" src="https://demo.vivapayments.com/web/checkout/js"></script>
 </head>
 <body>
     <form id="paymentform" runat="server">
