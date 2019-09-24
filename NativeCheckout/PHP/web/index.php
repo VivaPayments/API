@@ -19,15 +19,15 @@ if (count($_POST)>0){
 <html>
 <head>
 	<title>VivaPayments Native Checkout Sample</title>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script type="text/javascript" src="http://demo.vivapayments.com/web/checkout/js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="https://demo.vivapayments.com/web/checkout/js"></script>
 	
 	<script type="text/javascript">
 
 		$(document).ready(function (){
 			   VivaPayments.cards.setup({
 					publicKey: 'your_public_key',
-					baseURL: 'http://demo.vivapayments.com',
+					baseURL: 'https://demo.vivapayments.com',
 					cardTokenHandler: function (response) {
 							if (!response.Error) {
 								$('#hidToken').val(response.Token);
