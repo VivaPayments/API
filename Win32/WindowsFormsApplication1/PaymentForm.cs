@@ -19,7 +19,7 @@ namespace Win32Payments
         private string ApiKey = "l(kjh&a";
         private string PublicKey = "ptwJwOLh397ff3NylMVxuwMYs+sIxLytRgwWbI1M1hs=";
         private string SourceCode = "9091"; //A SourceCode that is set for Native Checkout
-        private string BasePaymentsApiUrl = "http://demo.vivapayments.com";
+        private string BasePaymentsApiUrl = "https://demo.vivapayments.com";
 
         public PaymentForm()
         {
