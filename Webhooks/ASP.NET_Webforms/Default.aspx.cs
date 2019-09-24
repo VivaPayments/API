@@ -8,7 +8,7 @@ using RestSharp;
 using Newtonsoft.Json;
 
 /*
- *  This example uses RestSharp, a simple REST and HTTP API Client for .NET (http://restsharp.org/ - https://github.com/restsharp/restsharp) 
+ *  This example uses RestSharp, a simple REST and HTTP API Client for .NET (https://restsharp.org/ - https://github.com/restsharp/restsharp) 
  *  and Newtonsoft Json.NET, a Popular JSON framework for .NET (http://james.newtonking.com/json)
  */
 
@@ -16,7 +16,7 @@ public partial class _Default : System.Web.UI.Page
 {
     private Guid _MerchantId = new Guid("22C8A516-BE4A-4B21-AB5C-01F25C02557C");
     private string _ApiKey = "myapitestkey";
-    private string _BaseApiUrl = "http://demo.vivapayments.com";
+    private string _BaseApiUrl = "https://demo.vivapayments.com";
     private string _WebhooksAuthUrl = "/api/messages/config/token";
 
     protected void Page_Load(object sender, EventArgs e)
