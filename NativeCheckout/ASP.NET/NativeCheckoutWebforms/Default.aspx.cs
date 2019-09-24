@@ -5,7 +5,7 @@ public partial class _Default : System.Web.UI.Page
 {
     private Guid _MerchantId = new Guid("90DDA476-CF7C-4CFD-A9CB-23DFE11F131E");
     private string _ApiKey = "XXXXXX";
-    private string _BaseApiUrl = "http://demo.vivapayments.com";
+    private string _BaseApiUrl = "https://demo.vivapayments.com";
     private string _PaymentsUrl = "/api/transactions";
     private string _PaymentsCreateOrderUrl = "/api/orders";
 
