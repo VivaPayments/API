@@ -9,7 +9,7 @@
 #import "MobileAPI.h"
 
 static NSString *productionURL = @"https://www.vivapayments.com";
-static NSString *demoURL = @"http://demo.vivapayments.com";
+static NSString *demoURL = @"https://demo.vivapayments.com";
 
 #if !defined(__has_feature) || ! __has_feature(objc_arc)
 #error This Class requires ARC. Either turn on ARC for the project or use -fobjc-arc flag
