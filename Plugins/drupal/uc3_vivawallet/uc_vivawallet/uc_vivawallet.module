@@ -215,7 +215,7 @@ function uc_vivawallet_form($form, &$form_state, $order) {
 	$poststring['PaymentTimeOut'] = '300';
 	
 	if(variable_get('uc_vivawallet_Mode', '')=='Test'){
-	$curl = curl_init("http://demo.vivapayments.com/api/orders");
+	$curl = curl_init("https://demo.vivapayments.com/api/orders");
 	} else {
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
@@ -277,7 +277,7 @@ function uc_vivawallet_form($form, &$form_state, $order) {
   );
 
   if(variable_get('uc_vivawallet_Mode', '')=='Test'){
-	$form['#action'] = "http://demo.vivapayments.com/web/newtransaction.aspx";
+	$form['#action'] = "https://demo.vivapayments.com/web/newtransaction.aspx";
 	} else {
 	$form['#action'] = "https://www.vivapayments.com/web/newtransaction.aspx";
 	}
