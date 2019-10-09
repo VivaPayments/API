@@ -49,6 +49,7 @@ static NSString *publicKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 	
 	[mobileApi createOrderWithAmount:amountInCents.unsignedLongLongValue
 							  params:nil
+                  isRecurrentPayment:false
 						  completion:^(BOOL success, NSURLResponse *urlResponse, NSDictionary *response, NSError *error)
 	 {
 		 NSLog(@"Create order response = %@", response);
@@ -106,6 +107,7 @@ static NSString *publicKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 	[mobileApi createTransactionWithOrderCode:orderCode
 								   sourceCode:@"Default"
 								 installments:1
+                           isRecurrentPayment:false
 							  creditCardToken:cardToken
 								   completion:^(BOOL success, NSURLResponse *urlResponse, NSDictionary *response, NSError *error)
 	 {
@@ -113,12 +115,36 @@ static NSString *publicKey = @"u3a1fcKsxynRZwY8zb++1utUYr1vjdGW6okiEX0pJBc=";
 		 
 		 if (success)
 		 {
-			 NSString *transactionId = [response objectForKey:@"TransactionId"];
+			 transactionId = [response objectForKey:@"TransactionId"];
 			 NSString *StatusId = [response objectForKey:@"StatusId"];
 			 NSLog(@"Completed transaction with id %@, status %@", transactionId, StatusId);
 		 }
 	 }];
+}
 
+
+- (IBAction)createRecurringTransactionPressed:(id)sender
+{
+    if (transactionId == nil)
+        NSLog(@"First create a successfull payment with isRecurrentPayment: true");
+    
+    NSNumber *amountInCents = @100;
+    
+    [mobileApi createRecurringTransaction:amountInCents.unsignedLongLongValue
+                                   params:nil
+                             installments:1
+                            transactionID:transactionId //Use transactionId from a previously completed Order that isRecurrentPayment:true
+                               completion:^(BOOL success, NSURLResponse *urlResponse, NSDictionary *response, NSError *error)
+     {
+         NSLog(@"Create Recurring transaction reponse = %@", response);
+         
+         if (success)
+         {
+             NSString *transactionId = [response objectForKey:@"TransactionId"];
+             NSString *StatusId = [response objectForKey:@"StatusId"];
+             NSLog(@"Completed transaction with id %@, status %@", transactionId, StatusId);
+         }
+     }];
 }
 
 
