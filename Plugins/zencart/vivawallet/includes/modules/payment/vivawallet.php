@@ -361,7 +361,7 @@
 		
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Vivawallet SourceCode', 'MODULE_PAYMENT_VIVAWALLET_SOURCE', '', 'Source code as specified in Vivawallet Web-care', '6', '0', now())");
 		
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Alpha Bank Instalment Logic', 'MODULE_PAYMENT_VIVAWALLET_INSTAL', '', 'Example: 300:3,600:12<br>Explained: order total 300: allow 3 instalments, order total 600: allow 3 and 6 instalments)', '6', '0', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Instalment Logic', 'MODULE_PAYMENT_VIVAWALLET_INSTAL', '', 'Example: 300:3,600:12<br>Explained: order total 300: allow 3 instalments, order total 600: allow 3 and 6 instalments)', '6', '0', now())");
 		
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Test Mode', 'MODULE_PAYMENT_VIVAWALLET_MODE', 'False', 'Enable the testing mode?', '6', '0', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
 		
