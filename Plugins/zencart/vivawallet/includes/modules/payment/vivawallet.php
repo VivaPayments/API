@@ -369,7 +369,7 @@
 
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('Sort order of display.', 'MODULE_PAYMENT_VIVAWALLET_SORT_ORDER', '0', 'Sort order of display. Lowest is displayed first.', '6', '0', now())");
 		
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Transaction Currency', 'MODULE_PAYMENT_VIVAWALLET_CURRENCY', 'Selected Currency', 'Which currency should the order be sent to Viva?', '6', '3', 'zen_cfg_select_option(array(\'Selected Currency\', \'EUR\', \'GBP\', \'BGN\', \'RON\', ', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('Transaction Currency', 'MODULE_PAYMENT_VIVAWALLET_CURRENCY', 'Selected Currency', 'Which currency should the order be sent to Viva?', '6', '3', 'zen_cfg_select_option(array(\'Selected Currency\', \'EUR\', \'GBP\', \'BGN\', \'RON\'), ', now())");
 		
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('Payment Zone', 'MODULE_PAYMENT_VIVAWALLET_ZONE', '0', 'If a zone is selected, only enable this payment method for that zone.', '6', '2', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes(', now())");
 		
