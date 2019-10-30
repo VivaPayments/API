@@ -1,14 +1,14 @@
 <?php
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_TITLE', 'Viva Payments - πιστωτική κάρτα');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_DESCRIPTION', 'Με πιστωτική κάρτα Viva Payments');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_CREDIT_CARD_OWNER', 'Όνομα:');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_CREDIT_CARD_OWNER_EMAIL', 'Email:');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_ERROR', 'Παρουσιάστηκε σφάλμα');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_ERROR_MESSAGE', 'Παρουσιάστηκε σφάλμα');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_ERROR_MESSAGE2', 'Αίτηση ακυρώσεις');
-  define('MODULE_PAYMENT_HELLASPAY_WARNING', '<br><br><strong><font color="#ff0000">ΠΡΟΣΟΧΗ:</font></strong> Αφού πατήσετε το "Επιβεβαίωση πληρωμής" θα κατευθυνθείτε στο ασφαλές περιβάλλον της Viva Payments για να ολοκληρώσετε την πληρωμή σας. <b>Μετά την πληρωμή, πατήστε ΝΑΙ στο αναδυόμενο παράθυρο που θα σας εμφανιστεί για να επιστρέψετε στο ηλεκτρονικό μας κατάστημα.');
-  define('MODULE_PAYMENT_HELLASPAY_TEXT_TOTAL', 'Συνολικό ποσό: ');
-  define('MODULE_PAYMENT_HELLASPAY_NOINSTAL', 'Χωρίς Δόσεις');  
-  define('MODULE_PAYMENT_HELLASPAY_INSTALMENTS', 'Δόσεις:');
-  define('MODULE_PAYMENT_HELLASPAY_INSTALMENTS_TEXT', ' άτοκες δόσεις');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_TITLE', 'Viva Payments - Ο€ΞΉΟƒΟ„Ο‰Ο„ΞΉΞΊΞ® ΞΊΞ¬ΟΟ„Ξ±');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_DESCRIPTION', 'ΞΞµ Ο€ΞΉΟƒΟ„Ο‰Ο„ΞΉΞΊΞ® ΞΊΞ¬ΟΟ„Ξ± Viva Payments');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_CREDIT_CARD_OWNER', 'ΞΞ½ΞΏΞΌΞ±:');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_CREDIT_CARD_OWNER_EMAIL', 'Email:');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_ERROR', 'Ξ Ξ±ΟΞΏΟ…ΟƒΞΉΞ¬ΟƒΟ„Ξ·ΞΊΞµ ΟƒΟ†Ξ¬Ξ»ΞΌΞ±');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_ERROR_MESSAGE', 'Ξ Ξ±ΟΞΏΟ…ΟƒΞΉΞ¬ΟƒΟ„Ξ·ΞΊΞµ ΟƒΟ†Ξ¬Ξ»ΞΌΞ±');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_ERROR_MESSAGE2', 'Ξ‘Ξ―Ο„Ξ·ΟƒΞ· Ξ±ΞΊΟ…ΟΟΟƒΞµΞΉΟ‚');
+  define('MODULE_PAYMENT_VIVAWALLET_WARNING', '<br><br><strong><font color="#ff0000">Ξ Ξ΅ΞΞ£ΞΞ§Ξ—:</font></strong> Ξ‘Ο†ΞΏΟ Ο€Ξ±Ο„Ξ®ΟƒΞµΟ„Ξµ Ο„ΞΏ "Ξ•Ο€ΞΉΞ²ΞµΞ²Ξ±Ξ―Ο‰ΟƒΞ· Ο€Ξ»Ξ·ΟΟ‰ΞΌΞ®Ο‚" ΞΈΞ± ΞΊΞ±Ο„ΞµΟ…ΞΈΟ…Ξ½ΞΈΞµΞ―Ο„Ξµ ΟƒΟ„ΞΏ Ξ±ΟƒΟ†Ξ±Ξ»Ξ­Ο‚ Ο€ΞµΟΞΉΞ²Ξ¬Ξ»Ξ»ΞΏΞ½ Ο„Ξ·Ο‚ Viva Payments Ξ³ΞΉΞ± Ξ½Ξ± ΞΏΞ»ΞΏΞΊΞ»Ξ·ΟΟΟƒΞµΟ„Ξµ Ο„Ξ·Ξ½ Ο€Ξ»Ξ·ΟΟ‰ΞΌΞ® ΟƒΞ±Ο‚. <b>ΞΞµΟ„Ξ¬ Ο„Ξ·Ξ½ Ο€Ξ»Ξ·ΟΟ‰ΞΌΞ®, Ο€Ξ±Ο„Ξ®ΟƒΟ„Ξµ ΞΞ‘Ξ™ ΟƒΟ„ΞΏ Ξ±Ξ½Ξ±Ξ΄Ο…ΟΞΌΞµΞ½ΞΏ Ο€Ξ±ΟΞ¬ΞΈΟ…ΟΞΏ Ο€ΞΏΟ… ΞΈΞ± ΟƒΞ±Ο‚ ΞµΞΌΟ†Ξ±Ξ½ΞΉΟƒΟ„ΞµΞ― Ξ³ΞΉΞ± Ξ½Ξ± ΞµΟ€ΞΉΟƒΟ„ΟΞ­ΟΞµΟ„Ξµ ΟƒΟ„ΞΏ Ξ·Ξ»ΞµΞΊΟ„ΟΞΏΞ½ΞΉΞΊΟ ΞΌΞ±Ο‚ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ·ΞΌΞ±.');
+  define('MODULE_PAYMENT_VIVAWALLET_TEXT_TOTAL', 'Ξ£Ο…Ξ½ΞΏΞ»ΞΉΞΊΟ Ο€ΞΏΟƒΟ: ');
+  define('MODULE_PAYMENT_VIVAWALLET_NOINSTAL', 'Ξ§Ο‰ΟΞ―Ο‚ Ξ”ΟΟƒΞµΞΉΟ‚');  
+  define('MODULE_PAYMENT_VIVAWALLET_INSTALMENTS', 'Ξ”ΟΟƒΞµΞΉΟ‚:');
+  define('MODULE_PAYMENT_VIVAWALLET_INSTALMENTS_TEXT', ' Ξ¬Ο„ΞΏΞΊΞµΟ‚ Ξ΄ΟΟƒΞµΞΉΟ‚');
 ?>
