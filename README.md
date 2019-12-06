@@ -27,9 +27,7 @@ Please provide any request / response logs generated along with screenshots if p
 
 Other queries:
 
-- If your issue is account related, please call the Viva Wallet office closest to you:<br />
-<table>
-  <tr><th>Country</th><th>Phone number</th>
+- If your issue is account related, please call the Viva Wallet office closest to you:<br /><table><tr><th>Country</th><th>Phone number</th>
   <tr><td>Belgium</td><td>(+32) 2342 0790</td></tr>
     <tr><td>Cyprus</td><td>(+357) 2403 0211</td></tr>
     <tr><td>France</td><td>(+33) 1876 50765</td></tr>
