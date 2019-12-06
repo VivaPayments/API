@@ -4,6 +4,8 @@ We welcome, also, your contributions towards developing plugins that will allow 
 
 For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com). You can also browse our [knowledgebase](https://help.vivawallet.com/hc/en-us), or [post an issue](https://github.com/VivaPayments/API/issues) to be looked at by someone from our developer community.
 
+# GitHub issues
+
 When adding a new issue for our development team to look at, please provide the following information:
 
 Are you having problems integrating with the Viva Wallet payment platform?
