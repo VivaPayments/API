@@ -25,32 +25,22 @@ Please provide any request / response logs generated along with screenshots if p
 
 #### No<a name="no"></a>
 
-If your issue is account related, please call the Viva Wallet office closest to you:
+Other queries:
 
-Belgium
-(+32) 2342 0790
+- If your issue is account related, please call the Viva Wallet office closest to you:
 
-Cyprus
-(+357) 2403 0211
+<table>
+  <tr><th>Country</th><th>Phone number</th>
+  <tr><td>Belgium</td><td>(+32) 2342 0790</td></tr>
+    <tr><td>Cyprus</td><td>(+357) 2403 0211</td></tr>
+    <tr><td>France</td><td>(+33) 1876 50765</td></tr>
+    <tr><td>Greece</td><td>(+30) 21 1760 4000</td></tr>
+    <tr><td>Netherland</td><td>(+31) 2089 05503</td></tr>
+    <tr><td>Romania</td><td>(+40) 3122 96150</td></tr>
+    <tr><td>UK</td><td>(+44) 20 3734 7770</td></tr>
+    <tr><td>Portugal</td><td>(+351) 3 0050 9059</td></tr>
+</table>
 
-France
-(+33) 1876 50765
-
-Greece
-(+30) 21 1760 4000
-
-Netherland
-(+31) 2089 05503
-
-Romania
-(+40) 3122 96150
-
-UK
-(+44) 20 3734 7770
-
-Portugal
-(+351) 3 0050 9059
-
-If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
+- If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
 
 Thanks!
