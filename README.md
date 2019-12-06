@@ -16,7 +16,7 @@ By which method are you attempting to integrate?
 
 - [Native Checkout v2 3DS](https://developer.vivawallet.com/online-checkouts/native-checkout-v2/)
 - [Redirect Checkout](https://developer.vivawallet.com/online-checkouts/redirect-checkout/)
-- [E-commerce plugin](https://developer.vivawallet.com/e-commerce-plugins/) (e.g. [Viva Wallet for WooCommerce](https://developer.vivawallet.com/e-commerce-plugins/woocommerce/), or [Viva Wallet for Shopify](https://developer.vivawallet.com/e-commerce-plugins/shopify/)
+- [E-commerce plugin](https://developer.vivawallet.com/e-commerce-plugins/) (e.g. [Viva Wallet for WooCommerce](https://developer.vivawallet.com/e-commerce-plugins/woocommerce/), or [Viva Wallet for Shopify](https://developer.vivawallet.com/e-commerce-plugins/shopify/))
 - [Payment API integration](https://developer.vivawallet.com/api-reference-guide/payment-api/)
 
 Describe the problem as clearly as possible notifying us of any errors generated.
