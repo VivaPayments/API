@@ -36,7 +36,6 @@ Other queries:
     <tr><td>Romania</td><td>(+40) 3122 96150</td></tr>
     <tr><td>UK</td><td>(+44) 20 3734 7770</td></tr>
     <tr><td>Portugal</td><td>(+351) 3 0050 9059</td></tr>
-</table><br /><br />
-- If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
+</table><br />- If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
 
 Thanks!
