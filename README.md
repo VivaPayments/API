@@ -3,3 +3,50 @@ This repository contains sample projects for integrating [Viva Wallet](https://w
 We welcome, also, your contributions towards developing plugins that will allow easy integration with popular open source e-commerce platforms and content management tools.
 
 For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com). You can also browse our [knowledgebase](https://help.vivawallet.com/hc/en-us), or [post an issue](https://github.com/VivaPayments/API/issues) to be looked at by someone from our developer community.
+
+When adding a new issue for our development team to look at, please provide the following information:
+
+Are you having problems integrating with the Viva Wallet payment platform?
+
+YES
+By which method are you attempting to integrate?
+
+- [Native Checkout v2 3DS](https://developer.vivawallet.com/online-checkouts/native-checkout-v2/)
+- [Redirect Checkout](https://developer.vivawallet.com/online-checkouts/redirect-checkout/)
+- [E-commerce plugin](https://developer.vivawallet.com/e-commerce-plugins/) (e.g. Viva Wallet for [WooCommerce](https://developer.vivawallet.com/e-commerce-plugins/woocommerce/), or Viva Wallet for [Shopify](https://developer.vivawallet.com/e-commerce-plugins/shopify/)
+- [Payment API integration](https://developer.vivawallet.com/api-reference-guide/payment-api/)
+
+Describe the problem as clearly as possible notifying us of any errors generated.
+
+Please provide any request / response logs generated along with screenshots if possible. Blur out any confidential information.
+
+NO
+If your issue is account related, please call the Viva Wallet office closest to you:
+
+Belgium
+(+32) 2342 0790
+
+Cyprus
+(+357) 2403 0211
+
+France
+(+33) 1876 50765
+
+Greece
+(+30) 21 1760 4000
+
+Netherland
+(+31) 2089 05503
+
+Romania
+(+40) 3122 96150
+
+UK
+(+44) 20 3734 7770
+
+Portugal
+(+351) 3 0050 9059
+
+If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
+
+Thanks!
