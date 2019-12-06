@@ -6,11 +6,11 @@ For detailed instructions on the APIs and more, check out the [Viva Wallet Devel
 
 ## GitHub issues
 
-When adding a new issue for our development team to look at, please provide the following information:
+When adding a [new issue](https://github.com/VivaPayments/API/issues) for our development team to look at, please provide the following information:
 
-Are you having problems integrating with the Viva Wallet payment platform?
+Are you having problems integrating with the Viva Wallet payment platform? Yes / No
 
-YES
+Yes
 By which method are you attempting to integrate?
 
 - [Native Checkout v2 3DS](https://developer.vivawallet.com/online-checkouts/native-checkout-v2/)
@@ -22,7 +22,7 @@ Describe the problem as clearly as possible notifying us of any errors generated
 
 Please provide any request / response logs generated along with screenshots if possible. Blur out any confidential information.
 
-NO
+No
 If your issue is account related, please call the Viva Wallet office closest to you:
 
 Belgium
