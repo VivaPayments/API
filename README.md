@@ -10,7 +10,7 @@ When adding a [new issue](https://github.com/VivaPayments/API/issues) for our de
 
 Are you having problems integrating with the Viva Wallet payment platform? [Yes](#yes) / [No](#no)
 
-#### Yes<a name="yes"></a>
+### Yes<a name="yes"></a>
 
 By which method are you attempting to integrate?
 
@@ -23,7 +23,7 @@ Describe the problem as clearly as possible notifying us of any errors generated
 
 Please provide any request / response logs generated along with screenshots if possible. Blur out any confidential information.
 
-#### No<a name="no"></a>
+### No<a name="no"></a>
 
 *Other queries*
 
