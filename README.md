@@ -43,5 +43,3 @@ If your issue is account related, please call the Viva Wallet office closest to 
 If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
 
 Thanks!
-
-[![HitCount](http://hits.dwyl.io/VivaPayments/VivaPayments/API.svg)](http://hits.dwyl.io/VivaPayments/VivaPayments/API)
