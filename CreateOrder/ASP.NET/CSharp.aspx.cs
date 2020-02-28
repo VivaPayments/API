@@ -37,6 +37,7 @@ public partial class _CSharp : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         var cl = new RestClient("https://demo.vivapayments.com/");
         //var cl = new RestClient("https://www.vivapayments.com/"); // production URL
 
