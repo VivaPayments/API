@@ -16,7 +16,7 @@ Domain Path: /languages
  * @author     Viva Wallet
  * @copyright  Copyright (c)2017 Vivawallet
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
- ****************************************************************************** 
+ ******************************************************************************
 */
 
 /* Add a custom payment class to JG
@@ -27,7 +27,7 @@ function vivawallet_fallback_notice() {
     $message .= '</div>';
 
     echo $message;
-}  
+}
 
 add_action( 'plugins_loaded', 'vivawallet_gateway_load', 0 );
 
@@ -42,20 +42,20 @@ if ( !class_exists( 'jigoshop_payment_gateway' ) ) {
 load_plugin_textdomain( 'vivawallet-for-jigoshop', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 add_filter( 'jigoshop_payment_gateways', 'add_vivawallet_gateway', 1 );
-  
+
 function add_vivawallet_gateway( $methods ) {
 	$methods[] = 'vivawallet';
 	return $methods;
 }
-	
+
 class vivawallet extends jigoshop_payment_gateway {
 private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 
 	public function __construct()
 	{
-		
+
 		parent::__construct();
-		
+
 		$options = Jigoshop_Base::get_options();
 
 		$this->id = 'vivawallet';
@@ -77,13 +77,13 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		add_action('jigoshop_api_js_gateway_vivawallet', array($this, 'check_ipn_response'));
 
 	}
-	
+
 	public function vivawallet_notices()
 	{
 		global $wpdb;
 		$query = "CREATE TABLE IF NOT EXISTS ". $wpdb->prefix . "vivawallet_data (id int(11) unsigned NOT NULL AUTO_INCREMENT, ref varchar(100) DEFAULT NULL, ordercode varchar(255) DEFAULT NULL, email varchar(150) DEFAULT NULL, orderid varchar(100) DEFAULT NULL, total_cost int(11) DEFAULT NULL, currency char(3) DEFAULT NULL, tm_password varchar(100) DEFAULT NULL, order_state char(1) DEFAULT NULL, sessionid varchar(32) DEFAULT NULL, timestamp datetime DEFAULT NULL, PRIMARY KEY (id))";
 		$wpdb->query($query);
-		
+
 		$options = Jigoshop_Base::get_options();
 
 		if ($this->enabled == 'no') {
@@ -102,11 +102,11 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		if (!$this->vivawallet_merchantid) {
 			echo '<div class="error"><p>'.__('The Vivawallet gateway does not have values entered for <strong>Merchant ID</strong> and the gateway is set to enabled.  Please enter your credentials for this or the gateway <strong>will not</strong> be available on the Checkout.  Disable the gateway to remove this warning.', 'vivawallet-for-jigoshop').'</p></div>';
 		}
-		
+
 		if (!$this->vivawallet_merchantpass) {
 			echo '<div class="error"><p>'.__('The Vivawallet gateway does not have values entered for <strong>API KEY</strong> and the gateway is set to enabled.  Please enter your credentials for this or the gateway <strong>will not</strong> be available on the Checkout.  Disable the gateway to remove this warning.', 'vivawallet-for-jigoshop').'</p></div>';
 		}
-	}	
+	}
 
 	public function is_available()
 	{
@@ -117,11 +117,11 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		if (!$this->vivawallet_source) {
 			return false;
 		}
-		
+
 		if (!$this->vivawallet_merchantid) {
 			return false;
 		}
-		
+
 		if (!$this->vivawallet_merchantpass) {
 			return false;
 		}
@@ -132,18 +132,18 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 
 		return true;
 	}
-		
+
 	protected function get_default_options() {
 	load_plugin_textdomain('vivawallet-for-jigoshop', 'wp-content/plugins/vivawallet-for-jigoshop/languages/vivawallet-for-jigoshop-'.get_locale().'.mo');
-	
+
 	$defaults = array();
-	
+
 	$defaults[] = array(
 			'name' => sprintf(__('Vivawallet %s', 'vivawallet-for-jigoshop'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.plugins_url( 'vivawallet.png', __FILE__ ) .'" alt="Vivawallet">'),
 			'type' => 'title',
 			'desc' => sprintf(__('This module allows you to accept online payments via %s allowing customers to buy and pay with a credit card. Vivawallet is a safe, convenient and secure way for customers to buy online in one-step.  %s', 'vivawallet-for-jigoshop'), '<a href="https://www.vivawallet.com/" target="_blank">'.__('Vivawallet','vivawallet-for-jigoshop').'</a>', '<a href="https://www.vivawallet.com/en-us/signup" target="_blank">'.__('Signup for a Merchant Account','vivawallet-for-jigoshop').'</a>' )
 		);
-		
+
 	$defaults[] = array(
 			'name'		=> __('Enable Vivawallet','vivawallet-for-jigoshop'),
 			'desc' 		=> '',
@@ -156,7 +156,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Title','vivawallet-for-jigoshop'),
 			'desc' 		=> '',
@@ -165,7 +165,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			'std' 		=> __('Vivawallet','vivawallet-for-jigoshop'),
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Description','jigoshop'),
 			'desc' 		=> '',
@@ -174,7 +174,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			'std' 		=> __('Pay via Vivawallet - you can pay with your credit card.', 'vivawallet-for-jigoshop'),
 			'type' 		=> 'longtext'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Merchant ID','vivawallet-for-jigoshop'),
 			'desc' 		=> '',
@@ -183,7 +183,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			'std' 		=> '',
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('API Key','vivawallet-for-jigoshop'),
 			'desc' 		=> '',
@@ -192,7 +192,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			'std' 		=> '',
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Source Code','vivawallet-for-jigoshop'),
 			'desc' 		=> '',
@@ -201,7 +201,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			'std' 		=> '',
 			'type' 		=> 'text'
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Instalments','vivawallet-for-jigoshop'),
 			'desc' 		=> '',
@@ -214,7 +214,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 				'yes'			=> __('Yes', 'jigoshop')
 			)
 		);
-		
+
 		$defaults[] = array(
 			'name'		=> __('Enable Test Mode','vivawallet-for-jigoshop'),
 			'desc' 		=> __('Turn on to enable the test mode.', 'vivawallet-for-jigoshop'),
@@ -227,7 +227,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 				'yes'		=> __('Yes', 'jigoshop')
 			)
 		);
-			
+
 	 return $defaults;
 	}
 
@@ -243,7 +243,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		global $wpdb;
 
 		$order = new jigoshop_order($order_id);
-		
+
 		if ($this->testmode == 'yes') {
 			$action_adr = "https://demo.vivapayments.com/web/newtransaction.aspx";
 		} else {
@@ -254,17 +254,17 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 		$amountcents = round($order->order_total * 100);
 		$trlang = get_locale();
-		
+
 		if (preg_match("/gr/i", $trlang) || preg_match("/el/i", $trlang)) {
 		$formlang = 'el-GR';
 		} else {
 		$formlang = 'en-US';
 		}
-		
+
 	$MerchantID =  $this->vivawallet_merchantid;
 	$Password =   $this->vivawallet_merchantpass;
-	
-	
+
+
 	$currency_symbol ='';
 		$currency_code = $this->currency;
 		switch ($currency_code) {
@@ -283,10 +283,10 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		default:
         $currency_symbol = 978;
 		}
-	
+
 	$poststring['Amount'] = $amountcents;
 	$poststring['RequestLang'] = $formlang;
-	
+
 	$poststring['Email'] = $order->billing_email;
 	if($this->vivawallet_instal == 'no'){
 	$poststring['MaxInstallments'] = '1';
@@ -305,22 +305,22 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 	$curl = curl_init("https://www.vivapayments.com/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
-	
+
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
-	
+
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
 	curl_setopt($curl, CURLOPT_HEADER, false);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password); 
+	curl_setopt($curl, CURLOPT_USERPWD, $MerchantID.':'.$Password);
 	$curlversion = curl_version();
 	if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
 	curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
 	}
-	
+
 	// execute curl
 	$response = curl_exec($curl);
-		
+
 	if(curl_error($curl)){
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	curl_setopt($curl, CURLOPT_POST, true);
@@ -331,9 +331,9 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 	$response = curl_exec($curl);
 	}
-	
+
 		curl_close($curl);
-		
+
 		try {
 		if (version_compare(PHP_VERSION, '5.3.99', '>=')) {
 		$resultObj=json_decode($response, false, 512, JSON_BIGINT_AS_STRING);
@@ -344,7 +344,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		} catch( Exception $e ) {
 			throw new Exception("Result is not a json object (" . $e->getMessage() . ")");
 		}
-		
+
 		if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
 		$OrderCode = $resultObj->OrderCode;
 		$ErrorCode = $resultObj->ErrorCode;
@@ -352,11 +352,11 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 		}
 		else{
 			throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
-		}	
-		
+		}
+
 		$query = "insert into ". $wpdb->prefix . "vivawallet_data (ref, ordercode, email, orderid, total_cost, currency, order_state, timestamp) values ('".$mref."', '".$OrderCode."','". $order->billing_email ."','". $order_id . "',$amountcents,'".$this->currency."','I', now())";
 	    $wpdb->query($query);
-			
+
 		echo '<form name="vivawallet" id="vivawallet_place_form" action="'.esc_url($action_adr).'" method="GET">
 		<input type="hidden" name="Ref" value="'.esc_attr($OrderCode).'" />
 		<input type="submit" class="button alt" id="submit_vivawallet_place_form" value="'.__('Pay Now', 'vivawallet-for-jigoshop').'" /> 			        <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel', 'vivawallet-for-jigoshop').'</a>
@@ -368,11 +368,11 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
    		window.onload = paymentform.submit();
 		//]]>
 		</script>';
-		
+
 		exit();
 
 	}
-	
+
 
 	function process_payment($order_id)
 	{
@@ -384,35 +384,35 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			'redirect'	=>esc_url_raw(add_query_arg('order-pay', $order->id, add_query_arg('key', $order->order_key, get_permalink(jigoshop_get_page_id('pay')))))
 		);
 	}
-	
+
 
 	function receipt_page($order)
 	{
 		echo '<p>'.__('Thank you for your order, please click the button below to pay.', 'vivawallet-for-jigoshop').'</p>';
 		echo $this->generate_form_vivawallet($order);
 	}
-	
-	
+
+
 	/**
 	* Check Response
 	**/
 	function check_ipn_response()
 	{
 		global $wpdb;
-		
+
 		load_plugin_textdomain('vivawallet-for-jigoshop', 'wp-content/plugins/vivawallet-for-jigoshop/languages/vivawallet-for-jigoshop-'.get_locale().'.mo');
 
 		if(preg_match("/success/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
 			$tm_ref = $_GET['s'];
-	  
+
 			$check_query = $wpdb->get_results("SELECT order_state, orderid FROM ". $wpdb->prefix . "vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
 			if($check_query[0]['order_state']=='I' || $check_query[0]['order_state']=='P') {
 			$inv_id = $check_query[0]['orderid'];
 			$order = new jigoshop_order($inv_id);
-			
+
 			if($check_query[0]['order_state']=='I'){
 			$query = "update ". $wpdb->prefix . "vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
 		    $wpdb->query($query);
@@ -429,28 +429,28 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			} else {
 			$order->update_status( 'on-hold', sprintf(__('Failed payment %s via Vivawallet.', 'vivawallet-for-jigoshop'), $tm_ref) );
 		    jigoshop_log( "VIVA: payment failed for Order ID: " . $order->id );
-			jigoshop::add_error(__('An error occured, please try again.', 'vivawallet-for-jigoshop'));
+			jigoshop::add_error(__('There was a problem with your payment, please try again with another card.', 'vivawallet-for-jigoshop'));
 			wp_safe_redirect( esc_url_raw(add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('checkout') ) ) ) ));
 			}
 			exit;
-			
+
 			}
           }
-		  
+
 		if(preg_match("/webhook/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
-			
+
 			$postdata = file_get_contents("php://input");
 
 			$MerchantID =  $this->vivawallet_merchantid;
 			$Password =   html_entity_decode($this->vivawallet_merchantpass);
-			
+
 			if ($this->testmode == 'yes') {
 			$action_adr = "https://demo.vivapayments.com/api/messages/config/token/";
 			} else {
 				$action_adr = "https://www.vivapayments.com/api/messages/config/token/";
 			}
-		
+
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_PORT, 443);
 			curl_setopt($curl, CURLOPT_POST, false);
@@ -463,7 +463,7 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
 			}
 			$response = curl_exec($curl);
-			
+
 			if(curl_error($curl)){
 			curl_setopt($curl, CURLOPT_PORT, 443);
 			curl_setopt($curl, CURLOPT_POST, true);
@@ -474,33 +474,33 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 			$response = curl_exec($curl);
 			}
-			
+
 			curl_close($curl);
 			echo $response;
-			
+
 			try {
-				
+
 			if(is_object(json_decode($postdata))){
 				$resultObj=json_decode($postdata);
 			}
 			} catch( Exception $e ) {
 				echo $e->getMessage();
 			}
-		
-		
+
+
 			if(sizeof($resultObj->EventData) > 0) {
 			$StatusId = $resultObj->EventData->StatusId;
 			$OrderCode = $resultObj->EventData->OrderCode;
 			$statustr = $this->vivawallet_processing;
-	  
+
 			$check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($OrderCode)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
 			if($check_query[0]['order_state']=='I' && $StatusId=='F') {
-			
+
 			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($OrderCode)."'";
 		    $wpdb->query($query);
-			
+
 			$inv_id = $check_query[0]['orderid'];
 			$order = new jigoshop_order($inv_id);
 			$order->add_order_note(__('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-jigoshop'));
@@ -515,25 +515,25 @@ private $allowed_currency = array( 'EUR','GBP','BGN','RON' );
 			 }
 			}
           }
-		}		  
-				
+		}
+
 		if(preg_match("/fail/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
 			$tm_ref = $_GET['s'];
-			
+
 			$check_query = $wpdb->get_results("SELECT orderid FROM ". $wpdb->prefix . "vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
-			
+
 			$query = "update ". $wpdb->prefix . "vivawallet_data set order_state='F' where ordercode='".addslashes($tm_ref)."'";
 		    $wpdb->query($query);
-			
+
 			$inv_id = $check_query[0]['orderid'];
 			$order = new jigoshop_order($inv_id);
-			
+
 			$order->update_status( 'on-hold', sprintf(__('Failed payment %s via Vivawallet.', 'vivawallet-for-jigoshop'), $tm_ref) );
 		    jigoshop_log( "VIVA: payment failed for Order ID: " . $order->id );
-			jigoshop::add_error(__('An error occured, please try again.', 'vivawallet-for-jigoshop'));
+			jigoshop::add_error(__('There was a problem with your payment, please try again with another card.', 'vivawallet-for-jigoshop'));
 			wp_safe_redirect( esc_url_raw(add_query_arg( 'key', $order->order_key, add_query_arg( 'order', $order_id, get_permalink( jigoshop_get_page_id('checkout') ) ) ) ));
 			exit;
           }

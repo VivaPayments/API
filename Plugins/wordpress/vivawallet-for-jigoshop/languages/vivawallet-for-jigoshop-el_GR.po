@@ -203,5 +203,5 @@ msgstr ""
 # @ vivawallet-for-jigoshop
 #: jigoshop-vivawallet.php:396 jigoshop-vivawallet.php:420
 #: languages/jigoshop-vivawallet.php:397 languages/jigoshop-vivawallet.php:421
-msgid "An error occured, please try again."
+msgid "There was a problem with your payment, please try again with another card."
 msgstr "Η συναλλαγή απέτυχε ή ακυρώθηκε, παρακαλώ προσπαθήστε ξανά."

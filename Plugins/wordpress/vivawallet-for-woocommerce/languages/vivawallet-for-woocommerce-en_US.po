@@ -172,7 +172,7 @@ msgstr ""
 
 # @ vivawallet-for-woocommerce
 #: wc-vivawallet.php:381
-msgid "An error occured, please try again."
+msgid "There was a problem with your payment, please try again with another card."
 msgstr ""
 
 # @ vivawallet-for-woocommerce

@@ -192,5 +192,5 @@ msgstr ""
 
 # @ vivawallet-for-jigoshop
 #: jigoshop-vivawallet.php:397 jigoshop-vivawallet.php:421
-msgid "An error occured, please try again."
+msgid "There was a problem with your payment, please try again with another card."
 msgstr ""

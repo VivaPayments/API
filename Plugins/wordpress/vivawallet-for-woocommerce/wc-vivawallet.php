@@ -9,14 +9,14 @@ Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
 Domain Path: /languages
 */
-/*  Copyright 2019  Vivawallet.com 
+/*  Copyright 2019  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
  * @package    Vivawallet v3.5.7
  * @author     Viva Wallet
  * @copyright  Copyright (c)2019 Vivawallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
- ****************************************************************************** 
+ ******************************************************************************
 */
 /* Add a custom payment class to WC
   ------------------------------------------------------------ */
@@ -27,20 +27,20 @@ function woocommerce_vivawallet()
 		return; // if the WC payment gateway class is not available, do nothing
 	if(class_exists('WC_VIVAWALLET'))
 		return;
-		
-	
-			
+
+
+
 class WC_VIVAWALLET extends WC_Payment_Gateway
 {
 	public function __construct()
 	{
 		$plugin_dir = plugin_dir_url(__FILE__);
-		
+
 		global $woocommerce;
 		$this->id = 'vivawallet';
 		$this->icon = apply_filters('woocommerce_vivawallet_icon', ''.$plugin_dir.'vivawallet.png');
 		$this->has_fields = false;
-		
+
 		// Load the form fields.
 		$this->init_form_fields();
 		// Load the settings.
@@ -58,10 +58,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		add_action('valid-vivawallet-standard-ipn-reques', array($this, 'successful_request') );
 		add_action('woocommerce_receipt_vivawallet', array($this, 'receipt_page'));
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		
+
 		// Payment listener/API hook
 		add_action( 'woocommerce_api_wc_vivawallet', array( $this, 'check_ipn_response' ) );
-		
+
 		if ( !defined('PLUGINDIR') )
 		define( 'PLUGINDIR', 'wp-content/plugins' );
 		load_plugin_textdomain('vivawallet-for-woocommerce', PLUGINDIR.'/vivawallet-for-woocommerce/languages','vivawallet-for-woocommerce/languages');
@@ -70,36 +70,36 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$this->enabled = false;
 		}
 	}
-	
+
 	/**
 	 * Check if this gateway is enabled and available in the user's country
 	 */
 	function is_valid_for_use()
 	{
 		if (!in_array( get_woocommerce_currency(), array('GBP', 'BGN', 'RON', 'EUR'))) return false;
-		
+
 		return true;
 	}
-	
+
 	/**
-	* Admin Panel Options 
+	* Admin Panel Options
 	* - Options for bits like 'title' and availability on a country-by-country basis
 	**/
 	public function admin_options() {
 		global $wpdb;
 		$query = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}vivawallet_data (id int(11) unsigned NOT NULL AUTO_INCREMENT, ref varchar(100) DEFAULT NULL, ordercode varchar(255) DEFAULT NULL, email varchar(150) DEFAULT NULL, orderid varchar(100) DEFAULT NULL, total_cost int(11) DEFAULT NULL, currency char(3) DEFAULT NULL, tm_password varchar(100) DEFAULT NULL, order_state char(1) DEFAULT NULL, sessionid varchar(32) DEFAULT NULL, timestamp datetime DEFAULT NULL, PRIMARY KEY (id))";
 		$wpdb->query($query);
-				
+
 		?>
 		<h3><?php _e('Vivawallet', 'vivawallet-for-woocommerce'); ?></h3>
 		<p><?php _e('Vivawallet redirects customers to their secure server for making payments.', 'vivawallet-for-woocommerce'); ?></p>
 		<table class="form-table">
 		<?php
 			if ( $this->is_valid_for_use() ) :
-    	
+
     			// Generate the HTML For the settings form.
     			$this->generate_settings_html();
-    		
+
     		else :
 		?>
 		<div class="inline error"><p><strong><?php _e('Gateway Disabled', 'vivawallet-for-woocommerce'); ?></strong>: <?php _e('Vivawallet does not support your store currency.', 'vivawallet-for-woocommerce' ); ?></p></div>
@@ -123,8 +123,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				'title' => array
 				(
 					'title' => __('Title', 'vivawallet-for-woocommerce'),
-					'type' => 'text', 
-					'description' => __( 'This controls the title which the user sees during checkout.', 'vivawallet-for-woocommerce' ), 
+					'type' => 'text',
+					'description' => __( 'This controls the title which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
 					'default' => __('Vivawallet', 'vivawallet-for-woocommerce')
 				),
 				'description' => array(
@@ -163,7 +163,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				),
 				'testmode' => array(
 					'title' => __('Test mode', 'vivawallet-for-woocommerce'),
-					'type' => 'checkbox', 
+					'type' => 'checkbox',
 					'label' => __('Enable test mode', 'vivawallet-for-woocommerce'),
 					'description' => __('Check this box for operating in test mode', 'vivawallet-for-woocommerce'),
 					'default' => 'no'
@@ -171,7 +171,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				'vivawallet_processing' => array(
 					'title' => __('Order status', 'vivawallet-for-woocommerce'),
 					'default' => 'completed',
-					'type' => 'select', 
+					'type' => 'select',
 					'options' => array(
 					  'completed'       => __( 'Completed', 'vivawallet-for-woocommerce' ),
 					  'processing'  	=> __( 'Processing', 'vivawallet-for-woocommerce' ),
@@ -196,7 +196,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	{
 		global $woocommerce, $wpdb;
 		$order = new WC_Order( $order_id );
-		
+
 		if ($this->vivawallet_testmode == 'yes') {
 			$action_adr = "https://demo.vivapayments.com/web/newtransaction.aspx";
 			$curl_adr   = "https://demo.vivapayments.com/api/orders";
@@ -211,46 +211,46 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		define( 'WOOCOMMERCE_CHECKOUT', true );
 		WC()->cart->calculate_totals();
 		$amountcents = round($order->get_total() * 100);
-		$charge = number_format($order->get_total(), '2', '.', '');	
+		$charge = number_format($order->get_total(), '2', '.', '');
 		} else {
 		$amountcents = round($order->order_total * 100);
 		$charge = number_format($order->order_total, '2', '.', '');
 		}
-		
+
 		if($amountcents==0){
 		$order_id = wc_get_order_id_by_order_key($_GET['key']);
 		$order    = wc_get_order( $order_id );
 		$amountcents = round($order->get_total() * 100);
 		$charge = number_format($order->get_total(), '2', '.', '');
-		} 
-		
+		}
+
 		$trlang = get_locale();
-		
+
 		if (preg_match("/gr/i", $trlang) || preg_match("/el/i", $trlang)) {
 		$formlang = 'el-GR';
 		} else {
 		$formlang = 'en-US';
 		}
-		
+
 	$MerchantID =  $this->vivawallet_merchantid;
 	$Password =   html_entity_decode($this->vivawallet_merchantpass);
-	
+
 	$poststring['Amount'] = $amountcents;
 	$poststring['RequestLang'] = $formlang;
-	
+
 	if (version_compare( $current_version, '3.0.0', '>=' )) {
 	$customer_mail = $order->get_billing_email();
 	} else {
 	$customer_mail = $order->billing_email;
 	}
-		
+
 	$poststring['Email'] = $customer_mail;
-	
+
 	$maxperiod = '1';
 	 $installogic = $this->vivawallet_instal;
 	 if(isset($installogic) && $installogic!=''){
 	 $split_instal_vivawallet = explode(',',$installogic);
-	 $c = count($split_instal_vivawallet);	
+	 $c = count($split_instal_vivawallet);
 	 $instal_vivawallet_max = array();
 	 for($i=0; $i<$c; $i++){
 		list($instal_amount, $instal_term) = explode(":", $split_instal_vivawallet[$i]);
@@ -261,8 +261,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	if(count($instal_vivawallet_max) > 0){
 	 $maxperiod = max($instal_vivawallet_max);
 	}
-	} 	
-	
+	}
+
 		$currency_symbol ='';
 		$currency_code = get_woocommerce_currency();
 		switch ($currency_code) {
@@ -281,8 +281,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		default:
         $currency_symbol = 978;
 		}
-	
-	
+
+
 	$poststring['MaxInstallments'] = $maxperiod;
 	$poststring['MerchantTrns'] = $order_id;
 	$poststring['SourceCode'] = $this->vivawallet_source;
@@ -292,9 +292,9 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	if (preg_match("/https/i", $curl_adr)) {
 	curl_setopt($curl, CURLOPT_PORT, 443);
 	}
-	
+
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300';
-	
+
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
 	curl_setopt($curl, CURLOPT_HEADER, false);
@@ -304,10 +304,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	if(!preg_match("/NSS/" , $curlversion['ssl_version'])){
 	curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
 	}
-	
+
 	// execute curl
 	$response = curl_exec($curl);
-	
+
 	if(curl_error($curl)){
 	if (preg_match("/https/i", $curl_adr)) {
 	curl_setopt($curl, CURLOPT_PORT, 443);
@@ -320,9 +320,9 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 	$response = curl_exec($curl);
 	}
-	
+
 		curl_close($curl);
-		
+
 		try {
 		if (version_compare(PHP_VERSION, '5.3.99', '>=')) {
 		$resultObj=json_decode($response, false, 512, JSON_BIGINT_AS_STRING);
@@ -333,7 +333,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		} catch( Exception $e ) {
 			throw new Exception("Result is not a json object (" . $e->getMessage() . ")");
 		}
-		
+
 		if ($resultObj->ErrorCode==0){	//success when ErrorCode = 0
 		$OrderCode = $resultObj->OrderCode;
 		$ErrorCode = $resultObj->ErrorCode;
@@ -341,11 +341,11 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		}
 		else{
 			throw new Exception("Unable to create order code (" . $resultObj->ErrorText . ")");
-		}	
-		
+		}
+
 		$query = "insert into {$wpdb->prefix}vivawallet_data (ref, ordercode, email, orderid, total_cost, currency, order_state, timestamp) values ('".$mref."', '".$OrderCode."','". $customer_mail ."','". $order_id . "',$amountcents,'978','I', now())";
 	    $wpdb->query($query);
-			
+
 		$args = array
 			(
 				'Ref' => $OrderCode,
@@ -357,7 +357,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
 		}
 		if (version_compare( $current_version, '2.3.0', '<' )) { //older version
-		
+
 		$woocommerce->add_inline_js( '
 			jQuery("body").block({
 					message: "'.__( 'Thank you for your order. We are now redirecting you to make your payment.', 'vivawallet-for-woocommerce' ).'",
@@ -377,10 +377,10 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				    }
 				});
 			jQuery("#submit_vivawallet_payment_form").click();
-		' ); 
-		
+		' );
+
 		} else {
-		
+
 		wc_enqueue_js( '
 			jQuery("body").block({
 					message: "'.__( 'Thank you for your order. We are now redirecting you to make your payment.', 'vivawallet-for-woocommerce' ).'",
@@ -400,16 +400,16 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 				    }
 				});
 			jQuery("#submit_vivawallet_payment_form").click();
-		' ); 
+		' );
 		}
-		
+
 		return
 			'<form action="'.esc_url($action_adr).'" method="GET" id="vivawallet_payment_form">'."\n".
 			implode("\n", $args_array)."\n".
 			'<input type="submit" class="button alt" id="submit_vivawallet_payment_form" value="'.__('Pay Now', 'vivawallet-for-woocommerce').'" /> <a class="button cancel" href="'.$order->get_cancel_order_url().'">'.__('Cancel', 'vivawallet-for-woocommerce').'</a>'."\n".
 			'</form>';
 	}
-	
+
 	/**
 	 * Process the payment and return the result
 	 **/
@@ -443,7 +443,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			);
 		}
 	}
-	
+
 	/**
 	* receipt_page
 	**/
@@ -452,8 +452,8 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		echo '<p>'.__('Thank you for your order, please click the button below to pay.', 'vivawallet-for-woocommerce').'</p>';
 		echo $this->generate_form($order);
 	}
-	
-	
+
+
 	/**
 	* Check Response
 	**/
@@ -465,35 +465,35 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 		{
 			$tm_ref = $_GET['s'];
 			$statustr = $this->vivawallet_processing;
-	  
+
 			$check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
 			if($check_query[0]['order_state']=='I' || $check_query[0]['order_state']=='P') {
-			
+
 			$inv_id = $check_query[0]['orderid'];
 			$order = new WC_Order($inv_id);
-			
+
 			if($check_query[0]['order_state']=='I'){
 			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
 		    $wpdb->query($query);
 			$order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
-			
+
 			if (version_compare( $current_version, '3.0.0', '<' )) {
 			$order->reduce_order_stock();
 			} else {
 			wc_reduce_stock_levels( $order->get_id() );
 			}
-			
+
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
 			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
 			update_post_meta( $inv_id, '_transaction_id', wc_clean($tm_ref) );
-			
+
 			$order->payment_complete(wc_clean($tm_ref));
 			$woocommerce->cart->empty_cart();
 			}
-			
-			
+
+
 			if (version_compare( $current_version, '2.1.0', '<' )) { //older version
 			wp_redirect(esc_url_raw(add_query_arg('key', $order->order_key, add_query_arg('order', $inv_id, get_permalink(get_option('woocommerce_thanks_page_id'))))));
 			} elseif (version_compare( $current_version, '3.0.0', '<' )) { //older version
@@ -502,18 +502,18 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			wp_redirect(esc_url_raw(add_query_arg('key', $order->get_order_key(), add_query_arg('order-received', $inv_id, $this->get_return_url($order)))));
 			}
 			exit;
-			
+
 			}
           }
 		}
-		
+
 		if(preg_match("/webhook/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
-			
+
 			$postdata = file_get_contents("php://input");
 			$MerchantID =  $this->vivawallet_merchantid;
 			$Password =   html_entity_decode($this->vivawallet_merchantpass);
-			
+
 			if ($this->vivawallet_testmode == 'yes') {
 			$curl_adr 	= 'https://demo.vivapayments.com/api/messages/config/token/';
 			$posturl = 'https://demo.vivapayments.com/api/messages/config/token/';
@@ -521,7 +521,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			$curl_adr 	= 'https://www.vivapayments.com/api/messages/config/token/';
 			$posturl = 'https://www.vivapayments.com/api/messages/config/token/';
 			}
-		
+
 			$curl = curl_init();
 			if (preg_match("/https/i", $curl_adr)) {
 			curl_setopt($curl, CURLOPT_PORT, 443);
@@ -536,7 +536,7 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			curl_setopt($curl, CURLOPT_SSL_CIPHER_LIST, "TLSv1");
 			}
 			$response = curl_exec($curl);
-			
+
 			if(curl_error($curl)){
 			if (preg_match("/https/i", $curl_adr)) {
 			curl_setopt($curl, CURLOPT_PORT, 443);
@@ -549,47 +549,47 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 			$response = curl_exec($curl);
 			}
-			
+
 			curl_close($curl);
 			echo $response;
-			
+
 			try {
-				
+
 			if(is_object(json_decode($postdata))){
 				$resultObj=json_decode($postdata);
 			}
 			} catch( Exception $e ) {
 				echo $e->getMessage();
 			}
-		
-		
+
+
 			if(!empty($resultObj->EventData) && sizeof($resultObj->EventData) > 0) {
 			$StatusId = $resultObj->EventData->StatusId;
 			$OrderCode = $resultObj->EventData->OrderCode;
 			$statustr = $this->vivawallet_processing;
-	  
+
 			$check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($OrderCode)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
 			if($check_query[0]['order_state']=='I' && $StatusId=='F') {
-			
+
 			$query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($OrderCode)."'";
 		    $wpdb->query($query);
-			
+
 			$inv_id = $check_query[0]['orderid'];
 			$order = new WC_Order($inv_id);
 			$order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $OrderCode, 'vivawallet-for-woocommerce'));
-			
+
 			if (version_compare( $current_version, '3.0.0', '<' )) {
 			$order->reduce_order_stock();
 			} else {
 			wc_reduce_stock_levels( $order->get_id() );
 			}
-			
+
 			add_post_meta( $inv_id, '_paid_date', current_time('mysql'), true );
 			//add_post_meta( $inv_id, '_transaction_id', $tm_ref, true );
 			update_post_meta( $inv_id, '_transaction_id', wc_clean($tm_ref) );
-			
+
 			$order->payment_complete(wc_clean($tm_ref));
 			$woocommerce->cart->empty_cart();
 			exit;
@@ -598,29 +598,29 @@ class WC_VIVAWALLET extends WC_Payment_Gateway
           	     } else {
 		  	exit();
 		  	}
-		}		
-				
+		}
+
 		if(preg_match("/fail/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
 		{
 			$tm_ref = $_GET['s'];
-			
+
 			$check_query = $wpdb->get_results("SELECT orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
 			$check_query_count = count($check_query);
 			if($check_query_count >= 1){
-			
+
 			$query = "update {$wpdb->prefix}vivawallet_data set order_state='F' where ordercode='".addslashes($tm_ref)."'";
 		    $wpdb->query($query);
-			
+
 			$inv_id = $check_query[0]['orderid'];
 			$order = new WC_Order($inv_id);
 			//$order->update_status('failed', __('Payment failed', 'vivawallet-for-woocommerce'));
-			
+
 			if (version_compare( $current_version, '2.3.0', '<' )) { //older version
-			$woocommerce->add_error(__('An error occured, please try again.', 'vivawallet-for-woocommerce'));
+			$woocommerce->add_error(__('There was a problem with your payment, please try again with another card.', 'vivawallet-for-woocommerce'));
 			} else {
-			wc_add_notice(__('An error occured, please try again.', 'vivawallet-for-woocommerce'), 'error' );
+			wc_add_notice(__('There was a problem with your payment, please try again with another card.', 'vivawallet-for-woocommerce'), 'error' );
 			}
-			
+
 			if (version_compare( $current_version, '2.6.0', '<' )) { //older version
 			wp_redirect($order->get_checkout_payment_url());
 			} else {
