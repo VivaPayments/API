@@ -566,9 +566,9 @@ function woocommerce_vivawallet()
                     //$order->update_status('failed', __('Payment failed', 'vivawallet-for-woocommerce'));
 
                     if (version_compare( $current_version, '2.3.0', '<' )) { //older version
-                        $woocommerce->add_error(__('An error occurred, please try again.', 'vivawallet-for-woocommerce'));
+                        $woocommerce->add_error(__('There was a problem with your payment, please try again with another card.', 'vivawallet-for-woocommerce'));
                     } else {
-                        wc_add_notice(__('An error occured, please try again.', 'vivawallet-for-woocommerce'), 'error' );
+                        wc_add_notice(__('There was a problem with your payment, please try again with another card.', 'vivawallet-for-woocommerce'), 'error' );
                     }
 
                     if (version_compare( $current_version, '2.6.0', '<' )) { //older version
