@@ -38,6 +38,12 @@ if (defined('PAYMENT_NOTIFICATION')) {
 		if (fn_check_payment_script('vivawallet.php', $order_id)) {
 			fn_finish_payment($order_id, $pp_response, true);
 		}
+		
+		//samesite cookie fix
+		if(!isset(Tygh::$app['session']['auth']['user_id']) || Tygh::$app['session']['auth']['user_id']==''){
+		 $user_id = $order_info['payment_info']['uid'];
+		 fn_login_user($user_id, true);
+		}
 
 		fn_order_placement_routines('route', $order_id);
 	}
@@ -58,6 +64,13 @@ if (defined('PAYMENT_NOTIFICATION')) {
 
 		if (fn_check_payment_script('vivawallet.php', $order_id)) {
 			fn_finish_payment($order_id, $pp_response, false);
+			
+			//samesite cookie fix
+			if(!isset(Tygh::$app['session']['auth']['user_id']) || Tygh::$app['session']['auth']['user_id']==''){
+			 $user_id = $order_info['payment_info']['uid'];
+			 fn_login_user($user_id, true);
+			}
+			
 			fn_order_placement_routines('route', $order_id, false);
 		}
 		
@@ -190,6 +203,9 @@ if (defined('PAYMENT_NOTIFICATION')) {
 		}
 	
 		db_query("INSERT INTO vivawalletdata (hp_oid, hp_code) VALUES ('".$cart_order_id."', '".$pp_response['OrderCode']."')");
+		//samesite cookie fix
+		$pp_response['uid'] = Tygh::$app['session']['auth']['user_id'];
+
 		fn_update_order_payment_info($order_id, $pp_response);	
 		$_SESSION['stored_vivawallet_orderid'] = $order_id;
 		
