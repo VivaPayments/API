@@ -88,8 +88,8 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $mref = "REF".substr(md5(uniqid(rand(), true)), 0, 9);
         $TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ=';
 
-        $charge = $order->getGrandTotal();
-        $amountcents = round($order->getGrandTotal() * 100);
+        $charge = $order->getBaseGrandTotal();
+        $amountcents = round($order->getBaseGrandTotal() * 100);
         $MerchantID = $this->getConfigData('merchantid');
         $Password =   $this->getConfigData('merchantpass');
         $trlang = $this->_localeResolver->getLocale();
