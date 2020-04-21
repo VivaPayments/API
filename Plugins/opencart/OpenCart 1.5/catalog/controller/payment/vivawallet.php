@@ -187,6 +187,19 @@ $this->data['text_failure_wait'] = sprintf($this->language->get('text_failure_wa
 	  }
 
 		$this->data['continue'] = $this->url->link('checkout/cart');
+		
+		if (isset($oRecord['ref'])) {
+			$order_id = $oRecord['ref'];
+		} else {
+			$order_id = 0;
+		}
+		
+		if(!$this->customer->isLogged()){
+		$email_query = $this->db->query("SELECT email FROM " . DB_PREFIX . "order WHERE order_id = '" . (int)$order_id . "'");
+			if ($email_query->num_rows){
+			 $this->customer->login($email_query->row['email'], '', true);
+			}
+		}
 	
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/vivawallet_failure.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/payment/vivawallet_failure.tpl';
@@ -210,12 +223,26 @@ $this->data['text_failure_wait'] = sprintf($this->language->get('text_failure_wa
 		
 		if($check_query->rows){
 		$oRecord = $check_query->rows[0];
+		
+		if (isset($oRecord['ref'])) {
+			$order_id = $oRecord['ref'];
+		} else {
+			$order_id = 0;
+		}
+		
+		if(!$this->customer->isLogged()){
+		$email_query = $this->db->query("SELECT email FROM " . DB_PREFIX . "order WHERE order_id = '" . (int)$emp_orderid . "'");
+			if ($email_query->num_rows){
+			 $this->customer->login($email_query->row['email'], '', true);
+			 $this->cart->clear();	   
+			}
+		}
 	  
 		$this->db->query("update oc_vivawallet_data set order_state='P' where OrderCode='".$this->db->escape($tm_ref)."'");
   
 		$this->load->model('checkout/order');
-		$order_info = $this->model_checkout_order->getOrder($oRecord['ref']);
-		$this->model_checkout_order->confirm($oRecord['ref'], $this->config->get('vivawallet_processed_status_id'));
+		$order_info = $this->model_checkout_order->getOrder((int)$oRecord['ref']);
+		$this->model_checkout_order->confirm((int)$oRecord['ref'], $this->config->get('vivawallet_processed_status_id'));
 		$this->redirect($this->url->link('checkout/success'));
   		}
        } 
