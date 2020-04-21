@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" version="2.5" method="install" group="hikashoppayment">
 	<name>Hikashop Vivawallet Plugin</name>
-	<creationDate>March 2013</creationDate>
-	<version>1.0.0</version>
+	<creationDate>April 2020</creationDate>
+	<version>2.0.0</version>
 	<author>Viva Wallet</author>
 	<authorEmail>info@vivawallet.com</authorEmail>
 	<authorUrl>http://www.vivawallet.com</authorUrl>
-	<copyright>Copyright (C) 2017 Vivawallet - All rights reserved.</copyright>
+	<copyright>Copyright (C) 2020 Vivawallet - All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2</license>
 	<description>This plugin enables you to setup your Vivawallet system</description>
 	
 	<files>
 		<filename plugin="viva">viva.php</filename>
 		<folder>sql</folder>
-		<filename>viva_configuration.php</filename>
 		<filename>viva_end.php</filename>
 	</files>
 	

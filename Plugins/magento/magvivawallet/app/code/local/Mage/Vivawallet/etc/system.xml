@@ -46,22 +46,12 @@
 						</merchantpass>
 						<merchantsource translate="label">
 							<label>Source Code</label>
-							<comment>If Seconday Source Code (below) is specified, this code will only be used for customers who have selected the Greek language.</comment>
 							<frontend_type>text</frontend_type>
 							<sort_order>9</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</merchantsource>
-						<merchantsecsource translate="label">
-							<label>Optional Secondary Source Code</label>
-							<comment>Can be used for secundary language setup, if specified, this code will be used for customers who have selected another language then Greek.</comment>
-							<frontend_type>text</frontend_type>
-							<sort_order>10</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</merchantsecsource>
 						<order_url translate="label">
 							<label>OrderCode URL</label>
 							<frontend_type>text</frontend_type>

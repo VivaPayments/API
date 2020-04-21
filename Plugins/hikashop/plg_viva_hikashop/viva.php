@@ -1,13 +1,13 @@
 <?php
 /**
  * @package	HikaShop for Joomla!
- * @version	1.0.0
+ * @version	2.0.0
  * @author	Viva Wallet
- * @copyright	(C) 2017 Vivawallet.
+ * @copyright	(C) 2020 Vivawallet.
  */
 defined('_JEXEC') or die('Restricted access');
 ?><?php
-class plgHikashoppaymentViva extends JPlugin
+class plgHikashoppaymentViva extends hikashopPaymentPlugin
 {
 	var $accepted_currencies = array
 	(
@@ -15,88 +15,23 @@ class plgHikashoppaymentViva extends JPlugin
 	);
 
 	var $debugData = array();
-
-	function onPaymentDisplay(&$order, &$methods, &$usable_methods)
-	{
-		if(!empty($methods))
-		{
-			foreach($methods as $method)
-			{
-				if($method->payment_type != 'viva' || !$method->enabled)
-				{
-					continue;
-				}
-				if(!empty($method->payment_zone_namekey))
-				{
-					$zoneClass = hikashop_get('class.zone');
-					$zones = $zoneClass->getOrderZones($order);
-					if(!in_array($method->payment_zone_namekey, $zones))
-					{
-						return true;
-					}
-				}
-				$currencyClass = hikashop_get('class.currency');
-				$null = null;
-				if(!empty($order->total))
-				{
-					$currency_id = intval(@$order->total->prices[0]->price_currency_id);
-					$currency = $currencyClass->getCurrencies($currency_id, $null);
-					if(!empty($currency) && !in_array(@$currency[$currency_id]->currency_code, $this->accepted_currencies))
-					{
-						return true;
-					}
-				}
-				
-				//instalments
-				$this->loadLanguage('plg_hikashoppayment_viva_hikashop');
-				$vivar_total_eur = $order->total->prices[0]->price_value_with_tax;
-				$instal_logic = trim($method->payment_params->instal);
-				if(isset($instal_logic) && $instal_logic !=''){
-				$split_instal_viva = explode(',', $instal_logic);
-				$c = count ($split_instal_viva);
-				
-				$instal_viva = '';
-				$instal_viva .= '<table width="100%"><tr><td><select name="plg_viva_instal">'."\n";
-				$instal_viva .= '<option value="">'.JText::_('PLG_VIVA_SELECT_INSTAL').'</option>'."\n";
-				$instal_viva .= '<option value="">'.JText::_('PLG_VIVA_NO_INSTAL').'</option>'."\n";
-			
-				for($i=0; $i<$c; $i++)
-				{
-				list($instal_amount, $instal_term) = explode(":", $split_instal_viva[$i]);
-				
-				if($vivar_total_eur >= $instal_amount){
-				$instal_viva .= '<option value="'.$instal_term.'">'. $instal_term . JText::_('PLG_VIVA_INSTALMENTS').'</option>'."\n"; 
-				}
-				}
-				$instal_viva .= '</select><br><br></td></tr></table>'."\n";
-				} else {
-				$instal_viva = '';
-				}				
-				$method->payment_description .= $instal_viva;
-				
-				$usable_methods[$method->ordering] = $method;
-			}
-		}
-		return true;
-	}
-
-	function onPaymentSave(&$cart, &$rates, &$payment_id)
-	{
-		$_SESSION['plg_viva_instal']=@$_REQUEST['plg_viva_instal'];
-		$usable = array();
-		$this->onPaymentDisplay($cart, $rates, $usable);
-		$payment_id = (int)$payment_id;
-		foreach($usable as $usable_method)
-		{
-			if($usable_method->payment_id == $payment_id)
-			{
-				return $usable_method;
-			}
-		}
-		
-		
-		return false;
-	}
+	
+	var $multiple = true;
+	var $name = 'viva';
+	
+	var $pluginConfig = array(
+		'user' => array('Merchant ID', 'input'),
+		'pass' => array('API Key', 'input'),
+		'merchantid' => array('Source Code', 'input'),
+		'merchantidloc' => array('Source Code Locale', 'input'),
+		'merchantidsec' => array('Secondary Source Code', 'input'),
+		'merchantidsecloc' => array('Secondary Source Code Locale', 'input'),
+		'testmode' => array('Use Sandbox', 'list', array('0' => 'HIKASHOP_NO', '1' => 'HIKASHOP_YES')),
+		'instal' => array('Instalment Logic', 'input'),
+		'invalid_status' => array('INVALID_STATUS', 'orderstatus'),
+		'pending_status' => array('PENDING_STATUS', 'orderstatus'),
+		'verified_status' => array('VERIFIED_STATUS', 'orderstatus')
+	);
 
 	function getVars($order, $methods, $method_id)
 	{
@@ -125,8 +60,9 @@ class plgHikashoppaymentViva extends JPlugin
 		$tramountformat = round($tramount * 100);
 		
 		$currency_symbol ='';
-		$currency_code = $currency;
-		switch ($currency_code) {
+		$trcurrency = strtoupper($currency->currency_code);
+		
+		switch ($trcurrency) {
 		case 'EUR':
    		$currency_symbol = 978;
    		break;
@@ -149,15 +85,38 @@ class plgHikashoppaymentViva extends JPlugin
 		$formlang = 'en-US';
 		}
 		
-		if(isset($_SESSION['plg_viva_instal']) && $_SESSION['plg_viva_instal'] > 0){
-		$period = intval($_SESSION['plg_viva_instal']);
+		$maxperiod = '';
+		 $installogic = trim($method->payment_params->instal);
+		 if(isset($installogic) && $installogic!=''){
+		 $split_instal = explode(',',$installogic);
+		 $c = count($split_instal);	
+		 $instal_max = array();
+		 for($i=0; $i<$c; $i++){
+			list($instal_amount, $instal_term) = explode(":", $split_instal[$i]);
+			if($tramount >= $instal_amount){
+			$instal_max[] = trim($instal_term);
+			}
+		}
+		if(count($instal_max) > 0){
+		 $maxperiod = max($instal_max);
+		}
+		}
+		
+		if(isset($maxperiod) && $maxperiod > 1){
+		$period = $maxperiod;
 		} else {
 		$period = '1';
 		}
 		
+		if($method->payment_params->testmode!=1){
+		$plg_curl_url = 'https://www.vivapayments.com/api/orders';
+		} else{
+		$plg_curl_url = 'https://demo.vivapayments.com/api/orders';
+		}
+		
 		$postargs = 'Amount='.urlencode($tramountformat).'&RequestLang='.urlencode($formlang).'&Email='.urlencode($user->user_email).'&MaxInstallments='.urlencode($period).'&MerchantTrns='.urlencode($order->order_id).'&SourceCode='.urlencode($mcode).'&CurrencyCode='.urlencode($currency_symbol).'&PaymentTimeOut=300';
 		
-		$curl = curl_init("https://www.vivapayments.com/api/orders");
+		$curl = curl_init($plg_curl_url);
 		curl_setopt($curl, CURLOPT_PORT, 443);
 		
 		curl_setopt($curl, CURLOPT_POST, true);
@@ -214,7 +173,8 @@ class plgHikashoppaymentViva extends JPlugin
 		$query = $db->getQuery(true);
 		$query->insert('`#__vivadata`');
 		$query->columns('`ref`,`orderid`,`ordercode`, `total_cost`, `locale`, `period`, `itemid`, `currency`, `order_state`, `timestamp`');
-		$query->values('"'.$mref.'","'.$order->order_id.'","'.$OrderCode.'","'.$tramount.'","'.$locale.'","'.$period.'","'.$Itemid.'","'.$currency_code.'","I",now()');
+		
+		$query->values('"'.$mref.'","'.$order->order_id.'","'.$OrderCode.'","'.$tramount.'","'.$locale.'","'.$period.'","'.$Itemid.'","'.$trcurrency.'","I",now()');
 		$db->setQuery($query);
 		$db->execute();
 		
@@ -227,6 +187,7 @@ class plgHikashoppaymentViva extends JPlugin
 
 	function onAfterOrderConfirm(&$order, &$methods, $method_id)
 	{
+		parent::onAfterOrderConfirm($order, $methods, $method_id);
 		$method =  & $methods[$method_id];
 		$tax_total = '';
 		$discount_total = '';
@@ -242,7 +203,11 @@ class plgHikashoppaymentViva extends JPlugin
 		$name = $method->payment_type . '_end.php';
 		$path = JPATH_THEMES . DS . $app->getTemplate() . DS . 'hikashoppayment' . DS . $name;
 		
+		if($method->payment_params->testmode!=1){
 		$plg_viva_url = 'https://www.vivapayments.com/web/newtransaction.aspx';
+		} else{
+		$plg_viva_url = 'https://demo.vivapayments.com/web/newtransaction.aspx';
+		}
 		
 		if(!file_exists($path))
 		{
@@ -405,39 +370,16 @@ class plgHikashoppaymentViva extends JPlugin
 	
 	}
 
-	function onPaymentConfiguration(&$element)
-	{
-		$this->viva = JRequest::getCmd('name', 'viva');
-
-		if(empty($element))
-		{
-			$element = new stdClass();
-			$element->payment_name = 'Viva Payments';
-			$element->payment_description = 'You can pay by credit card using this payment method';
-			$element->payment_type = $this->viva;
-			$element->payment_params = new stdClass();
-			$element->payment_params->notification = 1;
-			$element->payment_params->invalid_status = 'cancelled';
-			$element->payment_params->pending_status = 'created';
-			$element->payment_params->verified_status = 'confirmed';
-			$element = array($element);
-		}
-
-		$this->toolbar = array
-		(
-			'save',
-			'apply',
-			'cancel',
-			'|',
-			array('name' => 'pophelp', 'target' => 'payment-viva-form')
-		);
-
-		hikashop_setTitle('Viva', 'plugin', 'plugins&plugin_type=payment&task=edit&name=' . $this->viva);
-		$app = JFactory::getApplication();
-		$app->setUserState(HIKASHOP_COMPONENT . '.payment_plugin_type', $this->viva);
-		$this->address = hikashop_get('type.address');
-		$this->category = hikashop_get('type.categorysub');
-		$this->category->type = 'status';
+	function getPaymentDefaultValues(&$element) {
+		
+		$element->payment_name = 'Viva Wallet';
+		$element->payment_description = 'You can pay by credit card using this payment method';
+		$element->payment_images = 'MasterCard,VISA';
+		$element->payment_params->testmode = 1;
+		
+		$element->payment_params->invalid_status = 'cancelled';
+		$element->payment_params->pending_status = 'created';
+		$element->payment_params->verified_status = 'confirmed';
 	}
 
 }

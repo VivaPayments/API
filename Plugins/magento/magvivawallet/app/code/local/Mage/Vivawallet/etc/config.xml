@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Mage_Vivawallet>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <depends>
                 <Mage_Payment />
             </depends>
@@ -14,6 +14,11 @@
 	    		<class>Mage_Vivawallet_Model</class>
 				<resourceModel>paygate_mysql4</resourceModel>
 	    	</vivawallet>
+			<core>
+				<rewrite>
+					<cookie>Mage_Vivawallet_Model_Cookie</cookie>
+				</rewrite>
+			</core>	
          <paygate_mysql4>
             <class>Mage_Paygate_Model_Mysql4</class>
             <entities>
@@ -85,7 +90,6 @@
                 <merchantid>MerchantID</merchantid>
 				<merchantpass>API Key</merchantpass>
 				<merchantsource>Source Code</merchantsource>
-				<merchantsecsource></merchantsecsource>
 				<Installments>90:3,180:6</Installments>
                 <title>Viva Payments Credit Card (redirect)</title>
                 <Currency>EUR</Currency>

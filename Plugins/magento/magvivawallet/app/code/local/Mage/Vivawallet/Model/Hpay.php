@@ -84,19 +84,6 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
         return $this->getConfigData('merchantsource');
     }
 	
-	public function getSecsource()
-    {
-        
-		$secsource = $this->getConfigData('merchantsecsource');
-		if(isset($secsource) && $secsource!=''){
-		$this->source = $secsource;
-		} else {
-		$this->source = $this->getConfigData('merchantsource');
-		}
-		
-		return $this->source;
-    }
-	
 	public function getOrderUrl()
     {
         return $this->getConfigData('order_url');
@@ -176,12 +163,12 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
         $currency_symbol = 978;
 		}
 		
+		$vivasource =  $this->getSource();
+		
 		if($locale_code == 'el_GR'){
 		$language_code = 'el-GR';
-		$vivasource =  $this->getSource();
 		} else {
 		$language_code = 'en-US';
-		$vivasource =  $this->getSecsource();
 		}
 		
 		$amount = $order->getBaseGrandTotal();
@@ -299,6 +286,30 @@ class Mage_Vivawallet_Model_Hpay extends Mage_Payment_Model_Method_Abstract
 		} else {
 		$_SESSION['installments'] = '0';
 		}
+		
+		$qtotal = $this->getQuote()->getGrandTotal();
+		$maxperiod = '';
+		 $installogic = $this->getConfigData('Installments');
+		 if(isset($installogic) && $installogic!=''){
+		 $split_instal = explode(',',$installogic);
+		 $c = count($split_instal);	
+		 $instal_max = array();
+		 for($i=0; $i<$c; $i++){
+			list($instal_amount, $instal_term) = explode(":", $split_instal[$i]);
+			if($qtotal >= $instal_amount){
+			$instal_max[] = trim($instal_term);
+			}
+			}
+				if(count($instal_max) > 0){
+				 $maxperiod = max($instal_max);
+				}
+			}
+			
+			if(isset($_SESSION['installments']) && $_SESSION['installments'] > 1){
+				if((int)$_SESSION['installments'] > (int)$maxperiod){
+				$_SESSION['installments'] = '0';
+				}
+			}
         
 		return $this;
     }
