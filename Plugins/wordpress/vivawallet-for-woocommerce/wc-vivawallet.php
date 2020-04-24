@@ -507,15 +507,6 @@ function woocommerce_vivawallet()
                     exit;
                 }
 
-                try {
-                    if(is_object(json_decode($postdata))){
-                        $resultObj = json_decode($postdata);
-                        error_log(print_r($resultObj, true));
-                    }
-                } catch( Exception $e ) {
-                    echo $e->getMessage();
-                }
-
                 $eventData = false;
 
                 if ($postRequest['response']['code'] === 200) {
