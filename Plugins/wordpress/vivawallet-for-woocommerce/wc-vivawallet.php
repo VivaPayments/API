@@ -72,7 +72,7 @@ function woocommerce_vivawallet()
          */
         function is_valid_for_use()
         {
-            if (!in_array( get_woocommerce_currency(), array('GBP', 'BGN', 'RON', 'EUR'))) return false;
+            if (!in_array( get_woocommerce_currency(), array('GBP', 'BGN', 'RON', 'PLN', 'EUR'))) return false;
 
             return true;
         }
@@ -274,6 +274,9 @@ function woocommerce_vivawallet()
                     break;
                 case 'RON':
                     $currency_symbol = 946;
+                    break;
+                    case 'PLN':
+                    $currency_symbol = 985;
                     break;
                 default:
                     $currency_symbol = 978;
