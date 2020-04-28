@@ -9,7 +9,7 @@ include(dirname(__FILE__).'/vivawallet.php');
 $vivawallet = new vivawallet();
 $errors = '';
 
-  $OrderCode = stripslashes($_GET['s']);
+  $OrderCode = addslashes($_GET['s']);
   
   $update_query = "update vivawallet_data set order_state='F' where OrderCode='".$OrderCode."'";
   $update = Db::getInstance()->execute($update_query);

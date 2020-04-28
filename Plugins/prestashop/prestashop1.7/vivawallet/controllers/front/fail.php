@@ -9,10 +9,11 @@ class VivawalletFailModuleFrontController extends ModuleFrontController
   
 	  if(isset($_GET['s']) && $_GET['s']!=''){
 
-	  $OrderCode = stripslashes($_GET['s']);
+	  $OrderCode = addslashes($_GET['s']);
 	  
-	  $update_query = "update vivawallet_data set order_state='F' where OrderCode='".$OrderCode."'";
-	  $update = Db::getInstance()->execute($update_query);
+	  $check_query = "select * from vivawallet_data where OrderCode='".$OrderCode."' ORDER BY id DESC";
+	  $check = Db::getInstance()->executeS($check_query, $array = true, $use_cache = 0);
+	  $oid = $check[0]['ref'];
 	
 		$cart = $this->context->cart;
 		if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->module->active){
