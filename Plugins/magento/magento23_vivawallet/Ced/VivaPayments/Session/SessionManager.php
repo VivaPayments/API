@@ -99,9 +99,18 @@ class SessionManager extends \Magento\Framework\Session\Generic
                     session_commit();
                     session_id($_SESSION['new_session_id']);
                 }
-                $sid = $this->sidResolver->getSid($this);
-                // potential custom logic for session id (ex. switching between hosts)
-                $this->setSessionId($sid);
+				
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); 
+				$productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface'); 
+				$magversion = $productMetadata->getVersion();
+				
+				//tommod m235
+				if (version_compare($magversion, '2.3.5', '<')) {
+				 $sid = $this->sidResolver->getSid($this);
+                 //potential custom logic for session id (ex. switching between hosts)
+                 $this->setSessionId($sid);
+				}
+                
                 session_start();
                 if (isset($_SESSION['destroyed'])
                     && $_SESSION['destroyed'] < time() - $this->sessionConfig->getCookieLifetime()
@@ -110,7 +119,13 @@ class SessionManager extends \Magento\Framework\Session\Generic
                 }
 
                 $this->validator->validate($this);
-                $this->renewCookie($sid);
+				
+				//tommod m235
+				if (version_compare($magversion, '2.3.5', '<')) {
+                 $this->renewCookie($sid);
+				} else {
+				 $this->renewCookie(null);
+				}
 
                 register_shutdown_function([$this, 'writeClose']);
 
