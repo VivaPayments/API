@@ -1,7 +1,7 @@
 <fieldset class="form-list">
    <?php $_code=$this->getMethodCode() ?>
 
-   <?php if(count($this->displayInstallments()) > 1){ ?>
+    <?php if(count(explode(",",$this->displayInstallments())) > 1){ ?>
 	
     <ul id="payment_form_<?php echo $_code ?>" style="display:none">
         <li>
