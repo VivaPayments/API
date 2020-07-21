@@ -27,18 +27,7 @@ Please provide any request / response logs generated along with screenshots if p
 
 *Other queries*
 
-If your issue is account related, please call the Viva Wallet office closest to you:
-
-<table><tr><th>Country</th><th>Phone number</th>
-  <tr><td>Belgium</td><td>(+32) 2342 0790</td></tr>
-    <tr><td>Cyprus</td><td>(+357) 2403 0211</td></tr>
-    <tr><td>France</td><td>(+33) 1876 50765</td></tr>
-    <tr><td>Greece</td><td>(+30) 21 1760 4000</td></tr>
-    <tr><td>Netherland</td><td>(+31) 2089 05503</td></tr>
-    <tr><td>Romania</td><td>(+40) 3122 96150</td></tr>
-    <tr><td>UK</td><td>(+44) 20 3734 7770</td></tr>
-    <tr><td>Portugal</td><td>(+351) 3 0050 9059</td></tr>
-</table>
+If your issue is account related, please visit the live chat on the [Viva Wallet home page](https://www.vivawallet.com).
 
 If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
 
