@@ -195,7 +195,7 @@ $this->data['text_failure_wait'] = sprintf($this->language->get('text_failure_wa
 		}
 		
 		if(!$this->customer->isLogged()){
-		$email_query = $this->db->query("SELECT email FROM " . DB_PREFIX . "order WHERE order_id = '" . (int)$order_id . "'");
+		$email_query = $this->db->query("SELECT email FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "'");
 			if ($email_query->num_rows){
 			 $this->customer->login($email_query->row['email'], '', true);
 			}
