@@ -362,11 +362,11 @@ class vivawallet extends PaymentModule
 			$formpost.= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
 		
-		$logo = Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/vivawallet.gif');
+		$logo = Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/logos.png');
 
         $formurl = $this->context->link->getModuleLink('vivawallet', 'pay', [], true);
 		$newOption = new PaymentOption();
-        $newOption->setCallToActionText($this->l('Pay by Viva'))
+        $newOption->setCallToActionText($this->l('Payment card (Viva Wallet)'))
 		->setLogo($logo)
 		->setForm('<form id="vivawallet_confirmation_form" name="vivawallet_confirmation" data-ajax="false" action="'.$formurl.'" method="post">'.$formpost.'</form>');
 
