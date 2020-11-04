@@ -1,4 +1,4 @@
-This repository contains sample projects for integrating [Viva Wallet](https://www.vivapayments.com) to your website. Feel free to send us any issues, comments, or enhancements.
+This repository contains sample projects for integrating [Viva Wallet](https://www.vivawallet.com) to your website. Feel free to send us any issues, comments, or enhancements.
 
 We welcome, also, your contributions towards developing plugins that will allow easy integration with popular open source e-commerce platforms and content management tools.
 
@@ -17,7 +17,7 @@ By which method are you attempting to integrate? Check first the following secti
 - [Native Checkout v2 3DS](https://developer.vivawallet.com/online-checkouts/native-checkout-v2/)
 - [Redirect Checkout](https://developer.vivawallet.com/online-checkouts/redirect-checkout/)
 - [E-commerce plugin](https://developer.vivawallet.com/e-commerce-plugins/) (e.g. [Viva Wallet for WooCommerce](https://developer.vivawallet.com/e-commerce-plugins/woocommerce/), or [Viva Wallet for Shopify](https://developer.vivawallet.com/e-commerce-plugins/shopify/))
-- [Payment API integration](https://developer.vivawallet.com/api-reference-guide/payment-api/)
+- [Web API integration](https://developer.vivawallet.com/web-api-integration)
 
 If you still can't get anywhere, describe the problem as clearly as possible in a new [GitHub issue](https://github.com/VivaPayments/API/issues), notifying us of any errors generated.
 
