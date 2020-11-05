@@ -18,7 +18,8 @@ If you're using one of the popular e-commerce platforms, we've developed numerou
  - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/opencart/OpenCart%201.5">OpenCart 1.5</a><br/>
  - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/opencart/OpenCart%202.0%20-%202.1%20-%202.2">OpenCart 2 / 2.3</a><br/>
  - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/oscommerce/vivawallet">osCommerce</a><br/>
- - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/prestashop/vivawallet">PrestaShop 1.7</a><br/>
+ - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/prestashop/prestashop1.5-1.6/vivawallet">PrestaShop 1.5-1.6</a><br/>
+ - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/prestashop/prestashop1.7/vivawallet">PrestaShop 1.7</a><br/>
  - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/tomatocart/vivawallet">TomatoCart</a><br/>
  - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/virtuemart/vm1_vivawallet">VirtueMart 1</a><br/>
  - <a href="https://github.com/VivaPayments/API/tree/master/Plugins/virtuemart/vm2_plugin_vivawallet">VirtueMart 2</a><br/>
