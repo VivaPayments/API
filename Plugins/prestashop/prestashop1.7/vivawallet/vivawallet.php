@@ -252,17 +252,11 @@ class vivawallet extends PaymentModule
 				$products[$key]['name'] = htmlentities(utf8_decode($product['name']));
 			}
 
-		$allowed_languages = array('de', 'nl', 'en', 'fr', 'it', 'el', 'pl', 'pt', 'ro', 'es');
-		$language_by_iso_code = strtolower(Language::getIsoById($cookie->id_lang));
-		if ($language_by_iso_code === 'gr') {
-		$language_by_iso_code = 'el';
-		}
-
-		if(in_array($language_by_iso_code, $allowed_languages)){
-    	$languagecode = Language::getLocaleByIso($language_by_iso_code);
-		} else {
-    $languagecode ='en-US';
-	}
+			if(strtolower(Language::getIsoById($cookie->id_lang))=='el' || strtolower(Language::getIsoById($cookie->id_lang))=='gr'){
+				$languagecode ='el-GR';
+				} else {
+				$languagecode ='en-US';
+				}
 
 	$MerchantID =  trim(Configuration::get('VIVAWALLET_MERCHANTID'));
 	$Password =   html_entity_decode(Configuration::get('VIVAWALLET_MERCHANTPASS'));
