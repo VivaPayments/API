@@ -212,20 +212,29 @@ class vivawallet extends PaymentModule
 
 		$currency_symbol ='';
 		switch ($dest_currency['iso_code']) {
-		case 'EUR':
-   		$currency_symbol = 978;
-   		break;
-		case 'GBP':
-   		$currency_symbol = 826;
-   		break;
-		case 'BGN':
-   		$currency_symbol = 975;
-   		break;
-		case 'RON':
-   		$currency_symbol = 946;
-   		break;
-		default:
-        $currency_symbol = 978;
+			case 'EUR':
+				$currency_symbol = 978;
+				break;
+			case 'GBP':
+				$currency_symbol = 826;
+				break;
+			case 'BGN':
+				$currency_symbol = 975;
+				break;
+			case 'RON':
+				$currency_symbol = 946;
+				break;
+			case 'PLN':
+				$currency_symbol = 985;
+				break;
+			case 'DKK':
+				$currency_symbol = 208;
+				break;
+			case 'SEK':
+				$currency_symbol = 752;
+				break;
+			default:
+				$currency_symbol = 978;
 		}
 
 		$amount = $cart->getOrderTotal(true, Cart::BOTH);
@@ -252,11 +261,43 @@ class vivawallet extends PaymentModule
 				$products[$key]['name'] = htmlentities(utf8_decode($product['name']));
 			}
 
-			if(strtolower(Language::getIsoById($cookie->id_lang))=='el' || strtolower(Language::getIsoById($cookie->id_lang))=='gr'){
-				$languagecode ='el-GR';
-				} else {
+
+
+
+		switch (  strtolower(Language::getIsoById($cookie->id_lang)) ) {
+			case 'en':
 				$languagecode ='en-US';
-				}
+				break;
+			case 'el':
+				$languagecode ='el-GR';
+				break;
+			case 'de':
+				$languagecode ='de-DE';
+				break;
+			case 'nl':
+				$languagecode ='nl-NL';
+				break;
+			case 'fr':
+				$languagecode ='fr-FR';
+				break;
+			case 'it':
+				$languagecode ='it-IT';
+				break;
+			case 'pl':
+				$languagecode ='pl-PL';
+				break;
+			case 'pt':
+				$languagecode ='pt-PT';
+				break;
+			case 'ro':
+				$languagecode ='ro-RO';
+				break;
+			case 'es':
+				$languagecode ='es-ES';
+				break;
+			default:
+				$languagecode ='en-US';
+		}
 
 	$MerchantID =  trim(Configuration::get('VIVAWALLET_MERCHANTID'));
 	$Password =   html_entity_decode(Configuration::get('VIVAWALLET_MERCHANTPASS'));
