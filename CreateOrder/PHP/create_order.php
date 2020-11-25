@@ -14,7 +14,7 @@ $Amount = 100;	// Amount in cents
 //Set some optional parameters (Full list available here: https://developer.vivawallet.com/api-reference-guide/payment-api/#tag/Payments/paths/~1orders/post)
 $AllowRecurring = 'false'; // If set to true, this flag will prompt the customer to accept recurring payments in tbe future.
 $RequestLang = 'en-US'; //This will display the payment page in English (default language is Greek)
-$Source = 'Default'; // This will assign the transaction to the Source with Code = "Default". If left empty, the default source will be used.
+$Source = 'Default'; // This will assign the transaction to the Source with Code = "Default". Alternatively, you can use the 4-digit code of a custom payment source if set up.
 
 $postargs = 'Amount='.urlencode($Amount).'&AllowRecurring='.$AllowRecurring.'&RequestLang='.$RequestLang.'&SourceCode='.$Source;
 
