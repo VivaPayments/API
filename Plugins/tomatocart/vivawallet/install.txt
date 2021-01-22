@@ -1,1 +1,0 @@
-Latest stable version of Viva Wallet for TomatoCart. To view download and installation instructions, see https://developer.vivapayments.com/e-commerce-plugins/tomatocart.
