@@ -8,6 +8,6 @@ As of 29 January 2021, our issues page has moved to live chat. For technical sup
 
 Our support team will help you directly and escalate to our technical team if necessary. 
 
-Thank you, 
+Thank you –
 
 _Viva Wallet Development Team_
