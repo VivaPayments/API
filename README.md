@@ -1,6 +1,4 @@
-This repository contains the plugin code for the Viva Wallet plugins for [Magento 2.3](https://github.com/VivaPayments/API/tree/master/Plugins/magento), [OpenCart 3](https://github.com/VivaPayments/API/tree/master/Plugins/opencart) and [PrestaShop 1.7](https://github.com/VivaPayments/API/tree/master/Plugins/prestashop).
-
-For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com). You can also browse our [help centre](https://help.vivawallet.com/hc).
+This repository contains the plugin code for the Viva Wallet plugins for [Magento 2.3](https://github.com/VivaPayments/API/tree/master/Plugins/magento), [OpenCart 3](https://github.com/VivaPayments/API/tree/master/Plugins/opencart) and [PrestaShop 1.7](https://github.com/VivaPayments/API/tree/master/Plugins/prestashop). For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com). You can also browse our [help centre](https://help.vivawallet.com/hc).
 
 ## GitHub issues
 
@@ -10,4 +8,6 @@ As of 29 January 2021, our issues page has moved to live chat. For technical sup
 
 Our support team will help you directly and escalate to our technical team if necessary. 
 
-Thank you – _Viva Wallet Development Team_
+Thank you, 
+
+_Viva Wallet Development Team_
