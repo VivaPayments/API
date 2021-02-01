@@ -1,6 +1,6 @@
 This repository contains sample projects for integrating [Viva Wallet](https://www.vivawallet.com) to your website.
 
-For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com). You can also browse our [knowledgebase](https://help.vivawallet.com/hc/en-us).
+For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com). You can also browse our [help centre](https://help.vivawallet.com/hc/en-us).
 
 ## GitHub issues
 
