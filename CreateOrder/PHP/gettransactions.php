@@ -22,7 +22,7 @@ curl_setopt($session, CURLOPT_HTTPGET, true);
 curl_setopt($session, CURLOPT_URL, $request . $getargs);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($session, CURLOPT_USERPWD, $MerchantId.':'.$APIKey);
-curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+curl_setopt($session, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.2');
 
 // Do the GET and then close the session
 $response = curl_exec($session);
