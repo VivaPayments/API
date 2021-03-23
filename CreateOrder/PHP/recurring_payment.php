@@ -5,16 +5,16 @@ $request =  'https://demo.vivapayments.com/api/transactions/';	// demo environme
 //$request =  'https://www.vivapayments.com/api/transactions';	// production environment URL
 
 // Your merchant ID and API Key can be found in the 'Security' settings on your profile.
-$MerchantId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-$APIKey = 'xxxxxxxxxxxxx'; 	
+$merchant_id = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+$api_key = 'xxxxxxxxxxxxx';
 
 //Set the ID of the Initial Transaction
 $request .= 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
 //Set the Payment Amount
-$Amount = 100;	// Amount in cents
+$amount = 100;	// Amount in cents
 
-$postargs = 'Amount='.$Amount;
+$postargs = 'Amount='.$amount;
 
 // Get the curl session object
 $session = curl_init($request);
@@ -24,7 +24,7 @@ curl_setopt($session, CURLOPT_POST, true);
 curl_setopt($session, CURLOPT_POSTFIELDS, $postargs);
 curl_setopt($session, CURLOPT_HEADER, false);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($session, CURLOPT_USERPWD, $MerchantId.':'.$APIKey);
+curl_setopt($session, CURLOPT_USERPWD, $merchant_id.':'.$api_key);
 
 $response = curl_exec($session);
 curl_close($session);
