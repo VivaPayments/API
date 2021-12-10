@@ -103,25 +103,43 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
 		
 		$currency_symbol ='';
         $language_code ='';
-        
-        switch ($currency_code) {
-		case 'EUR':
-   		$currency_symbol = 978;
-   		break;
-		case 'GBP':
-   		$currency_symbol = 826;
-   		break;
-		case 'BGN':
-   		$currency_symbol = 975;
-   		break;
-		case 'RON':
-   		$currency_symbol = 946;
-   		break;
-		default:
-        $currency_symbol = 978;
-		}
 
-        
+        switch ($currency_code) {
+            case 'HRK':
+                $currency_symbol = 191; // CROATIAN KUNA.
+                break;
+            case 'CZK':
+                $currency_symbol = 203; // CZECH KORUNA.
+                break;
+            case 'DKK':
+                $currency_symbol = 208; // DANISH KRONE.
+                break;
+            case 'HUF':
+                $currency_symbol = 348; // HUNGARIAN FORINT.
+                break;
+            case 'SEK':
+                $currency_symbol = 752; // SWEDISH KRONA.
+                break;
+            case 'GBP':
+                $currency_symbol = 826; // POUND STERLING.
+                break;
+            case 'RON':
+                $currency_symbol = 946; // ROMANIAN LEU.
+                break;
+            case 'BGN':
+                $currency_symbol = 975; // BULGARIAN LEV.
+                break;
+            case 'EUR':
+                $currency_symbol = 978; // EURO.
+                break;
+            case 'PLN':
+                $currency_symbol = 985; // POLISH ZLOTY.
+                break;
+            default:
+                $currency_symbol = 978; // EURO.
+        }
+
+
         if ($trlang=='el-GR') {
             $formlang = 'el-GR';
         } else {
