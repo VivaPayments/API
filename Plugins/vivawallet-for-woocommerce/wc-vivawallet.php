@@ -72,7 +72,7 @@ function woocommerce_vivawallet()
          */
         function is_valid_for_use()
         {
-            if (!in_array( get_woocommerce_currency(), array('GBP', 'BGN', 'RON', 'PLN', 'EUR'))) return false;
+            if (!in_array( get_woocommerce_currency(), array('HRK', 'CZK', 'DKK', 'HUF', 'SEK', 'GBP', 'RON', 'BGN','EUR', 'PLN'))) return false;
 
             return true;
         }
@@ -305,7 +305,7 @@ function woocommerce_vivawallet()
                 'MerchantTrns'      => $order_id,
                 'SourceCode'        => $this->vivawallet_source,
                 'CurrencyCode'      => $currency_symbol,
-                'disableCash'       => true
+                'DisableCash'       => 'true'
             ];
 
             $args = [
