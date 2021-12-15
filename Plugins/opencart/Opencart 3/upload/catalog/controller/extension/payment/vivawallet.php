@@ -52,45 +52,62 @@ class ControllerExtensionPaymentVivawallet extends Controller {
 	$currency_symbol ='';
 	$currency_code = strtoupper($order_info['currency_code']);
 	switch ($currency_code) {
-	case 'EUR':
-	$currency_symbol = 978;
-	break;
-	case 'GBP':
-	$currency_symbol = 826;
-	break;
-	case 'BGN':
-	$currency_symbol = 975;
-	break;
-	case 'RON':
-	$currency_symbol = 946;
-	break;
-	default:
-	$currency_symbol = 978;
+        case 'HRK':
+            $currency_symbol = 191; // CROATIAN KUNA.
+            break;
+        case 'CZK':
+            $currency_symbol = 203; // CZECH KORUNA.
+            break;
+        case 'DKK':
+            $currency_symbol = 208; // DANISH KRONE.
+            break;
+        case 'HUF':
+            $currency_symbol = 348; // HUNGARIAN FORINT.
+            break;
+        case 'SEK':
+            $currency_symbol = 752; // SWEDISH KRONA.
+            break;
+        case 'GBP':
+            $currency_symbol = 826; // POUND STERLING.
+            break;
+        case 'RON':
+            $currency_symbol = 946; // ROMANIAN LEU.
+            break;
+        case 'BGN':
+            $currency_symbol = 975; // BULGARIAN LEV.
+            break;
+        case 'EUR':
+            $currency_symbol = 978; // EURO.
+            break;
+        case 'PLN':
+            $currency_symbol = 985; // POLISH ZLOTY.
+            break;
+        default:
+            $currency_symbol = 978; // EURO.
 	}
 	
 	$poststring['MerchantTrns'] = $vivawallet_orderid;
 	$poststring['SourceCode'] = $this->config->get('payment_vivawallet_source');
 	$poststring['CurrencyCode'] = $currency_symbol;
-	$poststring['PaymentTimeOut'] = '300';
 	
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($order_info['email']);
 	
 	if(isset($maxperiod) && $maxperiod > 0){ 
-	$postargs .= '&MaxInstallments='.$maxperiod;
+	    $postargs .= '&MaxInstallments='.$maxperiod;
 	} else {
-	$postargs .= '&MaxInstallments=1';
+	    $postargs .= '&MaxInstallments=1';
 	}
 	
 	$postargs .= '&MerchantTrns='.urlencode($poststring['MerchantTrns']);
 	$postargs .= '&SourceCode='.urlencode($poststring['SourceCode']);
 	$postargs .= '&CurrencyCode='.urlencode($poststring['CurrencyCode']);
-	$postargs .= '&PaymentTimeOut=300';
+	$postargs .= '&disableCash=true';
 
 	if(!isset($OrderCode) || $OrderCode==''){ //reload problem Journal2 quick checkout?
 	$curl = curl_init(trim($this->config->get('payment_vivawallet_orderurl')));
 	
 	if (preg_match("/https/i", $this->config->get('payment_vivawallet_orderurl'))) {
-	curl_setopt($curl, CURLOPT_PORT, 443);
+	    curl_setopt($curl, CURLOPT_PORT, 443);
 	} 
 
 	curl_setopt($curl, CURLOPT_POST, true);
