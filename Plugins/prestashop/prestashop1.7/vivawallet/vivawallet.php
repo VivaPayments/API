@@ -19,7 +19,7 @@ class vivawallet extends PaymentModule
 		$this->displayName = 'Vivawallet';
 		$this->tab = 'payments_gateways';
 		$this->author = 'Viva Wallet';
-		$this->version = '1.7.8';
+		$this->version = '1.7.9';
 		$this->controllers = array('pay', 'fail', 'success', 'webhook');
         $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
         $this->is_eu_compatible = 1;
@@ -212,29 +212,39 @@ class vivawallet extends PaymentModule
 
 		$currency_symbol ='';
 		switch ($dest_currency['iso_code']) {
-			case 'EUR':
-				$currency_symbol = 978;
+			case 'HRK':
+				$currency_symbol = 191; // CROATIAN KUNA.
 				break;
-			case 'GBP':
-				$currency_symbol = 826;
-				break;
-			case 'BGN':
-				$currency_symbol = 975;
-				break;
-			case 'RON':
-				$currency_symbol = 946;
-				break;
-			case 'PLN':
-				$currency_symbol = 985;
+			case 'CZK':
+				$currency_symbol = 203; // CZECH KORUNA.
 				break;
 			case 'DKK':
-				$currency_symbol = 208;
+				$currency_symbol = 208; // DANISH KRONE.
+				break;
+			case 'HUF':
+				$currency_symbol = 348; // HUNGARIAN FORINT.
 				break;
 			case 'SEK':
-				$currency_symbol = 752;
+				$currency_symbol = 752; // SWEDISH KRONA.
+				break;
+			case 'GBP':
+				$currency_symbol = 826; // POUND STERLING.
+				break;
+			case 'RON':
+				$currency_symbol = 946; // ROMANIAN LEU.
+				break;
+			case 'BGN':
+				$currency_symbol = 975; // BULGARIAN LEV.
+				break;
+			case 'EUR':
+				$currency_symbol = 978; // EURO.
+				break;
+			case 'PLN':
+				$currency_symbol = 985; // POLISH ZLOTY.
 				break;
 			default:
-				$currency_symbol = 978;
+				$currency_symbol = 978; // EURO.
+
 		}
 
 		$amount = $cart->getOrderTotal(true, Cart::BOTH);
@@ -310,7 +320,6 @@ class vivawallet extends PaymentModule
 	$poststring['MerchantTrns'] = $cart->id;
 	$poststring['SourceCode'] = Configuration::get('VIVAWALLET_SOURCE');
 	$poststring['CurrencyCode'] = $currency_symbol;
-	$poststring['PaymentTimeOut'] = '300';
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 
 	$charge = number_format($cart->getOrderTotal(true, Cart::BOTH), 2, '.', '');
@@ -335,7 +344,7 @@ class vivawallet extends PaymentModule
 	$curl = curl_init($BaseUrl."/api/orders");
 	curl_setopt($curl, CURLOPT_PORT, 443);
 
-	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($maxperiod).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut=300&DisableIVR=true';
+	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($maxperiod).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&disableCash=true&DisableIVR=true';
 
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
