@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Vivawallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.6.1
+Version: 3.6.2
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
@@ -12,7 +12,7 @@ Domain Path: /languages
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
- * @package    Vivawallet v3.6.0
+ * @package    Vivawallet v3.6.2
  * @author     Viva Wallet
  * @copyright  Copyright (c)2020 Vivawallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
@@ -263,20 +263,35 @@ function woocommerce_vivawallet()
             $currency_symbol ='';
             $currency_code = get_woocommerce_currency();
             switch ($currency_code) {
-                case 'EUR':
-                    $currency_symbol = 978;
+                case 'HRK':
+                    $currency_symbol = 191; // CROATIAN KUNA.
+                    break;
+                case 'CZK':
+                    $currency_symbol = 203; // CZECH KORUNA.
+                    break;
+                case 'DKK':
+                    $currency_symbol = 208; // DANISH KRONE.
+                    break;
+                case 'HUF':
+                    $currency_symbol = 348; // HUNGARIAN FORINT.
+                    break;
+                case 'SEK':
+                    $currency_symbol = 752; // SWEDISH KRONA.
                     break;
                 case 'GBP':
-                    $currency_symbol = 826;
-                    break;
-                case 'BGN':
-                    $currency_symbol = 975;
+                    $currency_symbol = 826; // POUND STERLING.
                     break;
                 case 'RON':
-                    $currency_symbol = 946;
+                    $currency_symbol = 946; // ROMANIAN LEU.
                     break;
-                    case 'PLN':
-                    $currency_symbol = 985;
+                case 'BGN':
+                    $currency_symbol = 975; // BULGARIAN LEV.
+                    break;
+                case 'EUR':
+                    $currency_symbol = 978; // EURO.
+                    break;
+                case 'PLN':
+                    $currency_symbol = 985; // POLISH ZLOTY.
                     break;
                 default:
                     $currency_symbol = 978;
@@ -290,7 +305,7 @@ function woocommerce_vivawallet()
                 'MerchantTrns'      => $order_id,
                 'SourceCode'        => $this->vivawallet_source,
                 'CurrencyCode'      => $currency_symbol,
-                'PaymentTimeOut'    => 300
+                'disableCash'       => true
             ];
 
             $args = [
