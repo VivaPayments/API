@@ -164,6 +164,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         $poststring['Email'] = $billingAddress->getEmail();
         $poststring['Phone'] = $billingAddress->getTelephone();
         $poststring['FullName'] = $firstName.' '.$lastName;
+        $poststring['PaymentTimeOut'] = 86400;
         $poststring['RequestLang'] = $formlang;
         $poststring['MaxInstallments'] = $maxperiod;
         $poststring['AllowRecurring'] = true;
