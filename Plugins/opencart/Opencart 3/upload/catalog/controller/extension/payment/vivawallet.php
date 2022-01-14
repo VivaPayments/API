@@ -89,7 +89,7 @@ class ControllerExtensionPaymentVivawallet extends Controller {
 	$poststring['MerchantTrns'] = $vivawallet_orderid;
 	$poststring['SourceCode'] = $this->config->get('payment_vivawallet_source');
 	$poststring['CurrencyCode'] = $currency_symbol;
-	
+
 	$postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($order_info['email']);
 	
 	if(isset($maxperiod) && $maxperiod > 0){ 
@@ -102,6 +102,7 @@ class ControllerExtensionPaymentVivawallet extends Controller {
 	$postargs .= '&SourceCode='.urlencode($poststring['SourceCode']);
 	$postargs .= '&CurrencyCode='.urlencode($poststring['CurrencyCode']);
 	$postargs .= '&disableCash=true';
+	$postargs .= '&PaymentTimeOut=300';
 
 	if(!isset($OrderCode) || $OrderCode==''){ //reload problem Journal2 quick checkout?
 	$curl = curl_init(trim($this->config->get('payment_vivawallet_orderurl')));
