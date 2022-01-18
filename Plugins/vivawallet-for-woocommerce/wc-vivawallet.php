@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: WooCommerce Vivawallet Gateway
+Plugin Name: WooCommerce Viva Wallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
 Version: 3.6.2
@@ -12,9 +12,9 @@ Domain Path: /languages
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WP Woocommerce
- * @package    Vivawallet v3.6.2
+ * @package    Viva Wallet v3.6.3
  * @author     Viva Wallet
- * @copyright  Copyright (c)2020 Vivawallet http://www.vivawallet.com/
+ * @copyright  Copyright (c)2020 Viva Wallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
  ******************************************************************************
 */
@@ -305,6 +305,7 @@ function woocommerce_vivawallet()
                 'MerchantTrns'      => $order_id,
                 'SourceCode'        => $this->vivawallet_source,
                 'CurrencyCode'      => $currency_symbol,
+                'PaymentTimeOut'    => 300,
                 'DisableCash'       => 'true'
             ];
 
@@ -319,7 +320,7 @@ function woocommerce_vivawallet()
             $postRequest = wp_remote_post($curl_adr, $args);
 
             if ($postRequest['response']['code'] === 200) {
-                $body = json_decode($postRequest['body'], true);
+                $body = json_decode($postRequest['body'], true, 512, JSON_BIGINT_AS_STRING);
             } else {
                 error_log(__METHOD__ . PHP_EOL . 'Code:' . $postRequest['response']['code'] . PHP_EOL. ' Error:' . $postRequest['response']['message']);
                 throw new Exception("Unable to reach Viva Payments (" . $postRequest['response']['message'] . ")");
@@ -443,7 +444,6 @@ function woocommerce_vivawallet()
             echo $this->generate_form($order);
         }
 
-
         /**
          * Check Response
          **/
@@ -529,7 +529,7 @@ function woocommerce_vivawallet()
 
                 if ($postRequest['response']['code'] === 200) {
                     if (isset($postRequest['EventData'])) {
-                        $eventData = json_decode($postRequest['EventData'], true);
+                        $eventData = json_decode($postRequest['EventData'], true, 512, JSON_BIGINT_AS_STRING);
                     }
                 } else {
                     error_log(__METHOD__ . PHP_EOL . 'Code:' . $postRequest['response']['code'] . PHP_EOL. ' Error:' . $postRequest['response']['message']);

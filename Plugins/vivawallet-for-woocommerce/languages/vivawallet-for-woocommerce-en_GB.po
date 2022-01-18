@@ -125,17 +125,17 @@ msgstr ""
 
 # @ vivawallet-for-woocommerce
 #: wc-vivawallet.php:174
-msgid "Installments"
+msgid "Instalments"
 msgstr ""
 
 # @ vivawallet-for-woocommerce
 #: wc-vivawallet.php:176
-msgid "Allow installments"
+msgid "Allow instalments"
 msgstr ""
 
 # @ vivawallet-for-woocommerce
 #: wc-vivawallet.php:177
-msgid "Check this box when you want to allow interest free installments."
+msgid "Check this box when you want to allow interest free instalments."
 msgstr ""
 
 # @ vivawallet-for-woocommerce
