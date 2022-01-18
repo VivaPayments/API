@@ -2,7 +2,7 @@
 Contributors: webitbz
 Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request
 Requires at least: 5.1
-Tested up to: 5.4
+Tested up to: 6.1
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3
@@ -18,19 +18,28 @@ The Viva Wallet plugin extends WooCommerce allowing you to take payments via Viv
 
 Viva Wallet is available for store owners and merchants in:
 
-* UK
-* Greece
-* France
-* Netherlands
-* Spain
-* Italy
-* Portugal
-* Poland
-* Romania
-* Belgium
-* Cyprus
-* Finland
-* Germany
+*  Austria
+*  Belgium
+*  Bulgaria
+*  Croatia
+*  Cyprus
+*  Czech Republic
+*  Denmark
+*  Finland
+*  France
+*  Germany
+*  Greece
+*  Hungary
+*  Ireland
+*  Italy
+*  Luxembourg
+*  Malta
+*  Netherlands
+*  Poland
+*  Portugal
+*  Romania
+*  Spain
+*  United Kingdom
 
 Viva Wallet for WooCommerce is an easy way to accept payments online. With Viva Wallet's payment gateway you can accept Visa, MasterCard, American Express, UnionPay, Alipay, JCB, and more, via a redirect from your store.
 
