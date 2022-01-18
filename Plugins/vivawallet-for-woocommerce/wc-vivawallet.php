@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WooCommerce Viva Wallet Gateway
+Plugin Name: Viva Wallet Gateway
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.6.2
+Version: 3.6.3
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
