@@ -184,7 +184,7 @@ function woocommerce_vivawallet()
         function payment_fields()
         {
             if( isset($this->description) && $this->description!=''){
-                echo '<p>'.$this->description.'</p>';
+                echo '<p>'.esc_html($this->description).'</p>';
             }
         }
         /**
@@ -207,7 +207,7 @@ function woocommerce_vivawallet()
             $TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
             $current_version = get_option( 'woocommerce_version', null );
             if (version_compare( $current_version, '3.0.0', '>=' )) {
-                define( 'WOOCOMMERCE_CHECKOUT', true );
+                wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );
                 WC()->cart->calculate_totals();
                 $amountcents = round($order->get_total() * 100);
                 $charge = number_format($order->get_total(), '2', '.', '');
@@ -522,10 +522,11 @@ function woocommerce_vivawallet()
 
                 $postRequest = wp_remote_get($posturl, $args);
 
-                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                    echo $postRequest['body'];
-                    exit;
-                }
+	            if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+		            $responseBody = json_decode( $postRequest['body'], true );
+		            echo wp_json_encode( array( 'key' => esc_html( $responseBody['Key'] ) ) );
+		            exit;
+	            }
 
                 $eventData = false;
 
