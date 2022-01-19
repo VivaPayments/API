@@ -7,6 +7,8 @@ Version: 3.6.3
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
+WC requires at least: 3.0
+WC tested up to: 6.1.0
 Domain Path: /languages
 */
 /*  Copyright 2020  Vivawallet.com

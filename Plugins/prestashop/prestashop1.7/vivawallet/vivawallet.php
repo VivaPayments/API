@@ -320,6 +320,8 @@ class vivawallet extends PaymentModule
 	$poststring['MerchantTrns'] = $cart->id;
 	$poststring['SourceCode'] = Configuration::get('VIVAWALLET_SOURCE');
 	$poststring['CurrencyCode'] = $currency_symbol;
+	$poststring['PaymentTimeOut'] = '300';
+
 	$TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
 
 	$charge = number_format($cart->getOrderTotal(true, Cart::BOTH), 2, '.', '');
