@@ -1,10 +1,10 @@
 <?php
 // Heading
-$_['heading_title']      = 'Vivawallet';
+$_['heading_title']      = 'Viva Wallet Smart Checkout';
 
 // Text
 $_['text_payment']        = 'Payment';
-$_['text_success']        = 'Vivawallet settings modified successfully';
+$_['text_success']        = 'Viva Wallet Smart Checkout settings modified successfully';
 $_['text_webcheckout']	  = 'WebCheckout';
 $_['text_receipt']	 	  = 'Electronic Receipt';
 $_['text_checkoutreceipt']= 'WebCheckout and Receipt';
@@ -32,7 +32,7 @@ $_['entry_sort_order']			= 'Sort Order:';
 $_['entry_mode']				= 'Transaction mode:';
 
 // Error
-$_['error_permission']    = 'Warning: You do not have permission to modify payment Vivawallet!';
+$_['error_permission']    = 'Warning: You do not have permission to modify payment Viva Wallet Smart Checkout!';
 $_['error_merchantid']    = 'Merchant ID Required';
 $_['error_merchantpass']  = 'Transaction Password Required';
 $_['error_orderurl']      = 'Order Url Required';

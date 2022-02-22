@@ -1,7 +1,7 @@
 <?php
 // Text
 $_['heading_title']     = 'Σας ευχαριστώ για τις αγορές με %s .... ';
-$_['text_title']		= 'Με πιστωτική κάρτα (Vivawallet)'; # checkout payment option
+$_['text_title']		= 'Με πιστωτική κάρτα (Viva Wallet Smart Checkout)'; # checkout payment option
 $_['text_checkout']		= 'Ταμείο';
 
 $_['text_to_vivawallet']		= '<strong>Προσοχή: </strong>Πατώντας επιβεβαίωση θα μεταφερθείτε σε ασφαλές τραπεζικό σύστημα για την ολοκλήρωση της πληρωμή σας.';

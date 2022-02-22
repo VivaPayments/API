@@ -1,10 +1,10 @@
 <?php
 // Heading
-$_['heading_title']      = 'Vivawallet';
+$_['heading_title']      = 'Viva Wallet Smart Checkout';
 
 // Text
 $_['text_payment']        = 'Πληρωμή';
-$_['text_success']        = 'Επιτυχία: Έχετε επεξεργαστεί τη πληρωμή με Vivawallet';
+$_['text_success']        = 'Επιτυχία: Έχετε επεξεργαστεί τη πληρωμή με Viva Wallet Smart Checkout';
 $_['text_webcheckout']	  = 'WebCheckout';
 $_['text_receipt']	 	  = 'Electronic Receipt';
 $_['text_checkoutreceipt']= 'WebCheckout and Receipt';
@@ -32,7 +32,7 @@ $_['entry_sort_order']			= 'Σειρά Ταξινόμησης:';
 $_['entry_mode']				= 'Transaction mode:';
 
 // Error
-$_['error_permission']    = 'Ειδοποίηση: Δεν έχετε άδεια να επεξεργαστείτε τη πληρωμή Vivawallet!';
+$_['error_permission']    = 'Ειδοποίηση: Δεν έχετε άδεια να επεξεργαστείτε τη πληρωμή Viva Wallet Smart Checkout!';
 $_['error_merchantid']    = 'Απαιτείται το Merchant ID';
 $_['error_merchantpass']  = 'Απαιτείται το API Password';
 $_['error_orderurl']      = 'Απαιτείται το Order Url';

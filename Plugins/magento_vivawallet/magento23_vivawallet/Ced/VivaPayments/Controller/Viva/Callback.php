@@ -156,7 +156,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		{	
     		
 		//BOF Order Status
-		$orderComment = 'Viva Confirmed Transaction<br />';
+		$orderComment = 'Viva Wallet Smart Checkout Confirmed Transaction<br />';
             	$orderComment .= 'TxID: '.$transactionId.'<br />';
 
 		$newstatus =  $this->_scopeConfig->getValue('payment/paymentmethod/order_status',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);

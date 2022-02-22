@@ -21,7 +21,7 @@
                 <merchantpass>API Key</merchantpass>
                 <merchantsource>Source Code</merchantsource>
                 <Installments>90:3,180:6</Installments>
-                <title>Viva Payments Credit Card (redirect)</title>
+                <title>Credit Card (Viva Wallet Smart Checkout)</title>
                 <transaction_url>https://demo.vivapayments.com/api/transactions/</transaction_url>
                 <currency>EUR</currency>
             </paymentmethod>

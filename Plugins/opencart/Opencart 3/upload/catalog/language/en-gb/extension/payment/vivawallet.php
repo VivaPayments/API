@@ -1,7 +1,7 @@
 <?php
 // Text
 $_['heading_title']     = 'Thank you for shopping with %s .... ';
-$_['text_title']		= 'Credit Card (Vivawallet)'; # checkout payment option
+$_['text_title']		= 'Credit Card (Viva Wallet Smart Checkout)'; # checkout payment option
 $_['text_checkout']		= 'Checkout';
 
 $_['text_to_vivawallet']		= '<strong>Please note: </strong>You will be redirected to a secure page to enter your credit card details.';

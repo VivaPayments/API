@@ -3,7 +3,7 @@ INSTALLATION:
 1b) Or use the extension installer, click the Upload button and select the vivawallet.ocmod.zip package.
 2. Overwrite files/folders as necessary (no core opencart files will be overwritten)
 3. Login to the Open Cart admin section and go to Extensions > Payments
-4. Find Vivawallet in the list of extensions
+4. Find Viva Wallet Smart Checkout in the list of extensions
 5. Click "Install" and then "Edit" the payment module settings
 6. At your Vivawallet backoffice create a new payment source:
 
