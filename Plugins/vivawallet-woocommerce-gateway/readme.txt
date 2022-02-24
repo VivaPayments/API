@@ -1,8 +1,8 @@
 === VivaWallet WooCommerce Gateway ===
 Contributors: webitbz
 Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request
-WC requires at least: 3.0
-WC tested up to: 6.1.0
+Requires at least: 5.1
+Tested up to: 5.4
 Requires PHP: 5.6
 Stable tag: 3.6.3
 License: GPLv3

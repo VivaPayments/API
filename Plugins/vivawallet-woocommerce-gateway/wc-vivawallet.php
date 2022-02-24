@@ -455,8 +455,7 @@ function woocommerce_vivawallet()
             $current_version = get_option( 'woocommerce_version', null );
             if(preg_match("/success/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
             {
-                $tm_ref = $_GET['s'];
-                $tm_ref = sanitize_text_field($tm_ref);
+                $tm_ref = sanitize_text_field($_GET['s']);
                 $statustr = $this->vivawallet_processing;
 
                 $check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
@@ -578,8 +577,7 @@ function woocommerce_vivawallet()
 
             if(preg_match("/fail/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
             {
-                $tm_ref = $_GET['s'];
-                $tm_ref = sanitize_text_field($tm_ref);
+                $tm_ref = sanitize_text_field($_GET['s']);
 
                 $check_query = $wpdb->get_results("SELECT orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
                 $check_query_count = count($check_query);
