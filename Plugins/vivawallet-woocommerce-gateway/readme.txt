@@ -1,4 +1,4 @@
-=== VivaWallet WooCommerce Gateway ===
+=== Viva Wallet Gateway ===
 Contributors: webitbz
 Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request
 Requires at least: 5.1
