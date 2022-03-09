@@ -12,7 +12,7 @@ For detailed instructions on the APIs and more, check out the [Viva Wallet Devel
 
 When adding a [new issue](https://github.com/VivaPayments/API/issues) for our development team to look at, please provide the following information:
 
-1-) How are you attempting to integrate? Check first the following sections of the documentation:
+1) How are you attempting to integrate? Check first the following sections of the documentation:
 
 - [Smart Checkout](https://developer.vivawallet.com/smart-checkout/)
 - [E-commerce plugins](https://developer.vivawallet.com/e-commerce-plugins/)
@@ -21,7 +21,7 @@ When adding a [new issue](https://github.com/VivaPayments/API/issues) for our de
 - [Marketplace](https://developer.vivawallet.com/marketplaces/)
 - [Payment API for ISV](https://developer.vivawallet.com/isv-partner-program/)
 
-2-) Please provide any request / response logs generated along with screenshots if possible. **Blur out any confidential information.**
+2) Please provide any request / response logs generated along with screenshots if possible. **Blur out any confidential information.**
 
 If you still can't get anywhere, describe the problem as clearly as possible in a new [GitHub issue](https://github.com/VivaPayments/API/issues), notifying us of any errors generated.
 
