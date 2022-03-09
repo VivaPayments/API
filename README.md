@@ -2,12 +2,35 @@ This repository contains the plugin code for the Viva Wallet plugins for [Magent
 
 ## GitHub issues
 
-As of 29 January 2021, our issues page has moved to live chat. For technical support, please visit [developer.vivawallet.com](https://developer.vivawallet.com) and click on the live chat icon in the bottom right-hand corner of the page:
+Do you need help integrating with the Viva Wallet payment platform? 
 
-[![Live chat](https://user-images.githubusercontent.com/44943019/106276885-2134e900-6230-11eb-8c1a-ade0e95a3fc2.png)](https://developer.vivawallet.com)
+Please feel free to send us any technical queries or comments on GitHub.
 
-Our support team will help you directly and escalate to our technical team if necessary. 
+For detailed instructions on the APIs and more, check out the [Viva Wallet Developer Portal](https://developer.vivawallet.com/). You can also [post an issue](https://github.com/VivaPayments/API/issues) to be looked at by someone from our developer community.
 
-Thank you –
+### GitHub issues
+
+When adding a [new issue](https://github.com/VivaPayments/API/issues) for our development team to look at, please provide the following information:
+
+1-) How are you attempting to integrate? Check first the following sections of the documentation:
+
+- [Smart Checkout](https://developer.vivawallet.com/smart-checkout/)
+- [E-commerce plugins](https://developer.vivawallet.com/e-commerce-plugins/)
+- [APIs for payments](https://developer.vivawallet.com/apis-for-payments/)
+- [Webhooks](https://developer.vivawallet.com/webhooks-for-payments/)
+- [Marketplace](https://developer.vivawallet.com/marketplaces/)
+- [Payment API for ISV](https://developer.vivawallet.com/isv-partner-program/)
+
+2-) Please provide any request / response logs generated along with screenshots if possible. **Blur out any confidential information.**
+
+If you still can't get anywhere, describe the problem as clearly as possible in a new [GitHub issue](https://github.com/VivaPayments/API/issues), notifying us of any errors generated.
+
+### Other queries
+
+If your issue is account related, please visit the live chat on the [Viva Wallet home page](https://www.vivawallet.com/).
+
+If you have a suggestion to make, please explain it and we'll make a note to add it to our roadmap if appropriate.
+
+Thanks
 
 _Viva Wallet Development Team_
