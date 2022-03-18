@@ -1,10 +1,10 @@
-=== Viva Wallet Gateway ===
+=== Viva Wallet Smart Checkout ===
 Contributors: webitbz
 Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request
 Requires at least: 5.1
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 3.6.3
+Stable tag: 3.6.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
