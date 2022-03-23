@@ -1,21 +1,17 @@
 <?php
-/**
- * Plugin Name: Viva Wallet Gateway
- * Plugin URI: https://github.com/VivaPayments/API/
- * Description: Extends WooCommerce with the Vivawallet gateway.
- * Version: 3.6.3
- * Author: Viva Wallet
- * Author URI: http://www.vivawallet.com/
- * Text Domain: vivawallet-for-woocommerce
- * Requires at least: 5.1
- * Requires PHP: 5.6
- * WC requires at least: 3.0
- * WC tested up to: 6.1.0
- * Domain Path: /languages
+/*
+Plugin Name: WooCommerce Viva Wallet Gateway
+Plugin URI: http://www.vivawallet.com/
+Description: Extends WooCommerce with the Vivawallet gateway.
+Version: 3.6.3
+Author: Viva Wallet
+Author URI: http://www.vivawallet.com/
+Text Domain: vivawallet-for-woocommerce
+Domain Path: /languages
 */
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
- * @category   Payment Gateway WP Woocommerce
+ * @category   Payment Gateway WordPress WooCommerce
  * @package    Viva Wallet v3.6.3
  * @author     Viva Wallet
  * @copyright  Copyright (c)2020 Viva Wallet http://www.vivawallet.com/
@@ -186,7 +182,7 @@ function woocommerce_vivawallet()
         function payment_fields()
         {
             if( isset($this->description) && $this->description!=''){
-                echo '<p>'.esc_html($this->description).'</p>';
+                echo '<p>'.$this->description.'</p>';
             }
         }
         /**
@@ -209,7 +205,7 @@ function woocommerce_vivawallet()
             $TmSecureKey = 'd2ViaXQuYnovbGljZW5zZS50eHQ='; // for extra encryption options
             $current_version = get_option( 'woocommerce_version', null );
             if (version_compare( $current_version, '3.0.0', '>=' )) {
-                wc_maybe_define_constant( 'WOOCOMMERCE_CHECKOUT', true );
+                define( 'WOOCOMMERCE_CHECKOUT', true );
                 WC()->cart->calculate_totals();
                 $amountcents = round($order->get_total() * 100);
                 $charge = number_format($order->get_total(), '2', '.', '');
@@ -457,7 +453,8 @@ function woocommerce_vivawallet()
             $current_version = get_option( 'woocommerce_version', null );
             if(preg_match("/success/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
             {
-                $tm_ref = sanitize_text_field($_GET['s']);
+                $tm_ref = $_GET['s'];
+                $tm_ref = sanitize_text_field($tm_ref);
                 $statustr = $this->vivawallet_processing;
 
                 $check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
@@ -524,8 +521,7 @@ function woocommerce_vivawallet()
                 $postRequest = wp_remote_get($posturl, $args);
 
 	            if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
-		            $responseBody = json_decode( $postRequest['body'], true );
-		            echo wp_json_encode( array( 'key' => esc_html( $responseBody['Key'] ) ) );
+                    echo $postRequest['body'];
 		            exit;
 	            }
 
@@ -579,7 +575,8 @@ function woocommerce_vivawallet()
 
             if(preg_match("/fail/i", $_SERVER['REQUEST_URI']) && preg_match("/vivawallet/i", $_SERVER['REQUEST_URI']))
             {
-                $tm_ref = sanitize_text_field($_GET['s']);
+                $tm_ref = $_GET['s'];
+                $tm_ref = sanitize_text_field($tm_ref);
 
                 $check_query = $wpdb->get_results("SELECT orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
                 $check_query_count = count($check_query);
