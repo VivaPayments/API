@@ -14,7 +14,7 @@ Accept Visa, MasterCard, American Express, Maestro, Bancontact, and more, direct
 
 = Take credit card payments easily on your store =
 
-The Viva Wallet plugin extends WooCommerce allowing you to take payments via Viva Wallet's API.
+The Viva Wallet Smart Checkout plugin extends WooCommerce allowing you to take payments via Viva Wallet's API.
 
 Viva Wallet is available for store owners and merchants in:
 
@@ -41,7 +41,7 @@ Viva Wallet is available for store owners and merchants in:
 *  Spain
 *  United Kingdom
 
-Viva Wallet for WooCommerce is an easy way to accept payments online. With Viva Wallet's payment gateway you can accept Visa, MasterCard, American Express, UnionPay, Alipay, JCB, and more, via a redirect from your store.
+Viva Wallet Smart Checkout is an easy way to accept payments online. With Viva Wallet's payment gateway you can accept Visa, MasterCard, American Express, UnionPay, Alipay, JCB, and more, via a redirect from your store.
 
 == Installation ==
 
