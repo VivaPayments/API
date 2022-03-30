@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WooCommerce Viva Wallet Gateway
+Plugin Name: Viva Wallet Smart Checkout
 Plugin URI: http://www.vivawallet.com/
-Description: Extends WooCommerce with the Vivawallet gateway.
-Version: 3.6.3
+Description: Extends WooCommerce with the Viva Wallet Smart Checkout.
+Version: 3.6.4
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
@@ -12,7 +12,7 @@ Domain Path: /languages
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WordPress WooCommerce
- * @package    Viva Wallet v3.6.3
+ * @package    Viva Wallet v3.6.4
  * @author     Viva Wallet
  * @copyright  Copyright (c)2020 Viva Wallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
@@ -87,8 +87,8 @@ function woocommerce_vivawallet()
             $wpdb->query($query);
 
             ?>
-            <h3><?php _e('Vivawallet', 'vivawallet-for-woocommerce'); ?></h3>
-            <p><?php _e('Vivawallet redirects customers to their secure server for making payments.', 'vivawallet-for-woocommerce'); ?></p>
+            <h3><?php _e('Viva Wallet Smart Checkout', 'vivawallet-for-woocommerce'); ?></h3>
+            <p><?php _e('Viva Wallet Smart Checkout redirects customers to their secure server for making payments.', 'vivawallet-for-woocommerce'); ?></p>
             <table class="form-table">
                 <?php
                 if ( $this->is_valid_for_use() ) :
@@ -113,7 +113,7 @@ function woocommerce_vivawallet()
                 (
                     'title' => __('Enable/Disable', 'vivawallet-for-woocommerce'),
                     'type' => 'checkbox',
-                    'label' => __('Enable Vivawallet', 'vivawallet-for-woocommerce'),
+                    'label' => __('Enable Viva Wallet Smart Checkout', 'vivawallet-for-woocommerce'),
                     'default' => 'yes'
                 ),
                 'title' => array
@@ -121,13 +121,13 @@ function woocommerce_vivawallet()
                     'title' => __('Title', 'vivawallet-for-woocommerce'),
                     'type' => 'text',
                     'description' => __( 'This controls the title which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
-                    'default' => __('Vivawallet', 'vivawallet-for-woocommerce')
+                    'default' => __('Viva Wallet Smart Checkout', 'vivawallet-for-woocommerce')
                 ),
                 'description' => array(
                     'title' => __( 'Description', 'woocommerce' ),
                     'type' => 'textarea',
                     'description' => __( 'This controls the description which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
-                    'default' => __( 'Pay via Vivawallet - you can pay with your credit card.', 'vivawallet-for-woocommerce' )
+                    'default' => __( 'Pay via Viva Wallet Smart Checkout - you can pay with your credit card.', 'vivawallet-for-woocommerce' )
                 ),
                 'vivawallet_merchantid' => array
                 (
@@ -468,7 +468,7 @@ function woocommerce_vivawallet()
                         if($check_query[0]['order_state']=='I'){
                             $query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
                             $wpdb->query($query);
-                            $order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
+                            $order->update_status($statustr, __('Order has been paid with Viva Wallet Smart Checkout, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
 
                             if (version_compare( $current_version, '3.0.0', '<' )) {
                                 $order->reduce_order_stock();
