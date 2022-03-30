@@ -121,13 +121,13 @@ function woocommerce_vivawallet()
                     'title' => __('Title', 'vivawallet-for-woocommerce'),
                     'type' => 'text',
                     'description' => __( 'This controls the title which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
-                    'default' => __('Vivawallet', 'vivawallet-for-woocommerce')
+                    'default' => __('Viva Wallet Smart Checkout', 'vivawallet-for-woocommerce')
                 ),
                 'description' => array(
                     'title' => __( 'Description', 'woocommerce' ),
                     'type' => 'textarea',
                     'description' => __( 'This controls the description which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
-                    'default' => __( 'Pay via Vivawallet - you can pay with your credit card.', 'vivawallet-for-woocommerce' )
+                    'default' => __( 'Pay via Viva Wallet Smart Checkout - you can pay with your credit card.', 'vivawallet-for-woocommerce' )
                 ),
                 'vivawallet_merchantid' => array
                 (
@@ -468,7 +468,7 @@ function woocommerce_vivawallet()
                         if($check_query[0]['order_state']=='I'){
                             $query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($tm_ref)."'";
                             $wpdb->query($query);
-                            $order->update_status($statustr, __('Order has been paid with Viva, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
+                            $order->update_status($statustr, __('Order has been paid with Viva Wallet Smart Checkout, TxID: ' . $tm_ref, 'vivawallet-for-woocommerce'));
 
                             if (version_compare( $current_version, '3.0.0', '<' )) {
                                 $order->reduce_order_stock();

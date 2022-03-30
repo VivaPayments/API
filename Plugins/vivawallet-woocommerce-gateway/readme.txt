@@ -1,6 +1,6 @@
 === Viva Wallet Smart Checkout ===
 Contributors: webitbz
-Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request
+Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request, smart checkout
 Requires at least: 5.1
 Tested up to: 5.4
 Requires PHP: 5.6
@@ -59,7 +59,11 @@ If you get stuck, you can ask for help via our [GitHub issues page](https://gith
 
 == Changelog ==
 
-= 3.6.3 2021-01-19 =
+= 3.6.4 2022-03-30 =
+
+change plugin name
+
+= 3.6.3 2022-01-19 =
 
 disableCash rule for smart checkout
 
