@@ -135,15 +135,28 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 
 		if ($resultObj->ErrorCode==0){
             if (sizeof($resultObj->Transactions) > 0) {
-                usort($resultObj->Transactions, function($a, $b) {
-                    return (strtotime($a->InsDate) - strtotime($b->InsDate)) < 0;
-                });
-                $latestTransaction = $resultObj->Transactions[0];
-                $TransactionId = $latestTransaction->TransactionId;
-                $Amount = $latestTransaction->Amount;
-                $StatusId = $latestTransaction->StatusId;
-                $CustomerTrns = $latestTransaction->CustomerTrns ;
+                foreach ($resultObj->Transactions as $t) {
+                    if (!empty($transactionId) && $t->TransactionId == $transactionId) {
+                        $currentTransactionObject = $t;
+                        break;
+                    }
+                }
+                if (empty($currentTransactionObject)) {
+                    usort($resultObj->Transactions, function ($a, $b) {
+                        return (strtotime($a->InsDate) - strtotime($b->InsDate)) < 0;
+                    });
+                    $currentTransactionObject = $resultObj->Transactions[0];
+                }
+                $TransactionId = $currentTransactionObject->TransactionId;
+                $Amount = $currentTransactionObject->Amount;
+                $StatusId = $currentTransactionObject->StatusId;
+                $CustomerTrns = $currentTransactionObject->CustomerTrns ;
                 $message = "Transactions completed Successfully";
+                if (isset($StatusId) && strtoupper($StatusId) == 'F') {
+                    $update_order->setOrderState('paid')->save();
+                } else{
+                    $update_order->setOrderState('failed')->save();
+                }
             } else {
 				$update_order->setOrderState('failed')->save();
 				$message = 'No transactions found. Make sure the order code exists and is created by your account.';
@@ -155,7 +168,6 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 
 		if(isset($StatusId) && strtoupper($StatusId) == 'F')
 		{
-            $update_order->setOrderState('paid')->save();
 		//BOF Order Status
 		$orderComment = 'Viva Wallet Smart Checkout Confirmed Transaction<br />';
             	$orderComment .= 'TxID: '.$transactionId.'<br />';
