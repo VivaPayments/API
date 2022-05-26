@@ -38,7 +38,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     * @var \Psr\Log\LoggerInterface
     */
     protected $_logger;
-	
+
 	private $_messageManager;
 
     /**
@@ -58,19 +58,19 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     \Magento\Sales\Model\OrderFactory $orderFactory,
     \Ced\VivaPayments\Model\PaymentMethod $paymentMethod,
     \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender,
-	\Magento\Framework\Message\ManagerInterface $messageManager,	
+	\Magento\Framework\Message\ManagerInterface $messageManager,
     \Psr\Log\LoggerInterface $logger,
 	\Magento\Checkout\Model\Session $checkoutSession,
     \Magento\Framework\View\Result\PageFactory $resultPageFactory,
     \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
-    	
+
         $this->_paymentMethod = $paymentMethod;
         $this->_orderFactory = $orderFactory;
         $this->_client = $this->_paymentMethod->getClient();
-        $this->_orderSender = $orderSender;	
-		$this->_messageManager = $messageManager;	
-        $this->_logger = $logger;		
+        $this->_orderSender = $orderSender;
+		$this->_messageManager = $messageManager;
+        $this->_logger = $logger;
 		$this->_checkoutSession = $checkoutSession;
         $this->_resultPageFactory = $resultPageFactory;
         $this->_scopeConfig = $scopeConfig;
@@ -79,7 +79,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 
     public function execute()
     {
-        try {	
+        try {
 			$this->_success();
 			$this->paymentAction();
 
@@ -91,13 +91,13 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     public function getOrderId(){
         return $this->_objectManager->get('Magento\Checkout\Model\Session')->getLastRealOrderId();
     }
-	
+
 	protected function paymentAction()
 	{
 		$payment_order = $this->getRequest()->getParam('s');
 		$transactionId = $this->getRequest()->getParam('t');
-       
-		$OrderCode = $payment_order;	
+
+		$OrderCode = $payment_order;
 		$Lang = $this->getRequest()->getParam('lang');
         $order_id = $this->getOrderId();
         $update_order = $this->_objectManager->create('Ced\VivaPayments\Model\VivaPayments')->load($OrderCode, 'ordercode');
@@ -108,7 +108,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
         $APIKey =  $this->_scopeConfig->getValue('payment/paymentmethod/merchantpass',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 
         $request = $this->_scopeConfig->getValue('payment/paymentmethod/transaction_url',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-		
+
 		$getargs = '?ordercode='.urlencode($OrderCode);
 
 		$session = curl_init($request);
@@ -125,7 +125,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		$response = curl_exec($session);
 		curl_close($session);
 		try {
-				
+
 			if(is_object(json_decode($response))){
 			  	$resultObj=json_decode($response);
 			}
@@ -134,16 +134,30 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		}
 
 		if ($resultObj->ErrorCode==0){
-			if(sizeof($resultObj->Transactions) > 0) {
-				foreach ($resultObj->Transactions as $t){
-					$TransactionId = $t->TransactionId;
-					$Amount = $t->Amount;
-					$StatusId = $t->StatusId;
-					$CustomerTrns = $t->CustomerTrns ;
-                    $message = "Transactions completed Successfully";
+            if (sizeof($resultObj->Transactions) > 0) {
+                foreach ($resultObj->Transactions as $t) {
+                    if (!empty($transactionId) && $t->TransactionId == $transactionId) {
+                        $currentTransactionObject = $t;
+                        break;
+                    }
+                }
+                if (empty($currentTransactionObject)) {
+                    usort($resultObj->Transactions, function ($a, $b) {
+                        return (strtotime($a->InsDate) - strtotime($b->InsDate)) < 0;
+                    });
+                    $currentTransactionObject = $resultObj->Transactions[0];
+                }
+                $TransactionId = $currentTransactionObject->TransactionId;
+                $Amount = $currentTransactionObject->Amount;
+                $StatusId = $currentTransactionObject->StatusId;
+                $CustomerTrns = $currentTransactionObject->CustomerTrns ;
+                $message = "Transactions completed Successfully";
+                if (isset($StatusId) && strtoupper($StatusId) == 'F') {
                     $update_order->setOrderState('paid')->save();
-				}
-			} else {
+                } else{
+                    $update_order->setOrderState('failed')->save();
+                }
+            } else {
 				$update_order->setOrderState('failed')->save();
 				$message = 'No transactions found. Make sure the order code exists and is created by your account.';
 			}
@@ -151,10 +165,9 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
             $update_order->setOrderState('failed')->save();
 			$message = 'The following error occured: <strong>' . $resultObj->ErrorCode . '</strong>, ' . $resultObj->ErrorText;
 		}
-        
+
 		if(isset($StatusId) && strtoupper($StatusId) == 'F')
-		{	
-    		
+		{
 		//BOF Order Status
 		$orderComment = 'Viva Wallet Smart Checkout Confirmed Transaction<br />';
             	$orderComment .= 'TxID: '.$transactionId.'<br />';
@@ -163,11 +176,11 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
 		if(!isset($newstatus) || $newstatus == ''){
                     $newstatus = 'pending';
             	}
-			
+
 		if($newstatus =='complete'){
                     $this->_order->setData('state', "complete");
                     $this->_order->setStatus("complete");
-					$this->_order->setBaseTotalPaid($Amount); 
+					$this->_order->setBaseTotalPaid($Amount);
 					$this->_order->setTotalPaid($Amount);
                     $history = $this->_order->addStatusHistoryComment($orderComment, false);
                     $history->setIsCustomerNotified(true);
@@ -176,46 +189,46 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
                     $newstate = $newstatus;
                     $this->_order->setData('state', $newstate);
                     $this->_order->setStatus($newstate);
-					$this->_order->setBaseTotalPaid($Amount); 
+					$this->_order->setBaseTotalPaid($Amount);
 					$this->_order->setTotalPaid($Amount);
                     $history = $this->_order->addStatusHistoryComment($orderComment, false);
                     $history->setIsCustomerNotified(true);
                 }
 		//EOF Order Status
-		
+
 		$this->_order->setCanSendNewEmailFlag(true)->setEmailSent(true)->save();
 		$this->_orderSender->send($this->_order, true);
-			
+
 		$this->_registerPaymentCapture($TransactionId, $Amount, $message);
     		$redirectUrl = $this->_paymentMethod->getSuccessUrl();
     		$this->_redirect($redirectUrl);
 		}
 		else
 		{
-			
+
 			$checkoutHelper = $this->_objectManager->create('Ced\VivaPayments\Helper\Checkout');
 			$checkoutHelper->cancelCurrentOrder($message);
         	//https://github.com/magento/magento2/pull/12668/commits/2c1d6a4d115f1e97787349849d215e6c73ac1335
 			$checkoutHelper->restoreQuote();
-			
+
 			$this->_messageManager->addErrorMessage(__('Your transaction failed or has been cancelled!'));
             $this->_redirect('checkout/cart');
-		}		
-		
+		}
+
 	}
-	
+
     protected function _registerPaymentCapture($transactionId, $amount, $message)
     {
         $payment = $this->_order->getPayment();
-		
-		
-        $payment->setTransactionId($transactionId)       
+
+
+        $payment->setTransactionId($transactionId)
                 ->setPreparedMessage($this->_createVivaPaymentsComment($message))
                 ->setShouldCloseParentTransaction(false)
                 ->setIsTransactionClosed(0)
                 ->registerCaptureNotification(
                     $amount,
-                    true 
+                    true
                 );
 
         $this->_order->save();
@@ -253,7 +266,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     }
 
     protected function _createVivaPaymentsComment($message = '')
-    {       
+    {
         if ($message != '')
         {
             $message = $this->_order->addStatusHistoryComment($message);
@@ -261,7 +274,7 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
         }
         return $message;
     }
-	
+
 	//mag23
     public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
     {
@@ -272,5 +285,5 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     public function validateForCsrf(RequestInterface $request): ?bool
     {
         return true;
-    }	
+    }
 }
