@@ -59,9 +59,10 @@ If you get stuck, you can ask for help via our [GitHub issues page](https://gith
 
 == Changelog ==
 
-= 3.6.4 2022-03-30 =
+= 3.6.4 2022-05-26 =
 
 change plugin name
+webhook fix
 
 = 3.6.3 2022-01-19 =
 

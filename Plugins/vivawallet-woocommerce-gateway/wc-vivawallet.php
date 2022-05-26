@@ -319,11 +319,18 @@ function woocommerce_vivawallet()
 
             $postRequest = wp_remote_post($curl_adr, $args);
 
-            if ($postRequest['response']['code'] === 200) {
+            if (is_array($postRequest) && $postRequest['response']['code'] === 200) {
                 $body = json_decode($postRequest['body'], true, 512, JSON_BIGINT_AS_STRING);
             } else {
-                error_log(__METHOD__ . PHP_EOL . 'Code:' . $postRequest['response']['code'] . PHP_EOL. ' Error:' . $postRequest['response']['message']);
-                throw new Exception("Unable to reach Viva Payments (" . $postRequest['response']['message'] . ")");
+                if ( is_wp_error( $postRequest ) ) {
+                    $code = $postRequest->get_error_code();
+                    $message = $postRequest->get_error_message();
+                } else {
+                    $code = $postRequest['response']['code'];
+                    $message = $postRequest['response']['message'];
+                }
+                error_log(__METHOD__ . PHP_EOL . 'Code:' . $code . PHP_EOL. ' Error:' . $message);
+                throw new Exception("Unable to reach Viva Payments ($code -- $message)");
             }
 
             if ($body['ErrorCode'] === 0) {
@@ -528,8 +535,9 @@ function woocommerce_vivawallet()
                 $eventData = false;
 
                 if ($postRequest['response']['code'] === 200) {
-                    if (isset($postRequest['EventData'])) {
-                        $eventData = json_decode($postRequest['EventData'], true, 512, JSON_BIGINT_AS_STRING);
+                    $postDataArray = json_decode($postdata, true, 512, JSON_BIGINT_AS_STRING);
+                    if (isset($postDataArray['EventData'])) {
+                        $eventData = $postDataArray['EventData'];
                     }
                 } else {
                     error_log(__METHOD__ . PHP_EOL . 'Code:' . $postRequest['response']['code'] . PHP_EOL. ' Error:' . $postRequest['response']['message']);
