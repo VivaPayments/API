@@ -1,9 +1,9 @@
-<form action="{{ action }}" method="post" id="payment">
+<form action="{{ action }}" method="post" id="vivawallet_payment">
   <input type="hidden" name="Ref" value="{{ vivawallet_ordercode }}" />
 </form>
 
 <div class="buttons">
   <div class="pull-right">
-    <input type="button" onclick="$('#payment').submit();" value="{{ button_confirm }}" id="button-confirm" class="btn btn-primary" />
+    <input type="button" onclick="$('form#vivawallet_payment').submit();" value="{{ button_confirm }}" id="button-confirm" class="btn btn-primary" />
   </div>
 </div>
