@@ -1,0 +1,7 @@
+*** Viva Wallet Smart Checkout Changelog ***
+
+2022-06-20 - version 1.0.3
+* do not populate PaymentTimeOut
+* populate customerTrns
+* populate fullName
+* populate RequestLang
