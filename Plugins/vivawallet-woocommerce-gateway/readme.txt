@@ -59,14 +59,20 @@ If you get stuck, you can ask for help via our [GitHub issues page](https://gith
 
 == Changelog ==
 
+= 3.6.5 2022-06-22 =
+
+populate FullName to Smart Checkout.
+populate Site Title as a Customer Message to Smart Checkout.
+populate RequestLang for all supported languages.
+
 = 3.6.4 2022-06-09 =
 
-change plugin name
-webhook fix
+change plugin name.
+webhook fix.
 
 = 3.6.3 2022-01-19 =
 
-disableCash rule for smart checkout
+disableCash rule for smart checkout.
 
 = 3.6.2 2020-04-17 =
 
