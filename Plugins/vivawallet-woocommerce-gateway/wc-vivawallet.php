@@ -3,7 +3,7 @@
 Plugin Name: Viva Wallet Smart Checkout
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Viva Wallet Smart Checkout.
-Version: 3.6.4
+Version: 3.6.5
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
@@ -12,7 +12,7 @@ Domain Path: /languages
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WordPress WooCommerce
- * @package    Viva Wallet v3.6.4
+ * @package    Viva Wallet v3.6.5
  * @author     Viva Wallet
  * @copyright  Copyright (c)2020 Viva Wallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
@@ -221,12 +221,40 @@ function woocommerce_vivawallet()
                 $charge = number_format($order->get_total(), '2', '.', '');
             }
 
-            $trlang = get_locale();
-
-            if (preg_match("/gr/i", $trlang) || preg_match("/el/i", $trlang)) {
-                $formlang = 'el-GR';
-            } else {
-                $formlang = 'en-US';
+            $supportedLanguages = [
+                'el-GR',
+                'bg-BG',
+                'cs-CZ',
+                'da-DK',
+                'de-DE',
+                'es-ES',
+                'fi-FI',
+                'fr-FR',
+                'hr-HR',
+                'hu-HU',
+                'it-IT',
+                'nl-NL',
+                'pl-PL',
+                'pt-PT',
+                'ro-RO',
+                'en-GB'
+            ];
+            $formlang           = get_locale();
+            switch ( $formlang ) {
+                case 'el':
+                    $formlang = 'el-GR';
+                    break;
+                case 'fi':
+                    $formlang = 'fi-FI';
+                    break;
+                case 'hr':
+                    $formlang = 'hr-HR';
+                    break;
+                default:
+                    if ( ! in_array( $formlang, $supportedLanguages ) ) {
+                        $formlang = 'en-GB';
+                    }
+                    break;
             }
 
             $MerchantID =  $this->vivawallet_merchantid;
@@ -237,8 +265,12 @@ function woocommerce_vivawallet()
 
             if (version_compare( $current_version, '3.0.0', '>=' )) {
                 $customer_mail = $order->get_billing_email();
+                $firstName = method_exists( $order, 'get_billing_first_name' ) ? $order->get_billing_first_name() : '';
+                $lastName = method_exists( $order, 'get_billing_last_name' ) ? $order->get_billing_last_name() : '';
             } else {
                 $customer_mail = $order->billing_email;
+                $firstName = isset( $order->billing_first_name ) ? $order->billing_first_name : '';
+                $lastName = isset( $order->billing_last_name ) ? $order->billing_last_name : '';
             }
 
             $poststring['Email'] = $customer_mail;
@@ -296,6 +328,7 @@ function woocommerce_vivawallet()
                 default:
                     $currency_symbol = 978;
             }
+            $site_name = get_bloginfo( 'name' );
 
             $body = [
                 'Amount'            => $poststring['Amount'],
@@ -303,11 +336,14 @@ function woocommerce_vivawallet()
                 'Email'             => $poststring['Email'],
                 'MaxInstallments'   => $maxperiod,
                 'MerchantTrns'      => $order_id,
+                'CustomerTrns'      => $site_name,
                 'SourceCode'        => $this->vivawallet_source,
                 'CurrencyCode'      => $currency_symbol,
-                'PaymentTimeOut'    => 300,
                 'DisableCash'       => 'true'
             ];
+            if ( ! empty( $firstName ) && ! empty( $lastName ) ) {
+                $body['FullName'] = "$firstName $lastName";
+            }
 
             $args = [
                 'body' => $body,
@@ -527,10 +563,10 @@ function woocommerce_vivawallet()
 
                 $postRequest = wp_remote_get($posturl, $args);
 
-	            if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
+                if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
                     echo $postRequest['body'];
-		            exit;
-	            }
+                    exit;
+                }
 
                 $eventData = false;
 
