@@ -139,11 +139,27 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
                 $currency_symbol = 978; // EURO.
         }
 
-
-        if ($trlang=='el-GR') {
-            $formlang = 'el-GR';
-        } else {
-            $formlang = 'en-US';
+        $supportedLanguages = [
+            'el-GR',
+            'bg-BG',
+            'cs-CZ',
+            'da-DK',
+            'de-DE',
+            'es-ES',
+            'fi-FI',
+            'fr-FR',
+            'hr-HR',
+            'hu-HU',
+            'it-IT',
+            'nl-NL',
+            'pl-PL',
+            'pt-PT',
+            'ro-RO',
+            'en-GB'
+        ];
+        $formlang = $trlang;
+        if (!in_array($formlang, $supportedLanguages)) {
+            $formlang = 'en-GB';
         }
         $maxperiod = '1';
         $installogic = $this->getConfigData('Installments');
@@ -161,10 +177,13 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
                 $maxperiod = max($instal_hellaspay_max);
             }
         }
+        $storeName = $this->_scopeConfig->getValue(
+            'general/store_information/name',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
         $poststring['Email'] = $billingAddress->getEmail();
         $poststring['Phone'] = $billingAddress->getTelephone();
         $poststring['FullName'] = $firstName.' '.$lastName;
-        $poststring['PaymentTimeOut'] = 86400;
         $poststring['RequestLang'] = $formlang;
         $poststring['MaxInstallments'] = $maxperiod;
         $poststring['AllowRecurring'] = true;
@@ -178,8 +197,12 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
 
         $curl = curl_init($order_url);
         curl_setopt($curl, CURLOPT_PORT, 443);
-        
-        $postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&PaymentTimeOut='.urlencode($poststring['PaymentTimeOut']).'&DisableCash=true';
+
+        $postargs = 'Amount='.urlencode($poststring['Amount']).'&RequestLang='.urlencode($poststring['RequestLang']).'&Email='.urlencode($poststring['Email']).'&MaxInstallments='.urlencode($poststring['MaxInstallments']).'&MerchantTrns='.urlencode($poststring['MerchantTrns']).'&SourceCode='.urlencode($poststring['SourceCode']).'&CurrencyCode='.urlencode($poststring['CurrencyCode']).'&DisableCash=true';
+        $postargs .= '&FullName='.urlencode($poststring['FullName']);
+        if (!empty($storeName)) {
+            $postargs .= '&CustomerTrns=' . urlencode($storeName);
+        }
 
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postargs);
@@ -192,7 +215,7 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
         }
 
         $response = curl_exec($curl);
-        
+
         if(curl_error($curl)){
             curl_setopt($curl, CURLOPT_PORT, 443);
             curl_setopt($curl, CURLOPT_POST, true);
