@@ -1,4 +1,4 @@
-=== Viva Wallet Smart Checkout ===
+=== Viva Wallet Smart Checkout for your WooCommerce store ===
 Contributors: webitbz
 Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request, smart checkout
 Requires at least: 5.1
@@ -10,48 +10,71 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 == Description ==
 
-Accept Visa, MasterCard, American Express, Maestro, Bancontact, and more, directly on your store with the Viva Wallet payment gateway for WooCommerce.
+**Multiple payment methods**
 
-= Take credit card payments easily on your store =
+Accept multiple [payment methods](https://developer.vivawallet.com/payment-methods/), including *international* [card schemes](https://developer.vivawallet.com/payment-methods/#credit-debit-cards) (Visa, Mastercard, American Express, Discover and more), *local* [card schemes](https://developer.vivawallet.com/payment-methods/#credit-debit-cards) (Bancontact, and more), [digital wallets](https://developer.vivawallet.com/payment-methods/#digital-wallets) (Apple Pay™, Google Pay™, Samsung Pay™), other payment methods such as [PayPal™](https://developer.vivawallet.com/payment-methods/#alternative-payment-methods), [SEPA Direct Debit](https://developer.vivawallet.com/payment-methods/direct-debit-other/sepa-direct-debit/), [Trustly, Sofort, BLIK, EPS, giropay, iDEAL, MULTIBANCO](https://developer.vivawallet.com/payment-methods/#alternative-payment-methods), [Payconiq™](https://developer.vivawallet.com/payment-methods/#payconiq), as well as online banking, direct debit, *and [more](https://developer.vivawallet.com/payment-methods/#other-payment-methods)*
 
-The Viva Wallet Smart Checkout plugin extends WooCommerce allowing you to take payments via Viva Wallet's API.
+**Supports saved cards**
 
-Viva Wallet is available for store owners and merchants in:
+Your customers can pay using cards they have saved during past purchases, even from other merchants
 
-*  Austria
-*  Belgium
-*  Bulgaria
-*  Croatia
-*  Cyprus
-*  Czech Republic
-*  Denmark
-*  Finland
-*  France
-*  Germany
-*  Greece
-*  Hungary
-*  Ireland
-*  Italy
-*  Luxembourg
-*  Malta
-*  Netherlands
-*  Poland
-*  Portugal
-*  Romania
-*  Spain
-*  United Kingdom
+**Adapts to customer**
 
-Viva Wallet Smart Checkout is an easy way to accept payments online. With Viva Wallet's payment gateway you can accept Visa, MasterCard, American Express, UnionPay, Alipay, JCB, and more, via a redirect from your store.
+It adapts intelligently to the customer, showing payment methods most likely to convert, considering past customer behavior across merchants
+
+**Integrate the Viva Wallet Smart Checkout with your WooCommerce store to process and sync your payments and help you sell more**
+
+Sign up with Viva Wallet to get a payments gateway, your IBAN-enabled local merchant account, and a debit Mastercard for your expenses.
+
+No need to have a separate account for settlement. Your money is settled in your Viva Wallet account the next day.
+
+Spend it with your Viva Wallet Mastercard and set the payment acceptance fees as low as 0%. The app is easy to set up and has no monthly fees or hidden costs.
+
+Viva Wallet is a European cloud-based Neobank in over 23 European countries, offering payment solutions to thousands of businesses across Europe.
+
+**Why use Viva Wallet?**
+
+* One stop-shop for your payments, without the need to have a separate settlement account
+* Next day settlement and up to 0% payment processing fees
+* No authorization, refund or other hidden fees
+* PCI DSS Level 1 Compliance
+* Support for Strong Customer Authentication (SCA)
+* Integrated AI-powered risk management and anti-fraud system
+* Payments are protected with 3D Secure, leading to lower chargeback rates
+* Easy to use check-out experience for your customers
+* One-time integration with quick set up and automatic updates
+* Refunds / partial refunds directly from your store
+* Real-time monitoring of your sales and transactions
+* Reliable, state-of-the-art, cloud-based infrastructure so you don’t miss a payment
+
+**Why use Viva Wallet Smart Checkout?**
+
+**Enjoy a conversion increase**
+
+* Payment in less than 30 secs, even less when using digital wallet or saved card
+* Supports saved cards (browser), recurring payments, pre-authorizations, open amount
+* Remembers customer saved cards & preferences across merchants & countries without the need for the customer to create an account
+* Offers multiple payment methods
+* Dynamically shows payment methods most likely to convert
+* In 17 local languages and 10 local currencies
+* Optimized for any device
+* Card decline recovery: based on the customer’s past payment behavior, we prompt the customer to re-try a declined card payment
+
+**It is continually self-updated**, ensuring
+
+1. constant regulatory compliance,
+2. constant improvements to customer experience and conversion,
+3. additional payment methods as they grow in popularity.
 
 == Installation ==
 
-For detailed installation instructions, visit our [Developer Portal](https://developer.vivawallet.com/e-commerce-plugins/viva-wallet-woocommerce-gateway/).
+For detailed installation instructions, visit our [Developer Portal](https://developer.vivawallet.com/plugins/woocommerce-smart-checkout/).
 
 == Frequently Asked Questions ==
 
 = Where can I find documentation? =
 
-For help setting up and configuring, please view our [documentation](https://developer.vivawallet.com/e-commerce-plugins/viva-wallet-woocommerce-gateway/).
+For help setting up and configuring, please view our [documentation](https://developer.vivawallet.com/plugins/woocommerce-smart-checkout/).
 
 = Where can I get support or talk to other users? =
 
