@@ -2,7 +2,7 @@
 Contributors: webitbz
 Tags: viva wallet, credit card, debit card, payment gateway, payments, payment request, smart checkout
 Requires at least: 5.1
-Tested up to: 5.4
+Tested up to: 6.0
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv3
@@ -69,6 +69,8 @@ Viva Wallet is a European cloud-based Neobank in over 23 European countries, off
 == Installation ==
 
 For detailed installation instructions, visit our [Developer Portal](https://developer.vivawallet.com/plugins/woocommerce-smart-checkout/).
+
+https://www.youtube.com/watch?v=kb3iX8gZqqY
 
 == Frequently Asked Questions ==
 
