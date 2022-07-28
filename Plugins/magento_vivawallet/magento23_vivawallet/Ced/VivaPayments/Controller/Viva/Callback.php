@@ -151,8 +151,8 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
                 $Amount = $currentTransactionObject->Amount;
                 $StatusId = $currentTransactionObject->StatusId;
                 $CustomerTrns = $currentTransactionObject->CustomerTrns ;
-                $message = "Transactions completed Successfully";
                 if (isset($StatusId) && strtoupper($StatusId) == 'F') {
+                    $message = "Transactions completed Successfully";
                     $update_order->setOrderState('paid')->save();
                 } else{
                     $update_order->setOrderState('failed')->save();
