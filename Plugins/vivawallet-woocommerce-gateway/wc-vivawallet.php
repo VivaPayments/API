@@ -36,7 +36,7 @@ function woocommerce_vivawallet()
 
             global $woocommerce;
             $this->id = 'vivawallet';
-            $this->icon = apply_filters('woocommerce_vivawallet_icon', ''.$plugin_dir.'vivawallet.png');
+            $this->icon = apply_filters('woocommerce_vivawallet_icon', ''.$plugin_dir.'cards-wallets-transfers-more.png');
             $this->has_fields = false;
 
             // Load the form fields.
@@ -127,7 +127,7 @@ function woocommerce_vivawallet()
                     'title' => __( 'Description', 'woocommerce' ),
                     'type' => 'textarea',
                     'description' => __( 'This controls the description which the user sees during checkout.', 'vivawallet-for-woocommerce' ),
-                    'default' => __( 'Pay via Viva Wallet Smart Checkout - you can pay with your credit card.', 'vivawallet-for-woocommerce' )
+                    'default' => __( 'Pay using 30+ methods (cards, digital wallets, local payment methods, online banking, and more)', 'vivawallet-for-woocommerce' )
                 ),
                 'vivawallet_merchantid' => array
                 (
