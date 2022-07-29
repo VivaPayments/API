@@ -67,9 +67,9 @@ msgstr ""
 
 # @ vivawallet-for-woocommerce
 #: wc-vivawallet.php:287
-msgid "Pay via Viva Wallet Smart Checkout - you can pay with your credit card."
+msgid "Pay using 30+ methods (cards, digital wallets, local payment methods, online banking, and more)"
 msgstr ""
-"Πληρώστε μέσω Viva Wallet Smart Checkout - μπορείτε να πληρώσετε με την πιστωτική σας κάρτα."
+"Πληρώστε με 30+ μεθόδους (κάρτες, ψηφιακά πορτοφόλια, τοπικές μεθόδους πληρωμών, online banking και άλλες)"
 
 # @ vivawallet-for-woocommerce
 #: wc-vivawallet.php:143
