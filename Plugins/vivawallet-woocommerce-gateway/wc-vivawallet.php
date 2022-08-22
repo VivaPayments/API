@@ -185,6 +185,50 @@ function woocommerce_vivawallet()
                 echo '<p>'.$this->description.'</p>';
             }
         }
+
+        /*
+         * Get default language for smart checkout
+         */
+        public function getRequestLanguage() {
+            $supportedLanguages = [
+                'bg' => 'bg-BG',
+                'hr' => 'hr-HR',
+                'cs' => 'cs-CZ',
+                'da' => 'da-DK',
+                'nl' => 'nl-NL',
+                'en' => 'en-GB',
+                'fi' => 'fi-FI',
+                'fr' => 'fr-FR',
+                'de' => 'de-DE',
+                'el' => 'el-GR',
+                'hu' => 'hu-HU',
+                'it' => 'it-IT',
+                'pl' => 'pl-PL',
+                'pt' => 'pt-PT',
+                'ro' => 'ro-RO',
+                'es' => 'es-ES'
+            ];
+            $locale             = get_locale();
+            if ( ! in_array( $locale, $supportedLanguages ) ) {
+                if ( isset( $supportedLanguages[ $locale ] ) ) {
+                    $locale = $supportedLanguages[ $locale ];
+                } else {
+                    foreach ( [ '_', '-' ] as $separator ) {
+                        $localeParts = explode( $separator, $locale );
+                        if ( isset( $supportedLanguages[ $localeParts[0] ] ) ) {
+                            $locale = $supportedLanguages[ $localeParts[0] ];
+                            break;
+                        }
+                    }
+                    if ( ! in_array( $locale, $supportedLanguages ) ) {
+                        $locale = 'en-GB';
+                    }
+                }
+            }
+
+            return $locale;
+        }
+
         /**
          * Generate the dibs button link
          **/
@@ -221,44 +265,9 @@ function woocommerce_vivawallet()
                 $charge = number_format($order->get_total(), '2', '.', '');
             }
 
-            $supportedLanguages = [
-                'el-GR',
-                'bg-BG',
-                'cs-CZ',
-                'da-DK',
-                'de-DE',
-                'es-ES',
-                'fi-FI',
-                'fr-FR',
-                'hr-HR',
-                'hu-HU',
-                'it-IT',
-                'nl-NL',
-                'pl-PL',
-                'pt-PT',
-                'ro-RO',
-                'en-GB'
-            ];
-            $formlang           = get_locale();
-            switch ( $formlang ) {
-                case 'el':
-                    $formlang = 'el-GR';
-                    break;
-                case 'fi':
-                    $formlang = 'fi-FI';
-                    break;
-                case 'hr':
-                    $formlang = 'hr-HR';
-                    break;
-                default:
-                    if ( ! in_array( $formlang, $supportedLanguages ) ) {
-                        $formlang = 'en-GB';
-                    }
-                    break;
-            }
-
-            $MerchantID =  $this->vivawallet_merchantid;
-            $Password =   html_entity_decode($this->vivawallet_merchantpass);
+            $formlang   = $this->getRequestLanguage();
+            $MerchantID = $this->vivawallet_merchantid;
+            $Password   = html_entity_decode( $this->vivawallet_merchantpass );
 
             $poststring['Amount'] = $amountcents;
             $poststring['RequestLang'] = $formlang;
