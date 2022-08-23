@@ -84,7 +84,7 @@ If you get stuck, you can ask for help via our [GitHub issues page](https://gith
 
 == Changelog ==
 
-= 3.6.5 2022-08-22 =
+= 3.6.5 2022-08-23 =
 
 populate FullName to Smart Checkout.
 populate Site Title as a Customer Message to Smart Checkout.
