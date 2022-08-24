@@ -1,0 +1,9 @@
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+div.payment-method.vivawalletsmartcheckout div.payment-method-title img {
+    padding-left: 5px;
+    vertical-align: middle;
+}

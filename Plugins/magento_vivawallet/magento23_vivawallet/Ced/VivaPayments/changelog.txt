@@ -1,0 +1,12 @@
+*** Viva Wallet Smart Checkout Changelog ***
+
+2022-08-24 - version 1.0.4
+* add icon in checkout page
+* change default title in checkout page
+* change message in failed payment attempts
+
+2022-06-21 - version 1.0.3
+* not populate PaymentTimeOut in Smart Checkout.
+* use the store name in Smart Checkout's customer message.
+* populate FullName in Smart checkout.
+* use site's language as the default one in Smart Checkout.
