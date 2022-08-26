@@ -1,6 +1,6 @@
 <?php
 class ControllerExtensionPaymentVivawallet extends Controller {
-    // version = '1.0.3';
+    // version = '1.0.4';
     public function index() {
         $this->load->language('extension/payment/vivawallet');
 
