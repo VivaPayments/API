@@ -84,6 +84,10 @@ If you get stuck, you can ask for help via our [GitHub issues page](https://gith
 
 == Changelog ==
 
+= 3.6.6 2022-10-13 =
+
+change default checkout icon size
+
 = 3.6.5 2022-08-23 =
 
 populate FullName to Smart Checkout.

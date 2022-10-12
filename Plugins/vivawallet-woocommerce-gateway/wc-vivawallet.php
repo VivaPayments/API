@@ -3,7 +3,7 @@
 Plugin Name: Viva Wallet Smart Checkout
 Plugin URI: http://www.vivawallet.com/
 Description: Extends WooCommerce with the Viva Wallet Smart Checkout.
-Version: 3.6.5
+Version: 3.6.6
 Author: Viva Wallet
 Author URI: http://www.vivawallet.com/
 Text Domain: vivawallet-for-woocommerce
@@ -12,7 +12,7 @@ Domain Path: /languages
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WordPress WooCommerce
- * @package    Viva Wallet v3.6.5
+ * @package    Viva Wallet v3.6.6
  * @author     Viva Wallet
  * @copyright  Copyright (c)2020 Viva Wallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
