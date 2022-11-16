@@ -58,7 +58,7 @@ Accept multiple [payment methods](https://developer.vivawallet.com/payment-metho
 * SEPA Direct Debit
 * Pay by Bank
 * Cash (Viva Spot)
-* e-Banking (ΔΙΑΣ/DIAS)
+* e-Banking (DIAS)
 
 **Supports saved cards**
 
