@@ -12,7 +12,53 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 **Multiple payment methods**
 
-Accept multiple [payment methods](https://developer.vivawallet.com/payment-methods/), including *international* [card schemes](https://developer.vivawallet.com/payment-methods/#credit-debit-cards) (Visa, Mastercard, American Express, Discover and more), *local* [card schemes](https://developer.vivawallet.com/payment-methods/#credit-debit-cards) (Bancontact, and more), [digital wallets](https://developer.vivawallet.com/payment-methods/#digital-wallets) (Apple Pay™, Google Pay™, Samsung Pay™), other payment methods such as [PayPal™](https://developer.vivawallet.com/payment-methods/#alternative-payment-methods), [SEPA Direct Debit](https://developer.vivawallet.com/payment-methods/direct-debit-other/sepa-direct-debit/), [Trustly, Sofort, BLIK, EPS, giropay, iDEAL, MULTIBANCO](https://developer.vivawallet.com/payment-methods/#alternative-payment-methods), [Payconiq™](https://developer.vivawallet.com/payment-methods/#payconiq), as well as online banking, direct debit, *and [more](https://developer.vivawallet.com/payment-methods/#other-payment-methods)*
+Accept multiple [payment methods](https://developer.vivawallet.com/payment-methods/), including:
+
+[**Card Schemes:**](https://developer.vivawallet.com/payment-methods/#cards)
+
+* Visa
+* Mastercard
+* American Express
+* Maestro
+* Bancontact
+* JCB
+* Diners Club International
+* Discover
+
+[**Digital Wallets:**](https://developer.vivawallet.com/payment-methods/digital-wallets/)
+
+* Apple Pay
+* Google Pay
+* Samsung Pay
+* PayPal
+* PayPal Pay Later
+* Viva Wallet
+
+[**Local Payment methods:**](https://developer.vivawallet.com/payment-methods/local-payment-methods/)
+
+* Bancontact QR
+* BitPay
+* BLIK
+* EPS
+* Giropay
+* IDEAL
+* IRIS
+* Klarna
+* MULTIBANCO
+* P24
+* Payconiq
+* PayU
+* Sofort
+* Tbi Bank
+* Trustly
+* WeChat Pay
+
+[**Direct Debit & Other:**](https://developer.vivawallet.com/payment-methods/direct-debit-other/)
+
+* SEPA Direct Debit
+* Pay by Bank
+* Cash (Viva Spot)
+* e-Banking (DIAS)
 
 **Supports saved cards**
 
@@ -83,6 +129,10 @@ For help setting up and configuring, please view our [documentation](https://dev
 If you get stuck, you can ask for help via our [GitHub issues page](https://github.com/VivaPayments/API/issues).
 
 == Changelog ==
+
+= 3.6.7 2022-11-16 =
+
+Update readme file with all the available payment methods
 
 = 3.6.6 2022-10-13 =
 
