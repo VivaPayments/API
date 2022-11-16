@@ -12,7 +12,7 @@ Domain Path: /languages
 /*  Copyright 2020  Vivawallet.com
  *****************************************************************************
  * @category   Payment Gateway WordPress WooCommerce
- * @package    Viva Wallet v3.6.6
+ * @package    Viva Wallet v3.6.7
  * @author     Viva Wallet
  * @copyright  Copyright (c)2020 Viva Wallet http://www.vivawallet.com/
  * @License    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
