@@ -516,7 +516,7 @@ function woocommerce_vivawallet()
                 if ($this->vivawallet_testmode == 'yes') {
                     $geturl = 'https://demo.vivapayments.com/api/orders/' . $tm_ref;
                 } else {
-                    $geturl = 'https://www.vivapayments.com/api/orders' . $tm_ref;
+                    $geturl = 'https://www.vivapayments.com/api/orders/' . $tm_ref;
                 }
 
                 $body = [];
@@ -629,7 +629,7 @@ function woocommerce_vivawallet()
                     if ($this->vivawallet_testmode == 'yes') {
                         $geturl = 'https://demo.vivapayments.com/api/orders/' . $OrderCode;
                     } else {
-                        $geturl = 'https://www.vivapayments.com/api/orders' . $OrderCode;
+                        $geturl = 'https://www.vivapayments.com/api/orders/' . $OrderCode;
                     }
                     $body = [];
 
