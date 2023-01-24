@@ -132,7 +132,7 @@ If you get stuck, you can ask for help via our [GitHub issues page](https://gith
 
 = 3.6.8 2023-01-24 =
 
-OrderCode verification in both success and webhook endpoints
+Security fix: OrderCode verification in both success and webhook endpoints
 
 = 3.6.7 2022-11-16 =
 
