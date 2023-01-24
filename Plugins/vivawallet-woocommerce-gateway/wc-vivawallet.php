@@ -509,10 +509,37 @@ function woocommerce_vivawallet()
                 $tm_ref = sanitize_text_field($tm_ref);
                 $statustr = $this->vivawallet_processing;
 
+                //Retrieve order data
+                $MerchantID =  $this->vivawallet_merchantid;
+                $Password =   html_entity_decode($this->vivawallet_merchantpass);
+
+                if ($this->vivawallet_testmode == 'yes') {
+                    $geturl = 'https://demo.vivapayments.com/api/orders/' . $tm_ref;
+                } else {
+                    $geturl = 'https://www.vivapayments.com/api/orders/' . $tm_ref;
+                }
+
+                $body = [];
+
+                $args = [
+                    'body' => $body,
+                    'headers' => [
+                        'Authorization' => 'Basic ' . base64_encode($MerchantID . ':' . $Password)
+                    ],
+                    'cookies' => []
+                ];
+
+                $orderRequest = wp_remote_get($geturl, $args);
+
+                if($orderRequest['response']['code'] === 200) {
+                    $body = json_decode($orderRequest['body'], true, 512, JSON_BIGINT_AS_STRING);
+                }
+                //End retrieve order data
+
                 $check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($tm_ref)."'", ARRAY_A);
                 $check_query_count = count($check_query);
                 if($check_query_count >= 1){
-                    if($check_query[0]['order_state']=='I' || $check_query[0]['order_state']=='P') {
+                    if( ($check_query[0]['order_state']=='I' || $check_query[0]['order_state']=='P') && 3 === $body['StateId'] ) {
 
                         $inv_id = $check_query[0]['orderid'];
                         $order = new WC_Order($inv_id);
@@ -578,26 +605,53 @@ function woocommerce_vivawallet()
                 }
 
                 $eventData = false;
+                $eventTypeId = false;
 
                 if ($postRequest['response']['code'] === 200) {
                     $postDataArray = json_decode($postdata, true, 512, JSON_BIGINT_AS_STRING);
                     if (isset($postDataArray['EventData'])) {
                         $eventData = $postDataArray['EventData'];
                     }
+                    if (isset($postDataArray['EventTypeId'])) {
+                        $eventTypeId = $postDataArray['EventTypeId'];
+                    }
                 } else {
                     error_log(__METHOD__ . PHP_EOL . 'Code:' . $postRequest['response']['code'] . PHP_EOL. ' Error:' . $postRequest['response']['message']);
                     throw new Exception("Unable to reach Viva Payments (" . $postRequest['response']['message'] . ")");
                 }
 
-                if($eventData !== false) {
+                if($eventData !== false && 1796 === $eventTypeId) {
                     $StatusId = $eventData['StatusId'];
                     $OrderCode = sanitize_text_field($eventData['OrderCode']);
                     $statustr = $this->vivawallet_processing;
 
+                    //Retrieve order data
+                    if ($this->vivawallet_testmode == 'yes') {
+                        $geturl = 'https://demo.vivapayments.com/api/orders/' . $OrderCode;
+                    } else {
+                        $geturl = 'https://www.vivapayments.com/api/orders/' . $OrderCode;
+                    }
+                    $body = [];
+
+                    $args = [
+                        'body' => $body,
+                        'headers' => [
+                            'Authorization' => 'Basic ' . base64_encode($MerchantID . ':' . $Password)
+                        ],
+                        'cookies' => []
+                    ];
+
+                    $orderRequest = wp_remote_get($geturl, $args);
+
+                    if($orderRequest['response']['code'] === 200) {
+                        $body = json_decode($orderRequest['body'], true, 512, JSON_BIGINT_AS_STRING);
+                    }
+                    //End retrieve order data
+
                     $check_query = $wpdb->get_results("SELECT order_state, orderid FROM {$wpdb->prefix}vivawallet_data WHERE ordercode = '".addslashes($OrderCode)."'", ARRAY_A);
                     $check_query_count = count($check_query);
                     if($check_query_count >= 1){
-                        if($check_query[0]['order_state']=='I' && $StatusId=='F') {
+                        if($check_query[0]['order_state']=='I' && $StatusId=='F' && 3 === $body['StateId']) {
 
                             $query = "update {$wpdb->prefix}vivawallet_data set order_state='P' where ordercode='".addslashes($OrderCode)."'";
                             $wpdb->query($query);
