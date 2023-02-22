@@ -13,13 +13,33 @@ class Checkout
      */
     protected $session;
 
+    protected \Magento\Sales\Model\Service\InvoiceService $invoiceService;
+
+    protected \Magento\Sales\Model\ResourceModel\Order\Invoice $invoiceResource;
+
+    protected \Magento\Framework\DB\Transaction $dbTransaction;
+
+    protected \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender;
+
     /**
      * @param \Magento\Checkout\Model\Session $session
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Sales\Model\ResourceModel\Order\Invoice $invoiceResource
+     * @param \Magento\Framework\DB\Transaction $dbTransaction
+     * @param \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
      */
     public function __construct(
-        \Magento\Checkout\Model\Session $session
+        \Magento\Checkout\Model\Session $session,
+        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+        \Magento\Sales\Model\ResourceModel\Order\Invoice $invoiceResource,
+        \Magento\Framework\DB\Transaction $dbTransaction,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
     ) {
         $this->session = $session;
+        $this->invoiceService = $invoiceService;
+        $this->invoiceResource = $invoiceResource;
+        $this->dbTransaction = $dbTransaction;
+        $this->invoiceSender = $invoiceSender;
     }
 
     /**
@@ -46,5 +66,21 @@ class Checkout
     public function restoreQuote()
     {
         return $this->session->restoreQuote();
+    }
+
+    public function createInvoiceForOrder(Order $order)
+    {
+        if ($order->canInvoice()) {
+            $invoice = $this->invoiceService->prepareInvoice($order);
+            $invoice->register();
+            $this->invoiceResource->save($invoice);
+
+            $this->dbTransaction
+                ->addObject($invoice)
+                ->addObject($invoice->getOrder())
+                ->save();
+
+            $this->invoiceSender->send($invoice);
+        }
     }
 }
