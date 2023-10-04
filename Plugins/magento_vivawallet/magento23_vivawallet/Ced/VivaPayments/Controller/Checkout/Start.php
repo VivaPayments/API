@@ -12,8 +12,12 @@ class Start extends \Magento\Framework\App\Action\Action
     */
     protected $_checkoutSession;
 
+    /**
+    * @var \Ced\VivaPayments\Model\PaymentMethod
+    */
+    protected $_paymentMethod;
 
-	protected $_resultPageFactory;
+    protected $_resultPageFactory;
 	
     /**
     * @param \Magento\Framework\App\Action\Context $context
