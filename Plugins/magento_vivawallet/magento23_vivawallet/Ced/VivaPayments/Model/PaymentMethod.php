@@ -59,9 +59,10 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
 
     }
 	
-	public function getsupportedCurrencyCodes()
+    public function getsupportedCurrencyCodes()
     {
-        return explode(",", $this->getConfigData('allowed_currency'));
+        $allowedCurrency = $this->getConfigData('allowed_currency');
+        return $allowedCurrency ? explode(",", $allowedCurrency) : [];
     }
 
     public function canUseForCurrency($currencyCode)
