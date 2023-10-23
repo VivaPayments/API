@@ -35,6 +35,11 @@ class Callback extends AppAction implements CsrfAwareActionInterface  //mag23 (i
     protected $_orderSender;
 
     /**
+     * @var 
+     */  
+    protected $_client;
+
+    /**
      * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
