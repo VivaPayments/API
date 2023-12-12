@@ -77,6 +77,11 @@ class ControllerExtensionPaymentVivawallet extends Controller {
         $poststring['Email'] = $order_info['email'];
 
         $vivawallet_total_eur = $this->currency->format($order_info['total'], strtoupper($order_info['currency_code']), '',false);
+
+        if ($vivawallet_total_eur <= 0) {
+            return;
+        }
+
         $charge = number_format($vivawallet_total_eur, '2', '.', '');
 
         $maxperiod = '';
